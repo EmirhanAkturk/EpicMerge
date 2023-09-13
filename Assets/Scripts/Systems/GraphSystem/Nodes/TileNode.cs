@@ -98,20 +98,35 @@ public class TileNode : Node
     #endregion
 
     #region Other Functions
+
+    [ContextMenu("Bfs")]
+    public void Bfs()
+    {
+        var wantedNodes = Graph.FindWantedNodesWithBfs(this, Value);
+        
+        Debug.Log("################## ");
+        Debug.Log("BFS Wanted Value : " + Value);
+        PrintNodes(wantedNodes);
+    }
     
     public override void PrintNeighbors()
     {
         Debug.Log("#######################");
         Debug.Log("Print My Neighbors : ", gameObject);
 
-        int neighborCount = 0;
-        foreach (var neighbor in Neighbors)
+        PrintNodes(Neighbors);
+    }
+
+    protected void PrintNodes(List<Node> nodes)
+    {
+        int nodesOrder = 0;
+        foreach (Node node in nodes)
         {
-            ++neighborCount; 
-            Debug.Log("Neighbor count : " + neighborCount, neighbor.gameObject);
+            GameObject nodeObject = node.gameObject;
+            Debug.Log("Nodes order : " + nodesOrder + "NodeName : " + nodeObject.name, nodeObject);
         }
     }
-    
+
     protected override bool CheckNeighborsFull()
     {
         return Neighbors.Count >= MAX_NEIGHBORS_COUNT;

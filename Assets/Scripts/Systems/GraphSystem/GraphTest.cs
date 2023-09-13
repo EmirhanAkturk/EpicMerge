@@ -32,9 +32,10 @@ namespace Systems.GraphSystem
          int nodeCount = 0;
          for (int i = 0; i < m; i++)
          {
-            int rndValue = Random.Range(0, 3);
             for (int j = 0; j < n; j++)
             {
+               int rndValue = Random.Range(0, 3);
+
                TileNode node = CreateNode(rndValue, new Vector3(i * nodeDistance, 0, j * nodeDistance));
                ++nodeCount;
                node.gameObject.name = "Node_" + nodeCount;
