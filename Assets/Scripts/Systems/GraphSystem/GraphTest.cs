@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Attribute;
 using UnityEngine;
+using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace Systems.GraphSystem
 {
@@ -12,7 +15,7 @@ namespace Systems.GraphSystem
       [SerializeField] private bool createGraphInStart = true;
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
-      
+
       private Graph graph;
    
       private void Start()
@@ -31,6 +34,12 @@ namespace Systems.GraphSystem
          int m = matrixDimensions.x;
          int n = matrixDimensions.y;
 
+         CreateNodes(m, n);
+         FindEdges();
+      }
+
+      private void CreateNodes(int m, int n)
+      {
          int nodeCount = 0;
          for (int i = 0; i < m; i++)
          {
@@ -41,10 +50,32 @@ namespace Systems.GraphSystem
                TileNode node = CreateNode(rndValue, new Vector3(i * nodeDistance, 0, j * nodeDistance));
                ++nodeCount;
                node.gameObject.name = "Node_" + nodeCount;
-               
+
                graph.AddNode(node);
                node.addEdgeAction = graph.AddEdge;
             }
+         }
+      }
+
+      private void FindEdges()
+      {
+         var nodes = graph.GetNodes();
+         foreach (var node1 in nodes)
+         {
+            foreach (var node2 in nodes)
+            {
+               if(node1 == node2) continue;
+               if (Vector3.Distance(node1.transform.position, node2.transform.position) <= nodeDistance)
+               {
+                  graph.AddEdge(node1, node2);
+                  node1.CreateVertexObject(node2);
+               }
+            }
+         }
+
+         foreach (var node in nodes)
+         {
+            node.PrintNeighbors();
          }
       }
 
