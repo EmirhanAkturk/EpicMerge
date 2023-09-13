@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using Attribute;
 using Systems.GraphSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,6 +14,9 @@ public class TileNode : Node
     [SerializeField] private GameObject vertexObjectPrefab;
     [Space]
     [SerializeField] private List<ValueMaterialPair> valueMaterialPairs;
+    
+    [Space]
+    [Button(nameof(Bfs))] public bool buttonField;
 
     private Dictionary<int, ValueMaterialPair> ValueMaterialMaps
     {
@@ -29,7 +33,6 @@ public class TileNode : Node
     private Dictionary<int, ValueMaterialPair> valueMaterialMaps;
 
     private const int MAX_NEIGHBORS_COUNT = 4;
-
 
     #region Test Part
 

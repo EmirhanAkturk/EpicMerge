@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Attribute;
 using UnityEngine;
 
 namespace Systems.GraphSystem
@@ -10,6 +11,7 @@ namespace Systems.GraphSystem
       [SerializeField] private Vector2Int matrixDimensions = new Vector2Int(5, 5);
       [SerializeField] private bool createGraphInStart = true;
       
+      [Button(nameof(RecreateGraph))] public bool buttonField;
       
       private Graph graph;
    
@@ -44,19 +46,6 @@ namespace Systems.GraphSystem
                node.addEdgeAction = graph.AddEdge;
             }
          }
-
-         // for (int i = 0; i < newNodes.Count - 1; i += 1)
-         // {
-         //    graph.AddEdge(newNodes[i], newNodes[i + 1]);
-         // }
-
-         // foreach (var node in newNodes)
-         // {
-         //    Debug.Log("##########################");
-         //    Debug.Log($"node{node.Value} Neighbors");
-         //
-         //    node.PrintNeighbors();
-         // }
       }
 
       private TileNode CreateNode(int value, Vector3 pos)
@@ -79,7 +68,7 @@ namespace Systems.GraphSystem
          }
       }      
       
-      [ContextMenu("RecreateGraph")]
+      // [ContextMenu("RecreateGraph")]
       public void RecreateGraph()
       {
          DestroyGraph();
@@ -94,7 +83,7 @@ namespace Systems.GraphSystem
 
          foreach (var node in nodes)
          {
-            Destroy(node.gameObject);
+            DestroyImmediate(node.gameObject);
          }
          
          graph = null;
