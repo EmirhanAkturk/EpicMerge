@@ -52,7 +52,6 @@ namespace Systems.GraphSystem
                node.gameObject.name = "Node_" + nodeCount;
 
                graph.AddNode(node);
-               node.addEdgeAction = graph.AddEdge;
             }
          }
       }
