@@ -4,7 +4,7 @@ namespace JoostenProductions {
     public class OverridableMonoBehaviour : MonoBehaviour {
         [SerializeField] private bool addOnEnable = true;
         [SerializeField] private bool removeOnDisable = true;
-
+        
         protected virtual void OnEnable() {
             if(addOnEnable) UpdateManager.AddItem(this);
         }

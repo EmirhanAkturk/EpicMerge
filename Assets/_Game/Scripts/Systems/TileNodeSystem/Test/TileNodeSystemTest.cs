@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
 using Attribute;
+using Systems.GraphSystem;
 using UnityEngine;
-using UnityEngine.Events;
+using Utils.Extensions;
 using Random = UnityEngine.Random;
 
-namespace Systems.GraphSystem
+namespace _Game.Scripts.Systems.TileNodeSystem.Test
 {
-   public class GraphTest : MonoBehaviour
+   public class TileNodeSystemTest : MonoBehaviour
    {
       [SerializeField] private GameObject nodePrefab;
       [SerializeField] private float nodeDistance = 1.5f;
@@ -47,77 +46,45 @@ namespace Systems.GraphSystem
             {
                int rndValue = Random.Range(0, 3);
 
-               TileNode node = CreateNode(rndValue, new Vector3(i * nodeDistance, 0, j * nodeDistance));
+               TileNodeController tileNodeController = CreateNode(rndValue, new Vector3(i * nodeDistance, 0, j * nodeDistance));
                ++nodeCount;
-               node.gameObject.name = "Node_" + nodeCount;
+               tileNodeController.gameObject.name = "Node_" + nodeCount;
 
-               graph.AddNode(node);
+               graph.AddNode(tileNodeController.TileNode);
             }
          }
       }
 
       private void FindEdges()
       {
-         var nodes = graph.GetNodes();
-         foreach (var node1 in nodes)
-         {
-            foreach (var node2 in nodes)
-            {
-               if(node1 == node2) continue;
-               if (Vector3.Distance(node1.transform.position, node2.transform.position) <= nodeDistance)
-               {
-                  graph.AddEdge(node1, node2);
-                  node1.CreateVertexObject(node2);
-               }
-            }
-         }
-
-         foreach (var node in nodes)
-         {
-            node.PrintNeighbors();
-         }
+         graph.FindEdgesWithNodeDistance(nodeDistance, true);
       }
 
-      private TileNode CreateNode(int value, Vector3 pos)
+      private TileNodeController CreateNode(int value, Vector3 pos)
       {
          var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, transform);
-         var node = nodeObject.GetComponent<TileNode>();
-         node.Init(value);
-         return node;
+         var tileNodeController = nodeObject.GetComponent<TileNodeController>();
+         tileNodeController.Init(value);
+         return tileNodeController;
       }
 
       [ContextMenu("PrintGraphNeighbors")]
       public void PrintGraphNeighbors()
       {
-         if(graph is null) return;
-
-         var nodes = graph.GetNodes();
-         foreach (var node in nodes)
-         {
-            node.PrintNeighbors();
-         }
+         graph?.PrintGraphNeighbors();
       }      
       
       // [ContextMenu("RecreateGraph")]
       public void RecreateGraph()
       {
-         DestroyGraph();
+         DestroyImmediateGraph();
          CreateGraph();
       }
 
-      private void DestroyGraph()
+      private void DestroyImmediateGraph()
       {
-         if(graph is null) return;
-
-         var nodes = graph.GetNodes();
-
-         foreach (var node in nodes)
-         {
-            DestroyImmediate(node.gameObject);
-         }
-         
+         graph?.DestroyImmediateNodes();
          graph = null;
       }
-
    }
 }

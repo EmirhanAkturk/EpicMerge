@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 namespace Utils
@@ -21,22 +22,28 @@ namespace Utils
             PrintLog(obj.ToString(), go);
         }
     
-        public static void PrintColoredLog(string message, LogColor logColor)
+        public static void PrintColoredLog(string message, LogColor logColor, GameObject go = null)
         {
             if(!CanPrintLog()) return;
-        
+
+            StringBuilder stringBuilder = new StringBuilder();
+            
             switch (logColor)
             {
                 case LogColor.Red:
-                    PrintLog($"<color=red> {message} </color>");
+                    stringBuilder.Append("<color=red> ");
                     break;
                 case LogColor.Green:
-                    PrintLog($"<color=green> {message} </color>");
+                    stringBuilder.Append("<color=green> ");
                     break;
                 case LogColor.Blue:
-                    PrintLog($"<color=blue> {message} </color>");
+                    stringBuilder.Append("<color=blue> ");
                     break;
             }
+            
+            stringBuilder.Append(message);
+            stringBuilder.Append(" </color>");
+            PrintLog(stringBuilder, go);
         }
 
         public static void PrintColoredError(string message)

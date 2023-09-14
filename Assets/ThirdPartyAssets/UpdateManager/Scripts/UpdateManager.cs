@@ -93,13 +93,13 @@ namespace JoostenProductions {
         private static void AddItemToArray(OverridableMonoBehaviour behaviour) {
             Type behaviourType = behaviour.GetType();
 
-            if(behaviourType.GetMethod("UpdateMe").DeclaringType != overridableMonoBehaviourType)
+            if(behaviourType.GetMethod("UpdateMe")?.DeclaringType != overridableMonoBehaviourType)
                 SubscribeToUpdate(behaviour.UpdateMe);
 
-            if(behaviourType.GetMethod("FixedUpdateMe").DeclaringType != overridableMonoBehaviourType)
+            if(behaviourType.GetMethod("FixedUpdateMe")?.DeclaringType != overridableMonoBehaviourType)
                 SubscribeToFixedUpdate(behaviour.FixedUpdateMe);
 
-            if(behaviourType.GetMethod("LateUpdateMe").DeclaringType != overridableMonoBehaviourType)
+            if(behaviourType.GetMethod("LateUpdateMe")?.DeclaringType != overridableMonoBehaviourType)
                 SubscribeToLateUpdate(behaviour.LateUpdateMe);
         }
 
@@ -109,16 +109,19 @@ namespace JoostenProductions {
             UnsubscribeFromLateUpdate(behaviour.LateUpdateMe);
         }
 
-        private void Update() {
-            if(OnUpdateEvent != null) OnUpdateEvent.Invoke();
+        private void Update()
+        {
+            OnUpdateEvent?.Invoke();
         }
 
-        private void FixedUpdate() {
-            if(OnFixedUpdateEvent != null) OnFixedUpdateEvent.Invoke();
+        private void FixedUpdate()
+        {
+            OnFixedUpdateEvent?.Invoke();
         }
 
-        private void LateUpdate() {
-            if(OnLateUpdateEvent != null) OnLateUpdateEvent.Invoke();
+        private void LateUpdate()
+        {
+            OnLateUpdateEvent?.Invoke();
         }
     }
 }

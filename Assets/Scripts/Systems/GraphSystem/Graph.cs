@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Systems.GraphSystem
 {
@@ -28,13 +29,19 @@ namespace Systems.GraphSystem
         {
             return nodes;
         }
-        
+
+        public void ClearNodes()
+        {
+            nodes.Clear();
+        }
+
+        #region Search Functions
         public static List<Node> FindWantedNodesWithBfs(Node start, int targetValue)
         {
             List<Node> result = new List<Node>();
             HashSet<Node> visited = new HashSet<Node>();
-
             Queue<Node> queue = new Queue<Node>();
+            
             queue.Enqueue(start);
             visited.Add(start);
 
@@ -59,5 +66,7 @@ namespace Systems.GraphSystem
 
             return result;
         }
+            
+        #endregion
     }
 }
