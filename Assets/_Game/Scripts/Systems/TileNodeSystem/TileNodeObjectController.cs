@@ -30,18 +30,53 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             placedTileObject = null;
         }
 
+        private bool isListening;
         private void ObjectEnterTileArea(TileObject tileObject)
         {
+            //TODO Refactor below part!!
+            // EventService.onTileObjectEnteredToNode?.Invoke(tileObject, this);
+            
             movingTileObjectInThisTile = tileObject;
-            EventService.onTileObjectMoveEnd += PlaceObjectInSlot;
+
+            if (!isListening)
+            {
+                EventService.onTileObjectDragEnd += PlaceObjectInSlot;
+                // EventService.onTileObjectEnteredToNode += EnteredToNode;
+                isListening = true;
+            }
            
             MoveObjectToCenter(tileObject);
         }
 
+        // private void EnteredToNode(TileObject tileObject, TileNodeObjectController tileNodeObjectController)
+        // {
+        //     if (movingTileObjectInThisTile == null || 
+        //         movingTileObjectInThisTile != tileObject)
+        //     {
+        //         return;
+        //     }
+        //
+        //     if (tileNodeObjectController != this)
+        //     {
+        //         if (isListening)
+        //         {
+        //             EventService.onTileObjectDragEnd -= PlaceObjectInSlot;
+        //             // EventService.onTileObjectEnteredToNode -= EnteredToNode;
+        //             isListening = false;
+        //         }
+        //         ObjectExitTileArea(tileObject);
+        //     }
+        // }
+
         private void ObjectExitTileArea(TileObject tileObject)
         {
             movingTileObjectInThisTile = null;
-            EventService.onTileObjectMoveEnd -= PlaceObjectInSlot;
+
+            if (isListening)
+            {
+                EventService.onTileObjectDragEnd -= PlaceObjectInSlot;
+                isListening = false;
+            }
         }
 
         private void TryPlaceObjectInSlot(TileObject tileObject)

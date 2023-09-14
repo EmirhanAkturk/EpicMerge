@@ -15,7 +15,7 @@ namespace Utils.Extensions
             }    
         }
         
-        public static void FindEdgesWithNodeDistance(this Graph graph, float nodeDistance, bool printNeighbors = false)
+        public static void FindEdgesWithNodeDistance(this Graph graph, float nodeDistance, bool crateVertexObject = false, bool printNeighbors = false)
         {
             var nodes = graph.GetNodes();
             
@@ -27,7 +27,10 @@ namespace Utils.Extensions
                     if (Vector3.Distance(node1.transform.position, node2.transform.position) <= nodeDistance)
                     {
                         graph.AddEdge(node1, node2);
-                        node1.CreateVertexObject(node2);
+                        if (crateVertexObject)
+                        {
+                            node1.CreateVertexObject(node2);
+                        }
                     }
                 }
             }

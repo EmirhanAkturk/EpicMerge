@@ -1,27 +1,30 @@
 ﻿using UnityEngine;
 
-public static class ConfigurationService
+namespace Systems.ConfigurationSystem
 {
-	public static GameConfigurations Configurations
+	public static class ConfigurationService
 	{
-		get
+		public static GameConfigurations Configurations
 		{
-			if (!isLoaded)
+			get
 			{
-				Load();
+				if (!_isLoaded)
+				{
+					Load();
+				}
+				return _configurations;
 			}
-			return configurations;
 		}
-	}
 
-	private static bool isLoaded = false;
-	private static GameConfigurations configurations;
+		private static bool _isLoaded = false;
+		private static GameConfigurations _configurations;
 
-	private const string ConfigurationPath = "Configurations/GameConfigurations";
+		private const string CONFIGURATION_PATH = "Configurations/GameConfigurations";
 
-	private static void Load()
-	{
-		configurations = Resources.Load<GameConfigurations>(ConfigurationPath);
-		isLoaded = true;
+		private static void Load()
+		{
+			_configurations = Resources.Load<GameConfigurations>(CONFIGURATION_PATH);
+			_isLoaded = true;
+		}
 	}
 }

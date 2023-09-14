@@ -57,7 +57,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
 
       private void FindEdges()
       {
-         graph.FindEdgesWithNodeDistance(nodeDistance, true);
+         graph.FindEdgesWithNodeDistance(nodeDistance);
       }
 
       private TileNodeController CreateNode(int value, Vector3 pos)
