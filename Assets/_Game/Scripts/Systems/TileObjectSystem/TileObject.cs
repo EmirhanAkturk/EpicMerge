@@ -15,8 +15,15 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         }
 
         [SerializeField] private TileObjectDragDropController tileObjectDragDropController;
+        
+        private IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
+        private IMoveController moveController;
 
-
+        public void Move(Vector3 targetPos, MoveEndCallback onMoveEnd = null)
+        {
+            MoveController?.Move(targetPos, onMoveEnd);
+        }
+        
         private void Start()
         {
             Init();

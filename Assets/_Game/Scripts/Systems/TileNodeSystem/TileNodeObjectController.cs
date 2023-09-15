@@ -13,7 +13,6 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         [Space]
 
         [SerializeField] private TileNodeObjectDetector tileNodeObjectDetector;
-        [SerializeField] private MoveTweenAnimController moveTweenAnimController;
 
         private TileObject placedTileObject;
         private TileObject movingTileObjectOnThisTile;
@@ -46,7 +45,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             if(tileObject != placedTileObject) return;
             Debug.Log("ObjectDragEnd : " + gameObject.name);
-            MoveObjectToCenter(tileObject);
+            MoveObjectToTileCenter(tileObject);
         }
 
         private void ObjectEnterTileArea(TileObject tileObject)
@@ -59,7 +58,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             
             movingTileObjectOnThisTile = tileObject;
             SubscribeObjectDragEnd();
-            MoveObjectToCenter(tileObject);
+            MoveObjectToTileCenter(tileObject);
         }
 
         private void ObjectExitTileArea(TileObject tileObject)
@@ -76,7 +75,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             if (placedTileObject == tileObject)
             {
                 // Already on this tile, just move to the center
-                MoveObjectToCenter(tileObject);
+                MoveObjectToTileCenter(tileObject);
             }
             else
             {
@@ -87,7 +86,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
         private void PlaceObjectOnTile(TileObject tileObject)
         {
-            MoveObjectToCenter(tileObject);
+            MoveObjectToTileCenter(tileObject);
             movingTileObjectOnThisTile = null;
             SetPlacedObject(tileObject);
             EventService.onTileObjectPlacedToTile?.Invoke(this, tileObject);
@@ -100,13 +99,11 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             Debug.Log("Set placedTileObject" + (placedTileObject is null ? "NULL" : "tile object") + ", Node Name : " + gameObject.name);
         }
 
-        private void MoveObjectToCenter(TileObject tileObject)
+        private void MoveObjectToTileCenter(TileObject tileObject)
         {
             Vector3 targetPos = GetCenterPoint();
             tileObject.CanDrag = false;
-            
-            void MoveEnd() => TileObjectMoveEnd(tileObject);
-            moveTweenAnimController.MoveAnim(tileObject.transform, targetPos, MoveEnd, MoveEnd);
+            tileObject.Move(targetPos, _ => TileObjectMoveEnd(tileObject));
         }
 
         private void TileObjectMoveEnd(TileObject tileObject)
