@@ -4,6 +4,7 @@ using JoostenProductions;
 using Systems.ConfigurationSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace _Game.Scripts.Systems.TileObjectSystem
 {
@@ -16,6 +17,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         public bool CanDrag { get; set; }
 
         [SerializeField] private float moveSpeed = 3f;
+        [SerializeField] private float inputMouseLimitPercentage = .1f;
         
         private Camera MainCam
         {
@@ -64,7 +66,11 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             else
             {
                 targetDragPosition = draggingObjectTr.position;
+                hitPoint = Input.mousePosition;
+                Debug.Log("hitPoint : " + hitPoint);
             }
+            
+            // Debug.Log("targetDragPosition : " + targetDragPosition + ", CanDrag : " + CanDrag);
         }
 
         public void OnMouseDown()
@@ -80,7 +86,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
 
         public void OnMouseDrag()
         {
-            if (Vector3.Distance(Input.mousePosition, hitPoint) < Screen.height * .01f) return;
+            if (Vector3.Distance(Input.mousePosition, hitPoint) < Screen.height * inputMouseLimitPercentage) return;
 
             if (CanDrag)
                 UpdateDraggingObjectPosition();

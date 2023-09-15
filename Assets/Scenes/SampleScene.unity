@@ -472,7 +472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodePrefab: {fileID: 2571920931737437627, guid: c97923502ded9cf4496859c95df767c8,
     type: 3}
-  nodeDistance: 1.1
+  nodeDistance: 1.5
   matrixDimensions: {x: 5, y: 5}
   createGraphInStart: 1
   buttonField: 0

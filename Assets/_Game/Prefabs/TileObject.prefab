@@ -145,7 +145,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &2086667363387616336
 MonoBehaviour:
@@ -161,7 +161,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   addOnEnable: 1
   removeOnDisable: 1
-  moveSpeed: 3
+  moveSpeed: 15
+  inputMouseLimitPercentage: 0.025
 --- !u!54 &592633299
 Rigidbody:
   m_ObjectHideFlags: 0

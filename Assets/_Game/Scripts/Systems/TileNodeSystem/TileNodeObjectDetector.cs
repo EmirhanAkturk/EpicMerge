@@ -23,7 +23,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             if (!CheckIsTileObject(other, out var tileObject)) return;
         
-            LogUtility.PrintColoredLog("Tile Node Entered The Area of This Tile", LogColor.Blue);
+            // LogUtility.PrintColoredLog("Tile Node Entered The Area of This Tile", LogColor.Blue);
             tileObjectEntered?.Invoke(tileObject);
         }        
         
@@ -31,7 +31,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             if (!CheckIsTileObject(other, out var tileObject)) return;
 
-            LogUtility.PrintColoredLog("Tile Node Exited The Area of This Tile", LogColor.Blue);
+            // LogUtility.PrintColoredLog("Tile Node Exited The Area of This Tile", LogColor.Blue);
             tileObjectExited?.Invoke(tileObject);
         }
 
