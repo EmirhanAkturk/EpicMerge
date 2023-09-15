@@ -18,7 +18,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
 
         [SerializeField] private float moveSpeed = 3f;
         [SerializeField] private float inputMouseLimitPercentage = .1f;
-        
+
         private Camera MainCam
         {
             get
@@ -65,9 +65,10 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             }
             else
             {
+                // TODO Check mouse clicking
                 targetDragPosition = draggingObjectTr.position;
                 hitPoint = Input.mousePosition;
-                Debug.Log("hitPoint : " + hitPoint);
+                // Debug.Log("hitPoint : " + hitPoint);
             }
             
             // Debug.Log("targetDragPosition : " + targetDragPosition + ", CanDrag : " + CanDrag);

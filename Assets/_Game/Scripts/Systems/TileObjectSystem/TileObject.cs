@@ -36,6 +36,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private void ObjectDragEnd()
         {
             EventService.onTileObjectDragEnd?.Invoke(this);
+            EventService.onAfterTileObjectDragEnd?.Invoke(this);
         }
     }
 }

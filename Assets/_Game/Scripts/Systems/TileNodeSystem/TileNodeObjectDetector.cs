@@ -8,15 +8,14 @@ namespace _Game.Scripts.Systems.TileNodeSystem
     [RequireComponent(typeof(Collider))]
     public class TileNodeObjectDetector : MonoBehaviour
     {
-        private Action<TileObject> tileObjectEntered;
-        private Action<TileObject> tileObjectExited;
+        public Action<TileObject> onTileObjectEntered;
+        public Action<TileObject> onTileObjectExited;
 
         private const string TILE_OBJECT_TAG = "TileObject";
 
-        public void Init(Action<TileObject> objectEnteredAreaAction, Action<TileObject> objectExitedAreaAction)
+        public void Init()
         {
-            tileObjectEntered = objectEnteredAreaAction;
-            tileObjectExited = objectExitedAreaAction;
+          
         }
         
         private void OnTriggerEnter(Collider other)
@@ -24,7 +23,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             if (!CheckIsTileObject(other, out var tileObject)) return;
         
             // LogUtility.PrintColoredLog("Tile Node Entered The Area of This Tile", LogColor.Blue);
-            tileObjectEntered?.Invoke(tileObject);
+            onTileObjectEntered?.Invoke(tileObject);
         }        
         
         private void OnTriggerExit(Collider other)
@@ -32,7 +31,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             if (!CheckIsTileObject(other, out var tileObject)) return;
 
             // LogUtility.PrintColoredLog("Tile Node Exited The Area of This Tile", LogColor.Blue);
-            tileObjectExited?.Invoke(tileObject);
+            onTileObjectExited?.Invoke(tileObject);
         }
 
         private static bool CheckIsTileObject(Collider other, out TileObject tileObject)
@@ -47,6 +46,5 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             
             return tileObject != null;
         }
-
     }
 }

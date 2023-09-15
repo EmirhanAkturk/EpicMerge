@@ -4,6 +4,7 @@ using GameDepends;
 using JoostenProductions;
 using Others.TweenAnimControllers;
 using UnityEngine;
+using Utils;
 
 namespace _Game.Scripts.Systems.TileNodeSystem
 {
@@ -14,82 +15,89 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         [SerializeField] private TileNodeObjectDetector tileNodeObjectDetector;
         [SerializeField] private MoveTweenAnimController moveTweenAnimController;
 
-        private TileObject movingTileObjectInThisTile;
         private TileObject placedTileObject;
+        private TileObject movingTileObjectOnThisTile;
         private Vector3? centerPoint;
         
         public void Init()
         {
             ResetVariables();
-            tileNodeObjectDetector.Init(ObjectEnterTileArea, ObjectExitTileArea);
+            SubscribeTileNodeDetectorEvents();
+            tileNodeObjectDetector.Init();
         }
 
         private void ResetVariables()
         {
-            movingTileObjectInThisTile = null;
+            movingTileObjectOnThisTile = null;
             placedTileObject = null;
         }
 
-        private bool isListening;
+        private void ObjectPlacedToTile(TileNodeObjectController tileNodeObjectController, TileObject tileObject)
+        {
+            if(placedTileObject == null || placedTileObject != tileObject) return;
+            if (tileNodeObjectController != this)
+            {
+                // The object previously placed in this tile is now placed in another tile
+                SetPlacedObject(null);
+            }
+        }
+
+        private void AfterObjectDragEnd(TileObject tileObject)
+        {
+            if(tileObject != placedTileObject) return;
+            Debug.Log("ObjectDragEnd : " + gameObject.name);
+            MoveObjectToCenter(tileObject);
+        }
+
         private void ObjectEnterTileArea(TileObject tileObject)
         {
             //TODO Refactor below part!!
             // EventService.onTileObjectEnteredToNode?.Invoke(tileObject, this);
             
-            movingTileObjectInThisTile = tileObject;
-
-            if (!isListening)
-            {
-                EventService.onTileObjectDragEnd += PlaceObjectInSlot;
-                // EventService.onTileObjectEnteredToNode += EnteredToNode;
-                isListening = true;
-            }
-           
+            // TODO Due to the CanDrag control, the object may not be centered in the slot when the drag ends
+            if(!tileObject.CanDrag) return;
+            
+            movingTileObjectOnThisTile = tileObject;
+            SubscribeObjectDragEnd();
             MoveObjectToCenter(tileObject);
         }
-
-        // private void EnteredToNode(TileObject tileObject, TileNodeObjectController tileNodeObjectController)
-        // {
-        //     if (movingTileObjectInThisTile == null || 
-        //         movingTileObjectInThisTile != tileObject)
-        //     {
-        //         return;
-        //     }
-        //
-        //     if (tileNodeObjectController != this)
-        //     {
-        //         if (isListening)
-        //         {
-        //             EventService.onTileObjectDragEnd -= PlaceObjectInSlot;
-        //             // EventService.onTileObjectEnteredToNode -= EnteredToNode;
-        //             isListening = false;
-        //         }
-        //         ObjectExitTileArea(tileObject);
-        //     }
-        // }
 
         private void ObjectExitTileArea(TileObject tileObject)
         {
-            movingTileObjectInThisTile = null;
+            movingTileObjectOnThisTile = null;
+            UnsubscribeObjectDragEnd();
+        }
 
-            if (isListening)
+        private void TryPlaceObjectInTile(TileObject tileObject)
+        {
+            Debug.Log("TryPlaceObjectIn : " + gameObject.name);
+            if(tileObject != movingTileObjectOnThisTile) return;
+
+            if (placedTileObject == tileObject)
             {
-                EventService.onTileObjectDragEnd -= PlaceObjectInSlot;
-                isListening = false;
+                // Already on this tile, just move to the center
+                MoveObjectToCenter(tileObject);
+            }
+            else
+            {
+                // Place object on the this slot
+                PlaceObjectOnTile(tileObject);
             }
         }
 
-        private void TryPlaceObjectInSlot(TileObject tileObject)
-        {
-            if(tileObject != movingTileObjectInThisTile) return;
-            PlaceObjectInSlot(tileObject);
-        }
-
-        private void PlaceObjectInSlot(TileObject tileObject)
+        private void PlaceObjectOnTile(TileObject tileObject)
         {
             MoveObjectToCenter(tileObject);
-            movingTileObjectInThisTile = null;
+            movingTileObjectOnThisTile = null;
+            SetPlacedObject(tileObject);
+            EventService.onTileObjectPlacedToTile?.Invoke(this, tileObject);
+        }
+
+        private void SetPlacedObject(TileObject tileObject)
+        {
             placedTileObject = tileObject;
+            CheckTileObjectEventSubState();
+            Debug.Log("Set placedTileObject" + (placedTileObject is null ? "NULL" : "tile object") + ", Node Name : " + gameObject.name);
         }
 
         private void MoveObjectToCenter(TileObject tileObject)
@@ -111,5 +119,56 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             centerPoint ??= transform.position;
             return centerPoint.Value;
         }
+        
+        private void CheckTileObjectEventSubState()
+        {
+            if (placedTileObject != null)
+                SubscribeTileObjectEvents();
+            else
+                UnsubscribeTileObjectEvents();
+        }
+
+        #region Subscribe Unsubscribe Events
+
+        private bool isSubTileDragEndEvent;
+        private void SubscribeObjectDragEnd()
+        {
+            if (isSubTileDragEndEvent) return;
+            EventService.onTileObjectDragEnd += TryPlaceObjectInTile;
+            isSubTileDragEndEvent = true;
+        }
+
+        private void UnsubscribeObjectDragEnd()
+        {
+            if (!isSubTileDragEndEvent) return;
+            EventService.onTileObjectDragEnd -= TryPlaceObjectInTile;
+            isSubTileDragEndEvent = false;
+        }
+
+        private bool isSubTileObjectEvents;
+        private void SubscribeTileObjectEvents()
+        {
+            if(isSubTileObjectEvents) return;
+            EventService.onAfterTileObjectDragEnd += AfterObjectDragEnd;
+            EventService.onTileObjectPlacedToTile += ObjectPlacedToTile;
+            isSubTileObjectEvents = true;
+        }
+
+        private void UnsubscribeTileObjectEvents()
+        {
+            // TODO unsubscribe can only be done in OnDisable 
+            if(!isSubTileObjectEvents) return;
+            EventService.onAfterTileObjectDragEnd -= AfterObjectDragEnd;
+            EventService.onTileObjectPlacedToTile -= ObjectPlacedToTile;
+            isSubTileObjectEvents = false;
+        }        
+        
+        private void SubscribeTileNodeDetectorEvents()
+        {
+            tileNodeObjectDetector.onTileObjectEntered += ObjectEnterTileArea;
+            tileNodeObjectDetector.onTileObjectExited += ObjectExitTileArea;
+        }
+
+        #endregion
     }
 }

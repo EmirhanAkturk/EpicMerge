@@ -190,7 +190,7 @@ MonoBehaviour:
   moveAnimDuration: 0.25
   moveAnimEase: 6
   shortMoveAnimDistance: 2
-  shotMoveAnimDuration: 0.1
+  shotMoveAnimDuration: 0.125
   shotMoveAnimEase: 6
 --- !u!1 &4897111180489990155
 GameObject:
