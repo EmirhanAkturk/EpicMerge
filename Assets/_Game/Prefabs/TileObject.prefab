@@ -162,7 +162,7 @@ MonoBehaviour:
   addOnEnable: 1
   removeOnDisable: 1
   moveSpeed: 15
-  inputMouseLimitPercentage: 0.025
+  inputMouseLimitPercentage: 0.05
 --- !u!54 &592633299
 Rigidbody:
   m_ObjectHideFlags: 0

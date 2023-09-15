@@ -40,13 +40,17 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
       private void CreateNodes(int m, int n)
       {
          int nodeCount = 0;
+         Vector3 parentPos = transform.position;
          for (int i = 0; i < m; i++)
          {
             for (int j = 0; j < n; j++)
             {
                int rndValue = Random.Range(0, 3);
 
-               TileNodeController tileNodeController = CreateNode(rndValue, new Vector3(i * nodeDistance, 0, j * nodeDistance));
+               Vector3 localPos = new Vector3(i * nodeDistance, 0, j * nodeDistance);
+               Vector3 pos = parentPos + localPos;
+               
+               TileNodeController tileNodeController = CreateNode(rndValue, pos);
                ++nodeCount;
                tileNodeController.gameObject.name = "Node_" + nodeCount;
 
