@@ -1,5 +1,6 @@
 using System;
 using _Game.Scripts.Systems.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using GameDepends;
 using JoostenProductions;
 using UnityEngine;
@@ -36,16 +37,21 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             InitPlacedObject(initObject);
         }
 
-        public void UpdateTileObject(TileObject tileObject)
+        public void UpdateMergedTileObjectValue(TileObjectValue tileObjectValue)
         {
-            if (placedTileObject != null)
+            if (TileObjectValue.IsEmptyTileObjectValue(tileObjectValue))
             {
                 Destroy(placedTileObject.gameObject);
                 placedTileObject = null;
                 movingTileObjectOnThisTile = null;
             }
+            else if (placedTileObject != null)
+            {
+                placedTileObject.Init(tileObjectValue);
+            }
             
-            InitPlacedObject(tileObject);
+            UnsubscribeAllEvents();
+            // InitPlacedObject(placedTileObject);
         }
 
         private void InitPlacedObject(TileObject initObject)
@@ -216,8 +222,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             if (isSubTileDragEndEvent) return;
             Debug.Log("### SubscribeObjectDragEnd " + gameObject.name);
-            EventService.onAfterTileObjectDragEnd += TileObjectDragEnd;
-            // EventService.onTileObjectDragEnd += TileObjectDragEnd;
+            // EventService.onAfterTileObjectDragEnd += TileObjectDragEnd;
+            EventService.onTileObjectDragEnd += TileObjectDragEnd;
             isSubTileDragEndEvent = true;
         }
 
@@ -225,8 +231,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             if (!isSubTileDragEndEvent) return;
             Debug.Log("### UnsubscribeObjectDragEnd " + gameObject.name);
-            EventService.onAfterTileObjectDragEnd -= TileObjectDragEnd;
-            // EventService.onTileObjectDragEnd -= TileObjectDragEnd;
+            // EventService.onAfterTileObjectDragEnd -= TileObjectDragEnd;
+            EventService.onTileObjectDragEnd -= TileObjectDragEnd;
             isSubTileDragEndEvent = false;
         }
 

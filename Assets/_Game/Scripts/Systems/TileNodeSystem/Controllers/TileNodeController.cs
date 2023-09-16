@@ -52,15 +52,17 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void TileObjectMerged(TileObjectValue newValue)
         {
             UpdateTileNodeValue(newValue);
-            if (!TileObjectValue.IsEmptyTileObjectValue(newValue))
-            {
-                var tileObject = CreateNewTileObject(newValue);
-                tileNodeObjectController.UpdateTileObject(tileObject);
-            }
-            else
-            {
-                tileNodeObjectController.UpdateTileObject(null);
-            }
+            tileNodeObjectController.UpdateMergedTileObjectValue(newValue);
+
+            // if (!TileObjectValue.IsEmptyTileObjectValue(newValue))
+            // {
+            //     // var tileObject = CreateNewTileObject(newValue);
+            //     tileNodeObjectController.UpdateTileObjectValue(newValue);
+            // }
+            // else
+            // {
+            //     tileNodeObjectController.UpdateTileObjectValue(null);
+            // }
         }
 
         private TileObject CreateNewTileObject(TileObjectValue newValue)

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Utility;
+using GameDepends;
 using UnityEngine;
 using Utils;
 
@@ -14,6 +16,12 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
         private void Awake()
         {
             TileObjectMergeHelper.onCanMergeStateChange += UpdateGizmoList;
+            EventService.onTileObjectPlacedToTile += TryClearList;
+        }
+
+        private void TryClearList(TileNodeObjectController arg1, TileObject arg2)
+        {
+            canMergeNodes.Clear();
         }
 
         private void UpdateGizmoList(bool canMerge, List<TileNode> nodes)

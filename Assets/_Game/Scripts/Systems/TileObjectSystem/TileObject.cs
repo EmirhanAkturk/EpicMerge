@@ -74,10 +74,13 @@ namespace _Game.Scripts.Systems.TileObjectSystem
 
         #region Subscribe & Unsubscribe Events
 
+        private bool isSubscribedDragDropEvents;
         private void SubscribeDragDropEvents()
         {
+            if(isSubscribedDragDropEvents) return;
             tileObjectDragDropController.onObjectDragStart += ObjectDragStart;
             tileObjectDragDropController.onObjectDragEnd += ObjectDragEnd;
+            isSubscribedDragDropEvents = true;
         }
 
         #endregion
