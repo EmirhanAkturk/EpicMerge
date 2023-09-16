@@ -13,6 +13,8 @@ using Utils.Extensions;
 
 public class TileNode : Node<TileNode, TileObjectValue>
 {
+    public Action<TileObjectValue> onTileObjectMerged; 
+        
     [Button(nameof(Bfs))] public bool buttonField;
 
     private const int MAX_NEIGHBORS_COUNT = 4;

@@ -12,6 +12,12 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph
         {
             objectId = id;
             objectLevel = level;
+        }        
+        
+        public TileObjectValue(TileObjectValue tileObjectValue)
+        {
+            objectId = tileObjectValue.objectId;
+            objectLevel = tileObjectValue.objectLevel;
         }
         
         public bool Equals(TileObjectValue other)
@@ -27,6 +33,18 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph
         public override int GetHashCode()
         {
             return HashCode.Combine(objectId, objectLevel);
+        }
+
+        private static readonly TileObjectValue EmptyTileObjectValue = new TileObjectValue(-1, 0);
+        public static TileObjectValue GetEmptyTileObjectValue()
+        {
+            return new TileObjectValue(EmptyTileObjectValue);
+        }
+
+        // TODO Move the bottom part into extension class
+        public static bool IsEmptyTileObjectValue(TileObjectValue tileObjectValue)
+        {
+            return tileObjectValue.Equals(EmptyTileObjectValue);
         }
     }
 }

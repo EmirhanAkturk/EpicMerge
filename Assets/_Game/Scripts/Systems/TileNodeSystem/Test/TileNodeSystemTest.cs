@@ -123,7 +123,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
          return tileNodeController;
       }
 
-      private TileObject CreateTileObject(int objectId, Vector3 pos)
+      public TileObject CreateTileObject(int objectId, Vector3 pos)
       {
          var tileObjectGo = Instantiate(tileObjectPrefab, pos, Quaternion.identity, TileObjectsParent.transform);
          var tileObject = tileObjectGo.GetComponent<TileObject>();

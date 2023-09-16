@@ -148,6 +148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   addOnEnable: 1
   removeOnDisable: 1
+  tileObjectPrefab: {fileID: 2086667363387616332, guid: 6d74efadcac8f624c8c94340c068c5bf,
+    type: 3}
   tileNodeObjectController: {fileID: 1289154809800282515}
   tileNode: {fileID: 1707805479221566269}
 --- !u!114 &1707805479221566269

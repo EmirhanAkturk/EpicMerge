@@ -1,6 +1,7 @@
 using System;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem;
+using _Game.Scripts.Utility;
 using GameDepends;
 using JoostenProductions;
 using Others.TweenAnimControllers;
@@ -13,6 +14,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
     public class TileNodeObjectController : OverridableMonoBehaviour
     {
         public Action<TileObject> onPlacedTileObjectChanged;
+        public Func<TileObject, bool> onTryMerge;
+        public Func<TileObject, bool> onCanMerge;
 
         [Space]
 
@@ -35,6 +38,16 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             InitPlacedObject(initObject);
         }
 
+        public void UpdateTileObject(TileObject tileObject)
+        {
+            if (placedTileObject != null)
+            {
+                Destroy(placedTileObject.gameObject);
+            }
+            
+            InitPlacedObject(tileObject);
+        }
+
         private void InitPlacedObject(TileObject initObject)
         {
             if(initObject == null) return;
@@ -46,6 +59,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             movingTileObjectOnThisTile = null;
             placedTileObject = null;
+            
+            UnsubscribeAllEvents();
         }
 
         private void ObjectPlacedToTile(TileNodeObjectController tileNodeObjectController, TileObject tileObject)
@@ -76,6 +91,15 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             movingTileObjectOnThisTile = tileObject;
             SubscribeObjectDragEnd();
             MoveObjectToTileCenter(tileObject);
+
+            if (placedTileObject != null)
+            {
+                if (onCanMerge != null)
+                {
+                    bool canMerge = onCanMerge.Invoke(tileObject);
+                    Debug.Log("canMerge : " + canMerge);
+                } 
+            }
         }
 
         private void ObjectExitTileArea(TileObject tileObject)
@@ -84,6 +108,27 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             UnsubscribeObjectDragEnd();
         }
 
+        private void TileObjectDragEnd(TileObject tileObject)
+        {
+            if (placedTileObject is null)
+            {
+                TryPlaceObjectInTile(tileObject);
+                return;
+            }
+
+            bool? isMerged = onTryMerge?.Invoke(tileObject);
+            if (isMerged != null && isMerged.Value)
+            {
+                // TODO Try Merge
+                
+            }
+            else
+            {
+                
+            }
+            // TODO Move Or Swap objects pos 
+        }
+        
         private void TryPlaceObjectInTile(TileObject tileObject)
         {
             Debug.Log("TryPlaceObjectIn : " + gameObject.name);
@@ -155,14 +200,14 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void SubscribeObjectDragEnd()
         {
             if (isSubTileDragEndEvent) return;
-            EventService.onTileObjectDragEnd += TryPlaceObjectInTile;
+            EventService.onTileObjectDragEnd += TileObjectDragEnd;
             isSubTileDragEndEvent = true;
         }
 
         private void UnsubscribeObjectDragEnd()
         {
             if (!isSubTileDragEndEvent) return;
-            EventService.onTileObjectDragEnd -= TryPlaceObjectInTile;
+            EventService.onTileObjectDragEnd -= TileObjectDragEnd;
             isSubTileDragEndEvent = false;
         }
 

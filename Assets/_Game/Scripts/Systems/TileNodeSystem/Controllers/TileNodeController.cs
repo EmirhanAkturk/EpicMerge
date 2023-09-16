@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
+using _Game.Scripts.Utility;
 using JoostenProductions;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         public TileNode TileNode => tileNode;
         
         [Space]
+        [SerializeField] private GameObject tileObjectPrefab; // for test
+        
         [SerializeField] private TileNodeObjectController tileNodeObjectController;
         [SerializeField] private TileNode tileNode;
 
@@ -19,37 +22,96 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         protected override void OnEnable()
         {
             base.OnEnable();
-            tileNodeObjectController.onPlacedTileObjectChanged += PlacedTileObjectChanged;
+            SubscribeEvents();
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            tileNodeObjectController.onPlacedTileObjectChanged -= PlacedTileObjectChanged;
+            UnsubscribeEvents();
         }
-
+        
         public void Init(TileObject tileObject)
         {
             tileNodeObjectController.Init(tileObject);
             tileNode.Init(GetTileObjectValue(tileObject));
         }
 
-        private void PlacedTileObjectChanged(TileObject tileObject)
+        #endregion
+
+        private bool CanMerge(TileObject tileObject)
         {
-            UpdateTileNodeValue(tileObject);
+            return tileObject != null && TileObjectMergeHelper.CanMerge(tileNode, tileObject.TileObjectValue);
         }
 
-        private void UpdateTileNodeValue(TileObject tileObject)
+        private bool TryMerge(TileObject tileObject)
         {
-            tileNode.SetValue(GetTileObjectValue(tileObject));
+            return TileObjectMergeHelper.TryMerge(tileNode, tileObject.TileObjectValue);
+        }
+
+        private void TileObjectMerged(TileObjectValue newValue)
+        {
+            UpdateTileNodeValue(newValue);
+            if (!TileObjectValue.IsEmptyTileObjectValue(newValue))
+            {
+                var tileObject = CreateNewTileObject(newValue);
+                tileNodeObjectController.UpdateTileObject(tileObject);
+            }
+            else
+            {
+                tileNodeObjectController.UpdateTileObject(null);
+            }
+        }
+
+        private TileObject CreateNewTileObject(TileObjectValue newValue)
+        {
+            Vector3 pos = transform.position;
+            var tileObjectGo = Instantiate(tileObjectPrefab, pos, Quaternion.identity, transform);
+            var tileObject = tileObjectGo.GetComponent<TileObject>();
+            tileObject.Init(newValue);
+            return tileObject;
+        }
+        
+        private void PlacedTileObjectChanged(TileObject tileObject)
+        {
+            UpdateTileNodeValue(GetTileObjectValue(tileObject));
+        }
+
+        private void UpdateTileNodeValue(TileObjectValue tileObjectValue)
+        {
+            tileNode.SetValue(tileObjectValue);
         }
 
         private TileObjectValue GetTileObjectValue(TileObject tileObject)
         {
-            return tileObject != null ? tileObject.TileObjectValue : new TileObjectValue(-1, 0);
+            return tileObject != null ? tileObject.TileObjectValue : TileObjectValue.GetEmptyTileObjectValue();
         }
         
-        #endregion
+        #region Subscribe & Unsubscribe Events
+        
+        private bool isSubscribedEvents;
+        private void SubscribeEvents()
+        {
+            if(isSubscribedEvents) return;
+            tileNodeObjectController.onPlacedTileObjectChanged += PlacedTileObjectChanged;
+            tileNodeObjectController.onTryMerge += TryMerge;
+            tileNodeObjectController.onCanMerge += CanMerge;
+            tileNode.onTileObjectMerged += TileObjectMerged;
 
+            isSubscribedEvents = true;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            if(!isSubscribedEvents) return;
+            tileNodeObjectController.onPlacedTileObjectChanged -= PlacedTileObjectChanged;
+            tileNodeObjectController.onTryMerge -= TryMerge;
+            tileNodeObjectController.onCanMerge -= CanMerge;
+            tileNode.onTileObjectMerged -= TileObjectMerged;
+            
+            isSubscribedEvents = false;
+        }
+
+        #endregion
     }
 }
