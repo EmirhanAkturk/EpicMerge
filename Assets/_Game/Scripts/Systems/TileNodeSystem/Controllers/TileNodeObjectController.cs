@@ -1,5 +1,6 @@
 using System;
 using _Game.Scripts.Systems.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem;
 using GameDepends;
 using JoostenProductions;
 using Others.TweenAnimControllers;
@@ -8,13 +9,9 @@ using Utils;
 
 namespace _Game.Scripts.Systems.TileNodeSystem
 {
-    public class TileNodeObjectController : OverridableMonoBehaviour
+    public class TileNodeObjectController : OverridableMonoBehaviour, ITileNodeDetectionHandler
     {
         public Action<TileObject> onPlacedTileObjectChanged;
-
-        [Space]
-
-        [SerializeField] private TileNodeObjectDetector tileNodeObjectDetector;
 
         private TileObject placedTileObject;
         private TileObject movingTileObjectOnThisTile;
@@ -23,8 +20,6 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         public void Init()
         {
             ResetVariables();
-            SubscribeTileNodeDetectorEvents();
-            tileNodeObjectDetector.Init();
         }
 
         private void ResetVariables()
@@ -50,7 +45,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             MoveObjectToTileCenter(tileObject);
         }
 
-        private void ObjectEnterTileArea(TileObject tileObject)
+        public void ObjectEnterTileArea(TileObject tileObject)
         {
             //TODO Refactor below part!!
             // EventService.onTileObjectEnteredToNode?.Invoke(tileObject, this);
@@ -63,7 +58,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             MoveObjectToTileCenter(tileObject);
         }
 
-        private void ObjectExitTileArea(TileObject tileObject)
+        public void ObjectExitTileArea(TileObject tileObject)
         {
             movingTileObjectOnThisTile = null;
             UnsubscribeObjectDragEnd();
@@ -163,12 +158,6 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             isSubTileObjectEvents = false;
         }        
         
-        private void SubscribeTileNodeDetectorEvents()
-        {
-            tileNodeObjectDetector.onTileObjectEntered += ObjectEnterTileArea;
-            tileNodeObjectDetector.onTileObjectExited += ObjectExitTileArea;
-        }
-
         #endregion
     }
 }

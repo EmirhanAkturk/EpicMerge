@@ -1,7 +1,9 @@
 using System;
+using _Game.Scripts.Systems.TileSystem;
 using GameDepends;
 using JoostenProductions;
 using UnityEngine;
+using Zenject;
 
 namespace _Game.Scripts.Systems.TileObjectSystem
 {
@@ -19,6 +21,11 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
         private IMoveController moveController;
 
+        
+        // TODO Use inject below part
+        private IObjectDetectionHandler ObjectDetectionHandler => objectDetectionHandler ??= new TileObjectDetectionHandler();
+        private IObjectDetectionHandler objectDetectionHandler;
+
         public void Move(Vector3 targetPos, MoveEndCallback onMoveEnd = null)
         {
             MoveController?.Move(targetPos, onMoveEnd);
@@ -33,6 +40,16 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         {
             tileObjectDragDropController.onObjectDragStart += ObjectDragStart;
             tileObjectDragDropController.onObjectDragEnd += ObjectDragEnd;
+        }
+        
+        private void OnTriggerEnter(Collider other)
+        {
+            ObjectDetectionHandler.TileObjectEntered(this, other.gameObject);
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            ObjectDetectionHandler.TileObjectExited(this, other.gameObject);
         }
 
         private void ObjectDragStart()
