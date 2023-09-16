@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 2086667363387616339}
   - component: {fileID: 2086667363387616336}
   - component: {fileID: 430812094}
+  - component: {fileID: 6289672947612442143}
   m_Layer: 0
   m_Name: TileObject
   m_TagString: TileObject
@@ -164,6 +165,10 @@ MonoBehaviour:
   addOnEnable: 1
   removeOnDisable: 1
   tileObjectDragDropController: {fileID: 2086667363387616336}
+  tileObjectModelController: {fileID: 6289672947612442143}
+  tileObjectValue:
+    objectId: 0
+    objectLevel: 0
 --- !u!114 &2086667363387616336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,3 +203,23 @@ MonoBehaviour:
   hasLongDistanceSpeed: 1
   longMoveDistance: 10
   longMoveMoveSpeedMultiplier: 10
+--- !u!114 &6289672947612442143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086667363387616332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 331c5191cebee4e4a87b20b94714c43a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 2086667363054481283}
+  valueMaterialPairs:
+  - value: 1
+    material: {fileID: 2100000, guid: 138af5c08ee35244ca1190ca717a1516, type: 2}
+  - value: 2
+    material: {fileID: 2100000, guid: 4452a4ce201fe1c42baeb9d3cca91293, type: 2}
+  - value: 3
+    material: {fileID: 2100000, guid: 1fb615f8aa5b907489dc156bda40ede1, type: 2}

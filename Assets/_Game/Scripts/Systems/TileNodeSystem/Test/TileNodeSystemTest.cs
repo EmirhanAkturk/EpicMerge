@@ -1,8 +1,10 @@
+using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Attribute;
 using Systems.GraphSystem;
 using UnityEngine;
 using Utils.Extensions;
+using Application = UnityEngine.Device.Application;
 using Random = UnityEngine.Random;
 
 namespace _Game.Scripts.Systems.TileNodeSystem.Test
@@ -10,9 +12,11 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
    public class TileNodeSystemTest : MonoBehaviour
    {
       [SerializeField] private GameObject nodePrefab;
+      [SerializeField] private GameObject tileObjectPrefab;
       [SerializeField] private float nodeDistance = 1.5f;
       [SerializeField] private Vector2Int matrixDimensions = new Vector2Int(5, 5);
       [SerializeField] private bool createGraphInStart = true;
+      [SerializeField] private bool drawGraphVertex = false;
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
 
@@ -46,12 +50,19 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
          {
             for (int j = 0; j < n; j++)
             {
-               int rndValue = Random.Range(0, 3);
-               TileNodeValue tileNodeValue = new TileNodeValue(rndValue, 1);
                Vector3 localPos = new Vector3(i * nodeDistance, 0, j * nodeDistance);
                Vector3 pos = parentPos + localPos;
                
-               TileNodeController tileNodeController = CreateNode(tileNodeValue, pos);
+               int rndValue = Random.Range(0, 3);
+               TileObject tileObject = null;
+               
+               if (rndValue > 0)
+               {
+                  tileObject = CreateTileObject(rndValue, pos);
+               }
+               
+               Debug.Log("rndValue : " + rndValue);
+               TileNodeController tileNodeController = CreateNode(tileObject, pos);
                ++nodeCount;
                tileNodeController.gameObject.name = "Node_" + nodeCount;
 
@@ -62,16 +73,62 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
 
       private void FindEdges()
       {
-         tileGraph.FindEdgesWithNodeDistance(nodeDistance);
-         tileGraph.PrintGraphNeighbors();
+         tileGraph.FindEdgesWithNodeDistance(nodeDistance, drawGraphVertex);
+         // tileGraph.PrintGraphNeighbors();
       }
 
-      private TileNodeController CreateNode(TileNodeValue value, Vector3 pos)
+      #region Test Objects Parent
+
+      private GameObject NodesParent
       {
-         var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, transform);
+         get
+         {
+            if (GameUtility.IsNull(nodesParent))
+            {
+               nodesParent = new GameObject
+               {
+                  name = "NodesParent",
+                  transform = { parent = transform }
+               };
+            }
+            return nodesParent;
+         }
+      }
+      private GameObject nodesParent;
+      
+      private GameObject TileObjectsParent
+      {
+         get
+         {
+            if (GameUtility.IsNull(tileObjectsParent))
+            {
+               tileObjectsParent = new GameObject
+               {
+                  name = "TileObjectsParent",
+                  transform = { parent = transform }
+               };
+            }
+            return tileObjectsParent;
+         }
+      }
+      private GameObject tileObjectsParent;
+
+      #endregion
+
+      private TileNodeController CreateNode(TileObject tileObject, Vector3 pos)
+      {
+         var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, NodesParent.transform);
          var tileNodeController = nodeObject.GetComponent<TileNodeController>();
-         tileNodeController.Init(value);
+         tileNodeController.Init(tileObject);
          return tileNodeController;
+      }
+
+      private TileObject CreateTileObject(int objectId, Vector3 pos)
+      {
+         var tileObjectGo = Instantiate(tileObjectPrefab, pos, Quaternion.identity, TileObjectsParent.transform);
+         var tileObject = tileObjectGo.GetComponent<TileObject>();
+         tileObject.Init(new TileObjectValue(objectId, 1));
+         return tileObject;
       }
 
       [ContextMenu("PrintGraphNeighbors")]
@@ -83,13 +140,33 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
       // [ContextMenu("RecreateGraph")]
       public void RecreateGraph()
       {
-         DestroyImmediateGraph();
+         DestroyGraph();
+         DestroyTileObjects();
          CreateGraph();
       }
 
-      private void DestroyImmediateGraph()
+      private void DestroyTileObjects()
       {
-         tileGraph?.DestroyImmediateNodes();
+         if (Application.isPlaying)
+         {
+            TileObjectsParent.transform.DestroyChildren();
+         }
+         else
+         {
+            TileObjectsParent.transform.DestroyImmediateChildren();
+         }
+      }
+
+      private void DestroyGraph()
+      {
+         if (Application.isPlaying)
+         {
+            tileGraph?.DestroyNodes();
+         }
+         else
+         {
+            tileGraph?.DestroyImmediateNodes();
+         }
          tileGraph = null;
       }
    }

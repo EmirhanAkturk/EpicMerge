@@ -14,38 +14,6 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         [SerializeField] private TileNodeObjectController tileNodeObjectController;
         [SerializeField] private TileNode tileNode;
 
-        #region Test
-        
-        [Space]
-        [HelpBox("Bottom Part For Test", HelpBoxMessageType.Info)]        
-        [SerializeField] private MeshRenderer meshRenderer;
-        [SerializeField] private List<ValueMaterialPair> valueMaterialPairs;
-        
-        private Dictionary<int, ValueMaterialPair> ValueMaterialMaps
-        {
-            get
-            {
-                if (valueMaterialMaps is null)
-                {
-                    InitValueMaterialMaps();
-                }
-
-                return valueMaterialMaps;
-            }
-        }
-        private Dictionary<int, ValueMaterialPair> valueMaterialMaps;
-        
-        private void InitValueMaterialMaps()
-        {
-            valueMaterialMaps ??= new Dictionary<int, ValueMaterialPair>();
-
-            foreach (var pair in valueMaterialPairs)
-            {
-                valueMaterialMaps.Add(pair.value, pair);
-            }
-        }
-        #endregion
-
         #region Init Functions
 
         protected override void OnEnable()
@@ -60,50 +28,28 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             tileNodeObjectController.onPlacedTileObjectChanged -= PlacedTileObjectChanged;
         }
 
-        public void Init(TileNodeValue value)
+        public void Init(TileObject tileObject)
         {
-            tileNodeObjectController.Init();
-            tileNode.Init(value);
-            InitVisual();
+            tileNodeObjectController.Init(tileObject);
+            tileNode.Init(GetTileObjectValue(tileObject));
         }
 
         private void PlacedTileObjectChanged(TileObject tileObject)
         {
-            
+            UpdateTileNodeValue(tileObject);
         }
 
-        private void InitVisual()
+        private void UpdateTileNodeValue(TileObject tileObject)
         {
-            var value = GetTileObjectValue();
-            var valueMaterialPair = GetValueMaterialPair(value.objectId);
-            SetMaterial(valueMaterialPair.material);
+            tileNode.SetValue(GetTileObjectValue(tileObject));
+        }
+
+        private TileObjectValue GetTileObjectValue(TileObject tileObject)
+        {
+            return tileObject != null ? tileObject.TileObjectValue : new TileObjectValue(-1, 0);
         }
         
         #endregion
-        
-        #region Set Functions
 
-        private void SetMaterial(Material material)
-        {
-            if(material is null) return;
-            meshRenderer.material = material;
-        }
-
-
-        #endregion
-    
-        #region Get Functions
-
-        private TileNodeValue GetTileObjectValue()
-        {
-            return tileNode.Value;
-        }
-
-        private ValueMaterialPair GetValueMaterialPair(int objectId)
-        {
-            return ValueMaterialMaps.TryGetValue(objectId, out var valueMaterialPair) ? valueMaterialPair : null;
-        }
-
-        #endregion
     }
 }

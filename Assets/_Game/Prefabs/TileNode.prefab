@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 1707805479221566269}
   - component: {fileID: 1289154809800282515}
   - component: {fileID: 4817397723535728622}
+  - component: {fileID: 7496104473921521836}
   m_Layer: 0
   m_Name: TileNode
   m_TagString: TileNode
@@ -149,14 +150,6 @@ MonoBehaviour:
   removeOnDisable: 1
   tileNodeObjectController: {fileID: 1289154809800282515}
   tileNode: {fileID: 1707805479221566269}
-  meshRenderer: {fileID: 2571920930450649074}
-  valueMaterialPairs:
-  - value: 0
-    material: {fileID: 2100000, guid: c2977447d34e0594ca96477bb3c08443, type: 2}
-  - value: 1
-    material: {fileID: 2100000, guid: 138af5c08ee35244ca1190ca717a1516, type: 2}
-  - value: 2
-    material: {fileID: 2100000, guid: 4452a4ce201fe1c42baeb9d3cca91293, type: 2}
 --- !u!114 &1707805479221566269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,6 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   addOnEnable: 1
   removeOnDisable: 1
+  tileNodeObjectDetectionHandler: {fileID: 7496104473921521836}
 --- !u!114 &4817397723535728622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,3 +197,15 @@ MonoBehaviour:
   shortMoveAnimDistance: 2
   shotMoveAnimDuration: 0.125
   shotMoveAnimEase: 6
+--- !u!114 &7496104473921521836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2571920931737437627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4aa93c64c3124b428d8162435d11bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -20,6 +20,11 @@ namespace Systems.GraphSystem
             Neighbors = new List<T>();
         }
 
+        public void SetValue(TF newValue)
+        {
+            Value = newValue;
+        }
+
         public virtual void PrintNeighbors()
         {
             PrintNodes(Neighbors);

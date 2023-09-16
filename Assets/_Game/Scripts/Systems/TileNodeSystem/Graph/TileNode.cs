@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 using Utils;
 using Utils.Extensions;
 
-public class TileNode : Node<TileNode, TileNodeValue>
+public class TileNode : Node<TileNode, TileObjectValue>
 {
     [Button(nameof(Bfs))] public bool buttonField;
 
@@ -19,7 +19,7 @@ public class TileNode : Node<TileNode, TileNodeValue>
 
     #region Init Functions
 
-    public override void Init(TileNodeValue value)
+    public override void Init(TileObjectValue value)
     {
         base.Init(value);
     }

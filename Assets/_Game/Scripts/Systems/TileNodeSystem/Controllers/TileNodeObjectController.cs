@@ -5,21 +5,41 @@ using GameDepends;
 using JoostenProductions;
 using Others.TweenAnimControllers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 
 namespace _Game.Scripts.Systems.TileNodeSystem
 {
-    public class TileNodeObjectController : OverridableMonoBehaviour, ITileNodeDetectionHandler
+    public class TileNodeObjectController : OverridableMonoBehaviour
     {
         public Action<TileObject> onPlacedTileObjectChanged;
+
+        [Space]
+
+        [SerializeField] private TileNodeObjectDetectionHandler tileNodeObjectDetectionHandler;
 
         private TileObject placedTileObject;
         private TileObject movingTileObjectOnThisTile;
         private Vector3? centerPoint;
-        
-        public void Init()
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            UnsubscribeAllEvents();
+        }
+
+        public void Init(TileObject initObject)
         {
             ResetVariables();
+            SubscribeTileNodeDetectorEvents();
+            InitPlacedObject(initObject);
+        }
+
+        private void InitPlacedObject(TileObject initObject)
+        {
+            if(initObject == null) return;
+            movingTileObjectOnThisTile = initObject;
+            TryPlaceObjectInTile(initObject);
         }
 
         private void ResetVariables()
@@ -45,7 +65,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             MoveObjectToTileCenter(tileObject);
         }
 
-        public void ObjectEnterTileArea(TileObject tileObject)
+        private void ObjectEnterTileArea(TileObject tileObject)
         {
             //TODO Refactor below part!!
             // EventService.onTileObjectEnteredToNode?.Invoke(tileObject, this);
@@ -58,7 +78,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             MoveObjectToTileCenter(tileObject);
         }
 
-        public void ObjectExitTileArea(TileObject tileObject)
+        private void ObjectExitTileArea(TileObject tileObject)
         {
             movingTileObjectOnThisTile = null;
             UnsubscribeObjectDragEnd();
@@ -125,6 +145,12 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
         #region Subscribe Unsubscribe Events
 
+        private void UnsubscribeAllEvents()
+        {
+            UnsubscribeObjectDragEnd();
+            UnsubscribeTileObjectEvents();
+        }
+        
         private bool isSubTileDragEndEvent;
         private void SubscribeObjectDragEnd()
         {
@@ -158,6 +184,12 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             isSubTileObjectEvents = false;
         }        
         
+        private void SubscribeTileNodeDetectorEvents()
+        {
+            tileNodeObjectDetectionHandler.onTileObjectEntered += ObjectEnterTileArea;
+            tileNodeObjectDetectionHandler.onTileObjectExited += ObjectExitTileArea;
+        }
+
         #endregion
     }
 }

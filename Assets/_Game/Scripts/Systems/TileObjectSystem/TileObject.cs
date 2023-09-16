@@ -1,8 +1,10 @@
 using System;
 using _Game.Scripts.Systems.TileSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using GameDepends;
 using JoostenProductions;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Game.Scripts.Systems.TileObjectSystem
@@ -16,32 +18,37 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             set { tileObjectDragDropController.CanDrag = value; }
         }
 
+        public TileObjectValue TileObjectValue { get; private set; } 
+        
         [SerializeField] private TileObjectDragDropController tileObjectDragDropController;
+        [SerializeField] private TileObjectModelController tileObjectModelController;
         
         private IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
         private IMoveController moveController;
 
-        
         // TODO Use inject below part
         private IObjectDetectionHandler ObjectDetectionHandler => objectDetectionHandler ??= new TileObjectDetectionHandler();
         private IObjectDetectionHandler objectDetectionHandler;
+        
 
         public void Move(Vector3 targetPos, MoveEndCallback onMoveEnd = null)
         {
             MoveController?.Move(targetPos, onMoveEnd);
         }
         
-        private void Start()
+        // private void Start()
+        // {
+        //     Init();
+        // }
+        
+
+        public void Init(TileObjectValue tileObjectValue)
         {
-            Init();
+            TileObjectValue = tileObjectValue;
+            tileObjectModelController.InitVisual(TileObjectValue);
+            SubscribeDragDropEvents();
         }
 
-        private void Init()
-        {
-            tileObjectDragDropController.onObjectDragStart += ObjectDragStart;
-            tileObjectDragDropController.onObjectDragEnd += ObjectDragEnd;
-        }
-        
         private void OnTriggerEnter(Collider other)
         {
             ObjectDetectionHandler.TileObjectEntered(this, other.gameObject);
@@ -62,5 +69,15 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             EventService.onTileObjectDragEnd?.Invoke(this);
             EventService.onAfterTileObjectDragEnd?.Invoke(this);
         }
+
+        #region Subscribe & Unsubscribe Events
+
+        private void SubscribeDragDropEvents()
+        {
+            tileObjectDragDropController.onObjectDragStart += ObjectDragStart;
+            tileObjectDragDropController.onObjectDragEnd += ObjectDragEnd;
+        }
+
+        #endregion
     }
 }

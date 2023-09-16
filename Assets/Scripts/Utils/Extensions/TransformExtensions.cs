@@ -14,6 +14,12 @@ namespace Utils.Extensions
         {
             foreach (Transform child in transform)
                 GameObject.Destroy(child.gameObject);
+        }        
+        
+        public static void DestroyImmediateChildren(this Transform transform)
+        {
+            foreach (Transform child in transform)
+                GameObject.DestroyImmediate(child.gameObject);
         }
 
         public static void DestroyChildren(this Transform transform, int startIdx)
