@@ -9,7 +9,9 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         [Space]
         [HelpBox("Bottom Part For Test", HelpBoxMessageType.Info)]        
         [SerializeField] private MeshRenderer meshRenderer;
+        [SerializeField] private MeshFilter meshFilter;
         [SerializeField] private List<ValueMaterialPair> valueMaterialPairs;
+        [SerializeField] private List<ValueModelPair> valueModelPairs;
 
         #region ValueMaterialPairs
     
@@ -35,6 +37,30 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             {
                 valueMaterialMaps.Add(pair.value, pair);
             }
+        }  
+        
+        private Dictionary<int, ValueModelPair> ValueModelMaps
+        {
+            get
+            {
+                if (valueModelMaps is null)
+                {
+                    InitValueModelMaps();
+                }
+
+                return valueModelMaps;
+            }
+        }
+        private Dictionary<int, ValueModelPair> valueModelMaps;
+        
+        private void InitValueModelMaps()
+        {
+            valueModelMaps ??= new Dictionary<int, ValueModelPair>();
+
+            foreach (var pair in valueModelPairs)
+            {
+                valueModelMaps.Add(pair.value, pair);
+            }
         }
     
         #endregion
@@ -42,9 +68,11 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         public void InitVisual(TileObjectValue tileObjectValue)
         {
             var valueMaterialPair = GetValueMaterialPair(tileObjectValue);
+            var valueModelPair = GetValueModelPair(tileObjectValue);
             SetMaterial(valueMaterialPair.material);
+            SetMesh(valueModelPair.model);
         }
-    
+        
         #region Get Functions
 
         private ValueMaterialPair GetValueMaterialPair(TileObjectValue tileObjectValue)
@@ -52,6 +80,13 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             // TODO Get Model from TileObjectManager or something similar
             int objectId = tileObjectValue.objectId;
             return ValueMaterialMaps.TryGetValue(objectId, out var valueMaterialPair) ? valueMaterialPair : null;
+        }        
+        
+        private ValueModelPair GetValueModelPair(TileObjectValue tileObjectValue)
+        {
+            // TODO Get Model from TileObjectManager or something similar
+            int objectLevel = tileObjectValue.objectLevel;
+            return ValueModelMaps.TryGetValue(objectLevel, out var valueMaterialPair) ? valueMaterialPair : null;
         }
 
         #endregion
@@ -63,8 +98,12 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             if(material is null) return;
             meshRenderer.material = material;
         }
-
-
+        
+        
+        private void SetMesh(Mesh mesh)
+        {
+            meshFilter.mesh = mesh;
+        }
         #endregion
     }
 }

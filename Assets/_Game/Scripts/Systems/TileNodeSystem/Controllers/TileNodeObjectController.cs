@@ -43,6 +43,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             if (placedTileObject != null)
             {
                 Destroy(placedTileObject.gameObject);
+                placedTileObject = null;
+                movingTileObjectOnThisTile = null;
             }
             
             InitPlacedObject(tileObject);
@@ -92,7 +94,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             SubscribeObjectDragEnd();
             MoveObjectToTileCenter(tileObject);
 
-            if (placedTileObject != null)
+            if (placedTileObject != null && placedTileObject != tileObject)
             {
                 if (onCanMerge != null)
                 {
@@ -112,11 +114,17 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             if (placedTileObject is null)
             {
+                Debug.Log("###TryPlaceObjectInTile");
                 TryPlaceObjectInTile(tileObject);
                 return;
             }
 
-            bool? isMerged = onTryMerge?.Invoke(tileObject);
+            bool? isMerged = false;
+            if (placedTileObject != tileObject && placedTileObject.TileObjectValue.Equals(tileObject.TileObjectValue))
+            {
+                Debug.Log("###TryPlaceObjectInTile");
+                isMerged = onTryMerge?.Invoke(tileObject);
+            }
             if (isMerged != null && isMerged.Value)
             {
                 // TODO Try Merge

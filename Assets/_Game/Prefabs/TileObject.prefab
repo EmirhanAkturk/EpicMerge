@@ -166,9 +166,6 @@ MonoBehaviour:
   removeOnDisable: 1
   tileObjectDragDropController: {fileID: 2086667363387616336}
   tileObjectModelController: {fileID: 6289672947612442143}
-  tileObjectValue:
-    objectId: 0
-    objectLevel: 0
 --- !u!114 &2086667363387616336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 2086667363054481283}
+  meshFilter: {fileID: 2086667363054481280}
   valueMaterialPairs:
   - value: 1
     material: {fileID: 2100000, guid: 138af5c08ee35244ca1190ca717a1516, type: 2}
@@ -223,3 +221,12 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 4452a4ce201fe1c42baeb9d3cca91293, type: 2}
   - value: 3
     material: {fileID: 2100000, guid: 1fb615f8aa5b907489dc156bda40ede1, type: 2}
+  valueModelPairs:
+  - value: 1
+    model: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  - value: 2
+    model: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  - value: 3
+    model: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  - value: 4
+    model: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}

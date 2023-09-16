@@ -62,3 +62,10 @@ public class ValueMaterialPair
     public int value;
     public Material material;
 }
+
+[Serializable]
+public class ValueModelPair
+{
+    public int value;
+    public Mesh model;
+}

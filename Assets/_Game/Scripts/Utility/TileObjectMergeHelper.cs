@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Systems.ConfigurationSystem;
@@ -7,6 +8,8 @@ namespace _Game.Scripts.Utility
 {
     public static class TileObjectMergeHelper
     {
+        public static Action<bool, List<TileNode>> onCanMergeStateChange;
+        
         private static int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
     
         public static bool CanMerge(TileNode tileNode, TileObjectValue targetValue)
@@ -16,9 +19,14 @@ namespace _Game.Scripts.Utility
 
         public static bool CanMerge(TileNode tileNode, TileObjectValue targetValue, out List<TileNode> wantedNodes)
         {
+            wantedNodes = null;
+            
+            if (TileObjectValue.IsEmptyTileObjectValue(targetValue)) return false;
+            
             wantedNodes = TileGraph.FindWantedNodesWithBfs(tileNode, targetValue);
             bool canMerge = wantedNodes.Count >= MergeRequiredObject;
             Debug.Log("canMerge : " + canMerge);
+            onCanMergeStateChange?.Invoke(canMerge, wantedNodes);
             return canMerge;
         }        
         
@@ -30,6 +38,8 @@ namespace _Game.Scripts.Utility
             {
                 return false;
             }
+
+            Debug.Log("TryMerge : ");
 
             Merge(wantedNodes, targetValue);
             return true;
@@ -49,6 +59,8 @@ namespace _Game.Scripts.Utility
                 
                 node.onTileObjectMerged?.Invoke(value);
             }
+            
+            Debug.Log("Merged : ");
         }
 
         private static List<TileObjectValue> GetMergedTileObjectValues(TileObjectValue tileObjectValue, int mergeObjectCount)

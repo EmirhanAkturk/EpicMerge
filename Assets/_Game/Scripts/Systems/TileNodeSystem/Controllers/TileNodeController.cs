@@ -93,6 +93,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void SubscribeEvents()
         {
             if(isSubscribedEvents) return;
+            
             tileNodeObjectController.onPlacedTileObjectChanged += PlacedTileObjectChanged;
             tileNodeObjectController.onTryMerge += TryMerge;
             tileNodeObjectController.onCanMerge += CanMerge;
@@ -104,6 +105,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void UnsubscribeEvents()
         {
             if(!isSubscribedEvents) return;
+            
             tileNodeObjectController.onPlacedTileObjectChanged -= PlacedTileObjectChanged;
             tileNodeObjectController.onTryMerge -= TryMerge;
             tileNodeObjectController.onCanMerge -= CanMerge;
