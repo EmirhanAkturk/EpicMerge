@@ -94,13 +94,10 @@ namespace _Game.Scripts.Systems.TileObjectSystem
 
         public void OnMouseDrag()
         {
-            if (Vector3.Distance(Input.mousePosition, hitPoint) < Screen.height * inputMouseLimitPercentage) return;
+            if (!CanDrag || !IsMouseDragEnoughForMovement()) return;
 
-            if (CanDrag)
-            {
-                UpdateTargetDragPosition();
-                MoveController.Move(targetDragPosition);
-            }
+            UpdateTargetDragPosition();
+            MoveController.Move(targetDragPosition);
         }
 
         public void OnMouseUp()
@@ -113,6 +110,11 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         #endregion
 
         #region Other Functions
+        
+        private bool IsMouseDragEnoughForMovement()
+        {
+            return Vector3.Distance(Input.mousePosition, hitPoint) >= Screen.height * inputMouseLimitPercentage;
+        }
         
         private void UpdateTargetDragPosition()
         {

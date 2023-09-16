@@ -6,7 +6,7 @@ namespace Utils.Extensions
 {
     public static class GraphExtension 
     {
-        public static void PrintGraphNeighbors(this Graph graph)
+        public static void PrintGraphNeighbors<T, TF>(this Graph<T, TF> graph) where T : Node<T, TF>
         {
             var nodes = graph.GetNodes();
             foreach (var node in nodes)
@@ -15,7 +15,7 @@ namespace Utils.Extensions
             }    
         }
         
-        public static void FindEdgesWithNodeDistance(this Graph graph, float nodeDistance, bool crateVertexObject = false, bool printNeighbors = false)
+        public static void FindEdgesWithNodeDistance<T, TF>(this Graph<T, TF> graph , float nodeDistance, bool crateVertexObject = false) where T : Node<T, TF> 
         {
             var nodes = graph.GetNodes();
             
@@ -34,14 +34,9 @@ namespace Utils.Extensions
                     }
                 }
             }
-
-            if (printNeighbors)
-            {
-                graph.PrintGraphNeighbors();
-            }
         }
 
-        public static void DestroyImmediateNodes(this Graph graph)
+        public static void DestroyImmediateNodes<T, TF>(this Graph<T, TF> graph) where T : Node<T, TF>
         {
             var nodes = graph.GetNodes();
 
@@ -53,7 +48,7 @@ namespace Utils.Extensions
             graph.ClearNodes();
         }        
         
-        public static void DestroyNodes(this Graph graph)
+        public static void DestroyNodes<T, TF>(this Graph<T, TF> graph) where T : Node<T, TF>
         {
             var nodes = graph.GetNodes();
 

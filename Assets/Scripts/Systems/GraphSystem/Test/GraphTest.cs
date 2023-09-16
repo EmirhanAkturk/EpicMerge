@@ -1,4 +1,5 @@
 using Attribute;
+using Systems.GraphSystem.Graphs;
 using UnityEngine;
 using Utils.Extensions;
 using Random = UnityEngine.Random;
@@ -14,7 +15,7 @@ namespace Systems.GraphSystem.Test
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
 
-      private Graph graph;
+      private IntGraph graph;
    
       private void Start()
       {
@@ -26,7 +27,7 @@ namespace Systems.GraphSystem.Test
 
       private void CreateGraph()
       {
-         graph = new Graph();
+         graph = new IntGraph();
 
          // Create Nodes
          int m = matrixDimensions.x;
@@ -45,7 +46,7 @@ namespace Systems.GraphSystem.Test
             {
                int rndValue = Random.Range(0, 3);
 
-               TileNode node = CreateNode(rndValue, new Vector3(i * nodeDistance, 0, j * nodeDistance));
+               IntNode node = CreateNode(rndValue, new Vector3(i * nodeDistance, 0, j * nodeDistance));
                ++nodeCount;
                node.gameObject.name = "Node_" + nodeCount;
 
@@ -59,10 +60,10 @@ namespace Systems.GraphSystem.Test
          graph.FindEdgesWithNodeDistance(nodeDistance, true);
       }
 
-      private TileNode CreateNode(int value, Vector3 pos)
+      private IntNode CreateNode(int value, Vector3 pos)
       {
          var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, transform);
-         var node = nodeObject.GetComponent<TileNode>();
+         var node = nodeObject.GetComponent<IntNode>();
          node.Init(value);
          return node;
       }

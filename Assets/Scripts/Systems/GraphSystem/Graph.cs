@@ -3,21 +3,23 @@ using UnityEngine;
 
 namespace Systems.GraphSystem
 {
-    public class Graph
+    /// <typeparam name="T"> Neighbor Node Type </typeparam>
+    /// <typeparam name="TF"> Node Value Type </typeparam>
+    public class Graph<T, TF> where T : Node<T, TF>
     {
-        private readonly List<Node> nodes;
+        private readonly List<T> nodes;
 
-        public Graph()
+        protected Graph()
         {
-            nodes = new List<Node>();
+            nodes = new List<T>();
         }
 
-        public void AddNode(Node node)
+        public void AddNode(T node)
         {
             nodes.Add(node);
         }
 
-        public void AddEdge(Node node1, Node node2)
+        public void AddEdge(T node1, T node2)
         {
             if(node1 == node2) return;
             
@@ -25,7 +27,7 @@ namespace Systems.GraphSystem
             node2.AddNeighbor(node1);
         }
 
-        public List<Node> GetNodes()
+        public List<T> GetNodes()
         {
             return nodes;
         }
@@ -36,26 +38,27 @@ namespace Systems.GraphSystem
         }
 
         #region Search Functions
-        public static List<Node> FindWantedNodesWithBfs(Node start, int targetValue)
+        public static List<T> FindWantedNodesWithBfs(T start, TF targetValue)
         {
-            List<Node> result = new List<Node>();
-            HashSet<Node> visited = new HashSet<Node>();
-            Queue<Node> queue = new Queue<Node>();
+            List<T> result = new List<T>();
+            HashSet<T> visited = new HashSet<T>();
+            Queue<T> queue = new Queue<T>();
             
             queue.Enqueue(start);
             visited.Add(start);
 
             while (queue.Count > 0)
             {
-                Node currentNode = queue.Dequeue();
-                if (currentNode.Value == targetValue)
+                var currentNode = queue.Dequeue();
+                if (currentNode.Value.Equals(targetValue))
                 {
                     result.Add(currentNode);
                 }
 
                 var neighbors = currentNode.GetNeighbors(); 
-                foreach (Node neighbor in neighbors)
+                foreach (var node in neighbors)
                 {
+                    var neighbor = node;
                     if (!visited.Contains(neighbor) && neighbor.Value.Equals(start.Value))
                     {
                         queue.Enqueue(neighbor);

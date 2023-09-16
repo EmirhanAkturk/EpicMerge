@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Attribute;
 using Systems.GraphSystem;
 using UnityEngine;
@@ -10,7 +11,7 @@ using UnityEngine.Serialization;
 using Utils;
 using Utils.Extensions;
 
-public class TileNode : Node
+public class TileNode : Node<TileNode, TileNodeValue>
 {
     [Button(nameof(Bfs))] public bool buttonField;
 
@@ -18,7 +19,7 @@ public class TileNode : Node
 
     #region Init Functions
 
-    public override void Init(int value)
+    public override void Init(TileNodeValue value)
     {
         base.Init(value);
     }
@@ -30,7 +31,7 @@ public class TileNode : Node
     [ContextMenu("Bfs")]
     public void Bfs()
     {
-        List<Node> wantedNodes = Graph.FindWantedNodesWithBfs(this, Value);
+        var wantedNodes = TileGraph.FindWantedNodesWithBfs(this, Value);
         
         Debug.Log("################## ");
         Debug.Log("BFS Wanted Value : " + Value);
@@ -41,19 +42,8 @@ public class TileNode : Node
     {
         Debug.Log("#######################");
         Debug.Log("Print My Neighbors : ", gameObject);
-
+    
         PrintNodes(Neighbors);
-    }
-
-    protected void PrintNodes(List<Node> nodes)
-    {
-        int nodesOrder = 0;
-        foreach (Node node in nodes)
-        {
-            ++nodesOrder;
-            GameObject nodeObject = node.gameObject;
-            LogUtility.PrintLog("Nodes order : " + nodesOrder + ", NodeName : " + nodeObject.name, nodeObject);
-        }
     }
 
     protected override bool CheckNeighborsFull()

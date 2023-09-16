@@ -10,6 +10,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 {
     public class TileNodeObjectController : OverridableMonoBehaviour
     {
+        public Action<TileObject> onPlacedTileObjectChanged;
+
         [Space]
 
         [SerializeField] private TileNodeObjectDetector tileNodeObjectDetector;
@@ -96,6 +98,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             placedTileObject = tileObject;
             CheckTileObjectEventSubState();
+            onPlacedTileObjectChanged?.Invoke(tileObject);
             Debug.Log("Set placedTileObject" + (placedTileObject is null ? "NULL" : "tile object") + ", Node Name : " + gameObject.name);
         }
 

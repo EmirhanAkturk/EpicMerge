@@ -1,3 +1,4 @@
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Attribute;
 using Systems.GraphSystem;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
 
-      private Graph graph;
+      private TileGraph tileGraph;
    
       private void Start()
       {
@@ -27,7 +28,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
 
       private void CreateGraph()
       {
-         graph = new Graph();
+         tileGraph = new TileGraph();
 
          // Create Nodes
          int m = matrixDimensions.x;
@@ -46,25 +47,26 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
             for (int j = 0; j < n; j++)
             {
                int rndValue = Random.Range(0, 3);
-
+               TileNodeValue tileNodeValue = new TileNodeValue(rndValue, 1);
                Vector3 localPos = new Vector3(i * nodeDistance, 0, j * nodeDistance);
                Vector3 pos = parentPos + localPos;
                
-               TileNodeController tileNodeController = CreateNode(rndValue, pos);
+               TileNodeController tileNodeController = CreateNode(tileNodeValue, pos);
                ++nodeCount;
                tileNodeController.gameObject.name = "Node_" + nodeCount;
 
-               graph.AddNode(tileNodeController.TileNode);
+               tileGraph.AddNode(tileNodeController.TileNode);
             }
          }
       }
 
       private void FindEdges()
       {
-         graph.FindEdgesWithNodeDistance(nodeDistance);
+         tileGraph.FindEdgesWithNodeDistance(nodeDistance);
+         tileGraph.PrintGraphNeighbors();
       }
 
-      private TileNodeController CreateNode(int value, Vector3 pos)
+      private TileNodeController CreateNode(TileNodeValue value, Vector3 pos)
       {
          var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, transform);
          var tileNodeController = nodeObject.GetComponent<TileNodeController>();
@@ -75,7 +77,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
       [ContextMenu("PrintGraphNeighbors")]
       public void PrintGraphNeighbors()
       {
-         graph?.PrintGraphNeighbors();
+         tileGraph?.PrintGraphNeighbors();
       }      
       
       // [ContextMenu("RecreateGraph")]
@@ -87,8 +89,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
 
       private void DestroyImmediateGraph()
       {
-         graph?.DestroyImmediateNodes();
-         graph = null;
+         tileGraph?.DestroyImmediateNodes();
+         tileGraph = null;
       }
    }
 }

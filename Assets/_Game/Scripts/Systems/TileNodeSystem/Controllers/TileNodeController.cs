@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using _Game.Scripts.Systems.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using JoostenProductions;
 using UnityEngine;
 
@@ -46,16 +48,34 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
         #region Init Functions
 
-        public void Init(int value)
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            tileNodeObjectController.onPlacedTileObjectChanged += PlacedTileObjectChanged;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            tileNodeObjectController.onPlacedTileObjectChanged -= PlacedTileObjectChanged;
+        }
+
+        public void Init(TileNodeValue value)
         {
             tileNodeObjectController.Init();
             tileNode.Init(value);
             InitVisual();
         }
 
+        private void PlacedTileObjectChanged(TileObject tileObject)
+        {
+            
+        }
+
         private void InitVisual()
         {
-            var valueMaterialPair = GetValueMaterialPair(GetTileObjectValue());
+            var value = GetTileObjectValue();
+            var valueMaterialPair = GetValueMaterialPair(value.objectId);
             SetMaterial(valueMaterialPair.material);
         }
         
@@ -74,14 +94,14 @@ namespace _Game.Scripts.Systems.TileNodeSystem
     
         #region Get Functions
 
-        private int GetTileObjectValue()
+        private TileNodeValue GetTileObjectValue()
         {
             return tileNode.Value;
         }
 
-        private ValueMaterialPair GetValueMaterialPair(int value)
+        private ValueMaterialPair GetValueMaterialPair(int objectId)
         {
-            return ValueMaterialMaps.TryGetValue(value, out var valueMaterialPair) ? valueMaterialPair : null;
+            return ValueMaterialMaps.TryGetValue(objectId, out var valueMaterialPair) ? valueMaterialPair : null;
         }
 
         #endregion
