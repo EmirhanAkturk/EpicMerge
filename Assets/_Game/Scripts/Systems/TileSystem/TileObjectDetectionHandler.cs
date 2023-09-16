@@ -9,12 +9,14 @@ namespace _Game.Scripts.Systems.TileSystem
         {
             if (!CheckHasTileNodeDetectionHandler(enteredObject, out var tileNodeObjectController)) return;
             tileNodeObjectController.ObjectEnterTileArea(tileObject);
+            Debug.Log("###enteredObject : " + enteredObject.name);
         }
 
         public void TileObjectExited(TileObject tileObject, GameObject exitObject)
         {
             if (!CheckHasTileNodeDetectionHandler(exitObject, out var tileNodeObjectController)) return;
             tileNodeObjectController.ObjectExitTileArea(tileObject);
+            Debug.Log("###exitObject : " + exitObject.name);
         }
     
         // private const string TILE_NODE_TAG = "TileNode";

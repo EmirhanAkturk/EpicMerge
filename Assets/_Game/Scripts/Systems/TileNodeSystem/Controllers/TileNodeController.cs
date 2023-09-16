@@ -33,7 +33,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         
         public void Init(TileObject tileObject)
         {
-            tileNodeObjectController.Init(tileObject);
+            tileNodeObjectController.Init(tileObject, tileNode);
             tileNode.Init(GetTileObjectValue(tileObject));
         }
 
@@ -41,12 +41,12 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
         private bool CanMerge(TileObject tileObject)
         {
-            return tileObject != null && TileObjectMergeHelper.CanMerge(tileNode, tileObject.TileObjectValue);
+            return tileObject != null && TileObjectMergeHelper.CanMerge(tileObject.TileNode, tileNode, tileObject.TileObjectValue);
         }
 
         private bool TryMerge(TileObject tileObject)
         {
-            return TileObjectMergeHelper.TryMerge(tileNode, tileObject.TileObjectValue);
+            return TileObjectMergeHelper.TryMerge(tileObject.TileNode,tileNode, tileObject.TileObjectValue);
         }
 
         private void TileObjectMerged(TileObjectValue newValue)
@@ -65,7 +65,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
         private TileObject CreateNewTileObject(TileObjectValue newValue)
         {
-            Vector3 pos = transform.position;
+            Vector3 pos = transform.position + Vector3.up;
             var tileObjectGo = Instantiate(tileObjectPrefab, pos, Quaternion.identity, transform);
             var tileObject = tileObjectGo.GetComponent<TileObject>();
             tileObject.Init(newValue);

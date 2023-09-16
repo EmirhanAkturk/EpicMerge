@@ -12,27 +12,29 @@ namespace _Game.Scripts.Utility
         
         private static int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
     
-        public static bool CanMerge(TileNode tileNode, TileObjectValue targetValue)
+        public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue)
         {
-            return CanMerge(tileNode, targetValue, out _);
+            return CanMerge(tileObjectNode, movedNode, targetValue, out _);
         }
 
-        public static bool CanMerge(TileNode tileNode, TileObjectValue targetValue, out List<TileNode> wantedNodes)
+        public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, out List<TileNode> wantedNodes)
         {
             wantedNodes = null;
             
             if (TileObjectValue.IsEmptyTileObjectValue(targetValue)) return false;
             
-            wantedNodes = TileGraph.FindWantedNodesWithBfs(tileNode, targetValue);
+            wantedNodes = TileGraph.FindWantedNodesWithBfs(movedNode, targetValue, tileObjectNode);
+            if(!wantedNodes.Contains(tileObjectNode)) wantedNodes.Add(tileObjectNode);
+            
             bool canMerge = wantedNodes.Count >= MergeRequiredObject;
             Debug.Log("canMerge : " + canMerge);
             onCanMergeStateChange?.Invoke(canMerge, wantedNodes);
             return canMerge;
         }        
         
-        public static bool TryMerge(TileNode tileNode, TileObjectValue targetValue)
+        public static bool TryMerge(TileNode currentMovingObjectNode, TileNode movedNode, TileObjectValue targetValue)
         {
-            bool canMerge = CanMerge(tileNode, targetValue, out var wantedNodes);
+            bool canMerge = CanMerge(currentMovingObjectNode, movedNode, targetValue, out var wantedNodes);
 
             if (!canMerge)
             {

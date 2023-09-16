@@ -33,7 +33,7 @@ public class TileNode : Node<TileNode, TileObjectValue>
     [ContextMenu("Bfs")]
     public void Bfs()
     {
-        var wantedNodes = TileGraph.FindWantedNodesWithBfs(this, Value);
+        var wantedNodes = TileGraph.FindWantedNodesWithBfs(this, Value );
         
         Debug.Log("################## ");
         Debug.Log("BFS Wanted Value : " + Value);

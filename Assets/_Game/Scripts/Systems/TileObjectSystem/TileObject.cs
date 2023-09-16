@@ -19,6 +19,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         }
 
         public TileObjectValue TileObjectValue { get; private set; } 
+        public TileNode TileNode { get;  set; } // for test 
         
         [SerializeField] private TileObjectDragDropController tileObjectDragDropController;
         [SerializeField] private TileObjectModelController tileObjectModelController;
@@ -47,6 +48,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             TileObjectValue = tileObjectValue;
             tileObjectModelController.InitVisual(TileObjectValue);
             SubscribeDragDropEvents();
+            Debug.Log(" ### Init return : " + gameObject.name);
         }
 
         private void OnTriggerEnter(Collider other)

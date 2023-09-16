@@ -1,13 +1,8 @@
 using System;
 using _Game.Scripts.Systems.TileObjectSystem;
-using _Game.Scripts.Systems.TileSystem;
-using _Game.Scripts.Utility;
 using GameDepends;
 using JoostenProductions;
-using Others.TweenAnimControllers;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Utils;
 
 namespace _Game.Scripts.Systems.TileNodeSystem
 {
@@ -21,6 +16,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
         [SerializeField] private TileNodeObjectDetectionHandler tileNodeObjectDetectionHandler;
 
+        private TileNode thisTileNode;
+        
         private TileObject placedTileObject;
         private TileObject movingTileObjectOnThisTile;
         private Vector3? centerPoint;
@@ -31,8 +28,9 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             UnsubscribeAllEvents();
         }
 
-        public void Init(TileObject initObject)
+        public void Init(TileObject initObject, TileNode tileNode)
         {
+            thisTileNode = tileNode;
             ResetVariables();
             SubscribeTileNodeDetectorEvents();
             InitPlacedObject(initObject);
@@ -88,7 +86,14 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             // EventService.onTileObjectEnteredToNode?.Invoke(tileObject, this);
             
             // TODO Due to the CanDrag control, the object may not be centered in the slot when the drag ends
-            if(!tileObject.CanDrag) return;
+            if (!tileObject.CanDrag)
+            {
+                Debug.Log("### tileObject.CanDrag return : " + gameObject.name);
+                return;
+            }
+            
+            Debug.Log("### tileObject.CanDrag not return : " + gameObject.name);
+
             
             movingTileObjectOnThisTile = tileObject;
             SubscribeObjectDragEnd();
@@ -128,11 +133,11 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             if (isMerged != null && isMerged.Value)
             {
                 // TODO Try Merge
-                
+                Debug.Log("###isMerged true : " + gameObject.name);
             }
             else
             {
-                
+                Debug.Log("###isMerged False" + gameObject.name);
             }
             // TODO Move Or Swap objects pos 
         }
@@ -165,8 +170,10 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void SetPlacedObject(TileObject tileObject)
         {
             placedTileObject = tileObject;
+            if (placedTileObject != null) tileObject.TileNode = thisTileNode; 
             CheckTileObjectEventSubState();
             onPlacedTileObjectChanged?.Invoke(tileObject);
+            UnsubscribeObjectDragEnd();
             Debug.Log("Set placedTileObject" + (placedTileObject is null ? "NULL" : "tile object") + ", Node Name : " + gameObject.name);
         }
 
@@ -208,14 +215,18 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void SubscribeObjectDragEnd()
         {
             if (isSubTileDragEndEvent) return;
-            EventService.onTileObjectDragEnd += TileObjectDragEnd;
+            Debug.Log("### SubscribeObjectDragEnd " + gameObject.name);
+            EventService.onAfterTileObjectDragEnd += TileObjectDragEnd;
+            // EventService.onTileObjectDragEnd += TileObjectDragEnd;
             isSubTileDragEndEvent = true;
         }
 
         private void UnsubscribeObjectDragEnd()
         {
             if (!isSubTileDragEndEvent) return;
-            EventService.onTileObjectDragEnd -= TileObjectDragEnd;
+            Debug.Log("### UnsubscribeObjectDragEnd " + gameObject.name);
+            EventService.onAfterTileObjectDragEnd -= TileObjectDragEnd;
+            // EventService.onTileObjectDragEnd -= TileObjectDragEnd;
             isSubTileDragEndEvent = false;
         }
 

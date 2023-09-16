@@ -38,7 +38,7 @@ namespace Systems.GraphSystem
         }
 
         #region Search Functions
-        public static List<T> FindWantedNodesWithBfs(T start, TF targetValue)
+        public static List<T> FindWantedNodesWithBfs(T start, TF targetValue, T except = null)
         {
             List<T> result = new List<T>();
             HashSet<T> visited = new HashSet<T>();
@@ -59,6 +59,8 @@ namespace Systems.GraphSystem
                 foreach (var node in neighbors)
                 {
                     var neighbor = node;
+                    if(except != null && neighbor == except) continue;
+                    
                     if (!visited.Contains(neighbor) && neighbor.Value.Equals(start.Value))
                     {
                         queue.Enqueue(neighbor);
