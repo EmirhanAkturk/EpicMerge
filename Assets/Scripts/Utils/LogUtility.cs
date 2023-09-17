@@ -54,9 +54,9 @@ namespace Utils
 
         private static bool CanPrintLog()
         {
-#if UNITY_EDITOR
+// #if UNITY_EDITOR
             return true;
-#endif
+// #endif
             // if (SRDebug.Instance != null && SRDebug.Instance.Settings != null)
             //     return SRDebug.Instance.Settings.IsEnabled;
             // else
