@@ -2,9 +2,8 @@ using System;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem;
 using UnityEngine;
-using Utils;
 
-namespace _Game.Scripts.Systems.TileNodeSystem
+namespace _Game.Scripts.Systems.DetectionSystem
 {
     public class TileNodeObjectDetectionHandler : MonoBehaviour, ITileNodeDetectionHandler
     {

@@ -1,17 +1,14 @@
-using _Game.Scripts.Systems.TileNodeSystem;
 using _Game.Scripts.Systems.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem;
 using UnityEngine;
 
-namespace _Game.Scripts.Systems.TileSystem
+namespace _Game.Scripts.Systems.DetectionSystem
 {
     public class TileObjectDetectionHandler : IObjectDetectionHandler
     {
-        public bool IsDetectionActive { get; set; }
-
         private ITileNodeDetectionHandler currentTileNodeDetectionHandler;
         public void TileObjectEntered(TileObject tileObject, GameObject enteredObject)
         {
-            if(!IsDetectionActive) return;
             if (!CheckHasTileNodeDetectionHandler(enteredObject, out var tileNodeDetectionHandler)) return;
             currentTileNodeDetectionHandler = tileNodeDetectionHandler;
             tileNodeDetectionHandler.ObjectEnterTileArea(tileObject);
@@ -20,7 +17,6 @@ namespace _Game.Scripts.Systems.TileSystem
 
         public void TileObjectExited(TileObject tileObject, GameObject exitObject)
         {
-            if(!IsDetectionActive) return;
             if (!CheckHasTileNodeDetectionHandler(exitObject, out var tileNodeObjectController)) return;
             if (currentTileNodeDetectionHandler == tileNodeObjectController)
             {

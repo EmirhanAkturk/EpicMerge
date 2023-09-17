@@ -5,7 +5,7 @@ using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Systems.ConfigurationSystem;
 using UnityEngine;
 
-namespace _Game.Scripts.Utility
+namespace _Game.Scripts.Utils
 {
     public static class TileObjectMergeHelper
     {

@@ -1,4 +1,5 @@
 using System;
+using _Game.Scripts.Systems.DetectionSystem;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
@@ -13,7 +14,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
     public class TileObject : OverridableMonoBehaviour
     {
         //TODO This script was created temporarily to test the Tile Node System and will be refactored
-        public bool CanDrag
+        private bool CanDrag
         {
             get { return tileObjectDragDropController.CanDrag; }
             set { tileObjectDragDropController.CanDrag = value; }
@@ -28,7 +29,10 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
         private IMoveController moveController;
 
-        // TODO Use inject below part
+        private IObjectDetector ObjectDetector => objectDetector ??= GetComponentInChildren<IObjectDetector>();
+        private IObjectDetector objectDetector;
+        
+        // TODO Use inject for below part
         private IObjectDetectionHandler ObjectDetectionHandler => objectDetectionHandler ??= new TileObjectDetectionHandler();
         private IObjectDetectionHandler objectDetectionHandler;
         
@@ -37,9 +41,10 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             TileObjectValue = tileObjectValue;
             tileObjectModelController.InitVisual(TileObjectValue);
             SubscribeDragDropEvents();
+            SubscribeObjectDetectionEvents();
             // Debug.Log(" ### Init return : " + gameObject.name);
         }
-        
+
         public void Move(Vector3 targetPos, MoveEndCallback onMoveEnd = null)
         {
             MoveController?.Move(targetPos, onMoveEnd);
@@ -58,6 +63,11 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             Move(targetPos, ReachedToNode);
         }
 
+        public bool CanObjectCentered()
+        {
+            return CanDrag;
+        }
+        
         void ReachedToNode(bool _)
         {
             CanDrag = true;
@@ -65,17 +75,17 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         
         private void SetDetectionActiveState(bool isDetectionActive)
         {
-            ObjectDetectionHandler.IsDetectionActive = isDetectionActive;
+            ObjectDetector.IsDetectionActive = isDetectionActive;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void EnteredGameObject(GameObject enteredGo)
         {
-            ObjectDetectionHandler.TileObjectEntered(this, other.gameObject);
+            ObjectDetectionHandler.TileObjectEntered(this, enteredGo);
         }
 
-        private void OnTriggerExit(Collider other)
+        private void ExitedGameObject(GameObject exitedGo)
         {
-            ObjectDetectionHandler.TileObjectExited(this, other.gameObject);
+            ObjectDetectionHandler.TileObjectExited(this, exitedGo);
         }
 
         private void ObjectDragStart()
@@ -101,6 +111,15 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             tileObjectDragDropController.onObjectDragStart += ObjectDragStart;
             tileObjectDragDropController.onObjectDragEnd += ObjectDragEnd;
             isSubscribedDragDropEvents = true;
+        }
+
+        private bool isSubscribedObjectDetectionEvents;
+        private void SubscribeObjectDetectionEvents()
+        {
+            if(isSubscribedObjectDetectionEvents) return;
+            ObjectDetector.OnEnteredGameObject += EnteredGameObject;
+            ObjectDetector.OnExitedGameObject += ExitedGameObject;
+            isSubscribedObjectDetectionEvents = true;
         }
 
         #endregion

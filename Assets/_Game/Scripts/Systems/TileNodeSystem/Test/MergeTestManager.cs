@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
-using _Game.Scripts.Utility;
+using _Game.Scripts.Utils;
 using GameDepends;
 using UnityEngine;
 using Utils;
