@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.Scripts.Systems.IndicationSystem;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Utils;
@@ -16,30 +17,17 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
         
         private void Awake()
         {
-            TileObjectMergeHelper.onCanMergeStateChange += UpdateGizmoList;
-            EventService.onTileObjectPlacedToTile += TryClearList;
+            TileObjectMergeHelper.onCanMergeStateChange += UpdateGizmo;
         }
 
-        private void TryClearList(TileNode arg1, TileObject arg2)
+        private void UpdateGizmo(bool isMergeable)
         {
-            canMergeNodes.Clear();
-        }
-
-        private void UpdateGizmoList(bool canMerge, List<TileNode> nodes)
-        {
-            if (!canMerge)
-            {
-                canMergeNodes.Clear();
-            }
-            else
-            {
-                canMergeNodes = nodes.ToList();
-            }
+            canMergeNodes = TileObjectMergeHelper._mergeableIndicatorShownNodes;
         }
 
         private void OnDrawGizmos()
         {
-            if(canMergeNodes.Count == 0 ) return;
+            if(canMergeNodes == null || canMergeNodes.Count == 0 ) return;
 
             Vector3 scale = new Vector3(.8f, .1f, .8f);
             foreach (var node in canMergeNodes)

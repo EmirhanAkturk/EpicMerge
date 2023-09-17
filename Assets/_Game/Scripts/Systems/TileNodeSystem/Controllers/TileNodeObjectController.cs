@@ -1,9 +1,12 @@
 using _Game.Scripts.Systems.DetectionSystem;
+using _Game.Scripts.Systems.IndicationSystem;
+using _Game.Scripts.Systems.IndicatorSystem;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Utils;
 using GameDepends;
 using JoostenProductions;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace _Game.Scripts.Systems.TileNodeSystem
@@ -13,7 +16,11 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         public TileNode ThisTileNode { get; private set; }
 
         [Space]
+        
         [SerializeField] private TileNodeObjectDetectionHandler tileNodeObjectDetectionHandler;
+        // [SerializeField] private MergeableTileIndicator mergeableTileIndicator;
+        [SerializeField] private bool hasMergeableTileIndicator;
+        [ShowIf("hasMergeableTileIndicator")][SerializeField] private TileNodeMergeableIndicator mergeableTileIndicator;
         
         private TileObject placedTileObject;
         private TileObject movingTileObjectOnThisTile;
@@ -86,7 +93,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
             if (placedTileObject != null && placedTileObject != tileObject)
             {
-                bool canMerge = CanMerge(tileObject);
+                bool canMerge = CanMerge(tileObject, true);
                 Debug.Log("canMerge : " + canMerge);
             }
         }
@@ -170,19 +177,31 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             UpdateTileNodeValue(GetTileObjectValue(tileObject));
         }
-        
-        private Vector3 GetCenterPoint()
-        {
-            centerPoint ??= transform.position;
-            return centerPoint.Value;
-        }
-        
+
         private void CheckTileObjectEventSubState()
         {
             if (placedTileObject != null)
                 SubscribeTileObjectEvents();
             else
                 UnsubscribeTileObjectEvents();
+        }
+
+        private Vector3 GetCenterPoint()
+        {
+            centerPoint ??= transform.position;
+            return centerPoint.Value;
+        }
+        
+        private void UpdateMergeableIndicator(bool isMergeable)
+        {
+            if (hasMergeableTileIndicator)
+            {
+                mergeableTileIndicator.UpdateIndicatorState(isMergeable);
+            }
+            if (placedTileObject != null)
+            {
+                placedTileObject.UpdateMergeableIndicatorState(isMergeable);
+            }
         }
 
         #region Merge Functions
@@ -192,9 +211,9 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             return placedTileObject != tileObject && placedTileObject.TileObjectValue.Equals(tileObject.TileObjectValue);
         }
         
-        private bool CanMerge(TileObject tileObject)
+        private bool CanMerge(TileObject tileObject, bool indicateMergeableObjects)
         {
-            return tileObject != null && TileObjectMergeHelper.CanMerge(tileObject.TileNode, ThisTileNode, tileObject.TileObjectValue);
+            return tileObject != null && TileObjectMergeHelper.CanMerge(tileObject.TileNode, ThisTileNode, tileObject.TileObjectValue, indicateMergeableObjects);
         }
 
         private bool TryMerge(TileObject tileObject)
@@ -277,9 +296,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void SubscribeInitEvents()
         {
             if(isSubscribedInitEvents) return;
-            ThisTileNode.onTileObjectMerged += TileObjectMerged;
-            ThisTileNode.onTileObjectChanged += PlaceObjectOnTile;
-            
+            SubscribeTileNodeEvents();
             SubscribeTileNodeDetectorEvents();
             isSubscribedInitEvents = true;
         }
@@ -287,13 +304,25 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void UnSubscribeInitEvents()
         {
             if(!isSubscribedInitEvents) return;
-            ThisTileNode.onTileObjectMerged -= TileObjectMerged;
-            ThisTileNode.onTileObjectChanged -= PlaceObjectOnTile;
-            
+            UnsubscribeTileNodeEvents();
             UnsubscribeTileNodeDetectorEvents();
             isSubscribedInitEvents = false;
         }
-        
+
+        private void SubscribeTileNodeEvents()
+        {
+            ThisTileNode.onTileObjectMerged += TileObjectMerged;
+            ThisTileNode.onTileObjectChanged += PlaceObjectOnTile;
+            ThisTileNode.onUpdateMergeableIndicator += UpdateMergeableIndicator;
+        }
+
+        private void UnsubscribeTileNodeEvents()
+        {
+            ThisTileNode.onTileObjectMerged -= TileObjectMerged;
+            ThisTileNode.onTileObjectChanged -= PlaceObjectOnTile;
+            ThisTileNode.onUpdateMergeableIndicator -= UpdateMergeableIndicator;
+        }
+
         private void SubscribeTileNodeDetectorEvents()
         {
             tileNodeObjectDetectionHandler.onTileObjectEntered += ObjectEnterTileArea;

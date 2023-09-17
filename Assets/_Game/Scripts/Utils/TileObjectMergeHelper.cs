@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
+using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
+using GameDepends;
 using Systems.ConfigurationSystem;
 using UnityEngine;
 
@@ -9,16 +11,30 @@ namespace _Game.Scripts.Utils
 {
     public static class TileObjectMergeHelper
     {
-        public static Action<bool, List<TileNode>> onCanMergeStateChange;
-        
+        public static Action<bool> onCanMergeStateChange;
+
         private static int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
-    
-        public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue)
+        
+        // TODO Made private!!
+        public static List<TileNode> _mergeableIndicatorShownNodes;
+        
+        static TileObjectMergeHelper()
         {
-            return CanMerge(tileObjectNode, movedNode, targetValue, out _);
+            EventService.onTileObjectPlacedToTile += TileObjectPlacedToTile;
         }
 
-        public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, out List<TileNode> wantedNodes)
+        private static void TileObjectPlacedToTile(TileNode tileNode, TileObject tileObject)
+        {
+            UpdateMergeableObjectsIndicator( _mergeableIndicatorShownNodes, false);
+            onCanMergeStateChange?.Invoke(false);
+        }
+        
+        public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects)
+        {
+            return CanMerge(tileObjectNode, movedNode, targetValue, indicateMergeableObjects, out _);
+        }
+
+        public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects, out List<TileNode> wantedNodes)
         {
             wantedNodes = null;
             
@@ -29,13 +45,17 @@ namespace _Game.Scripts.Utils
             
             bool canMerge = wantedNodes.Count >= MergeRequiredObject;
             // Debug.Log("canMerge : " + canMerge);
-            onCanMergeStateChange?.Invoke(canMerge, wantedNodes);
+            if (indicateMergeableObjects)
+            {
+                UpdateMergeableObjectsIndicator(wantedNodes, canMerge);
+            }
+            onCanMergeStateChange?.Invoke(canMerge);
             return canMerge;
-        }        
-        
+        }
+
         public static bool TryMerge(TileNode currentMovingObjectNode, TileNode movedNode, TileObjectValue targetValue)
         {
-            bool canMerge = CanMerge(currentMovingObjectNode, movedNode, targetValue, out var wantedNodes);
+            bool canMerge = CanMerge(currentMovingObjectNode, movedNode, targetValue, false, out var wantedNodes);
 
             if (!canMerge)
             {
@@ -63,6 +83,7 @@ namespace _Game.Scripts.Utils
                 node.onTileObjectMerged?.Invoke(value);
             }
             
+            UpdateMergeableObjectsIndicator(wantedNodes, false);
             Debug.Log("Merged : ");
         }
 
@@ -101,6 +122,47 @@ namespace _Game.Scripts.Utils
             }
 
             return newTileObjectValues;
+        }
+        
+        private static void UpdateMergeableObjectsIndicator(List<TileNode> tileNodes, bool isMergeable)
+        {
+            HideShowingMergeIndicators();
+            
+            if(tileNodes == null || tileNodes.Count == 0) return;
+
+            foreach (var tileNode in tileNodes)
+            {
+                tileNode?.onUpdateMergeableIndicator.Invoke(isMergeable);
+            }
+
+            UpdateMergeableIndicatorShownList(tileNodes, isMergeable);
+        }
+
+        private static void HideShowingMergeIndicators()
+        {
+            if (!HasIndicatorShownNode()) return;
+            
+            foreach (var tileNode in _mergeableIndicatorShownNodes)
+            {
+                tileNode?.onUpdateMergeableIndicator.Invoke(false);
+            }
+        }
+
+        private static bool HasIndicatorShownNode()
+        {
+            return _mergeableIndicatorShownNodes is { Count: > 0 };
+        }
+
+        private static void UpdateMergeableIndicatorShownList(List<TileNode> tileNodes, bool isMergeable)
+        {
+            if (isMergeable)
+            {
+                _mergeableIndicatorShownNodes = tileNodes;
+            }
+            else
+            {
+                _mergeableIndicatorShownNodes?.Clear();
+            }
         }
     }
 }

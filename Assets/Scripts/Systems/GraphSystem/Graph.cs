@@ -38,21 +38,26 @@ namespace Systems.GraphSystem
         }
 
         #region Search Functions
+
+        private static readonly HashSet<T> Visited = new HashSet<T>();
+        private static readonly Queue<T> Queue = new Queue<T>();
+
         public static List<T> FindWantedNodesWithBfs(T start, TF targetValue, T except = null)
         {
-            List<T> result = new List<T>();
-            HashSet<T> visited = new HashSet<T>();
-            Queue<T> queue = new Queue<T>();
-            
-            queue.Enqueue(start);
-            visited.Add(start);
+            Visited.Clear();
+            Queue.Clear();
 
-            while (queue.Count > 0)
+            List<T> results = new List<T>();
+            
+            Queue.Enqueue(start);
+            Visited.Add(start);
+
+            while (Queue.Count > 0)
             {
-                var currentNode = queue.Dequeue();
+                var currentNode = Queue.Dequeue();
                 if (currentNode.Value.Equals(targetValue))
                 {
-                    result.Add(currentNode);
+                    results.Add(currentNode);
                 }
 
                 var neighbors = currentNode.GetNeighbors(); 
@@ -61,15 +66,15 @@ namespace Systems.GraphSystem
                     var neighbor = node;
                     if(except != null && neighbor == except) continue;
                     
-                    if (!visited.Contains(neighbor) && neighbor.Value.Equals(start.Value))
+                    if (!Visited.Contains(neighbor) && neighbor.Value.Equals(start.Value))
                     {
-                        queue.Enqueue(neighbor);
-                        visited.Add(neighbor);
+                        Queue.Enqueue(neighbor);
+                        Visited.Add(neighbor);
                     }
                 }
             }
 
-            return result;
+            return results;
         }
             
         #endregion

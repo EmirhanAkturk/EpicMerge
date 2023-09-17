@@ -1,5 +1,7 @@
 using System;
 using _Game.Scripts.Systems.DetectionSystem;
+using _Game.Scripts.Systems.IndicationSystem;
+using _Game.Scripts.Systems.IndicatorSystem;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
@@ -20,17 +22,22 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             set { tileObjectDragDropController.CanDrag = value; }
         }
 
+        private bool isDraggingObject;
+
         public TileObjectValue TileObjectValue { get; private set; } 
         public TileNode TileNode { get;  set; } // for test 
         
         [SerializeField] private TileObjectDragDropController tileObjectDragDropController;
         [SerializeField] private TileObjectModelController tileObjectModelController;
-        
+        [SerializeField] private TileObjectMergeableIndicator mergeableTileObjectIndicator;
+        [SerializeField] private DragObjectIndicator dragObjectIndicator;
+
         private IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
         private IMoveController moveController;
 
         private IObjectDetector ObjectDetector => objectDetector ??= GetComponentInChildren<IObjectDetector>();
         private IObjectDetector objectDetector;
+        
         
         // TODO Use inject for below part
         private IObjectDetectionHandler ObjectDetectionHandler => objectDetectionHandler ??= new TileObjectDetectionHandler();
@@ -63,12 +70,18 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             Move(targetPos, ReachedToNode);
         }
 
+        public void UpdateMergeableIndicatorState(bool isMergeable)
+        {
+            if(isDraggingObject) return;
+            mergeableTileObjectIndicator.UpdateIndicatorState(isMergeable);    
+        }
+        
         public bool CanObjectCentered()
         {
             return CanDrag;
         }
         
-        void ReachedToNode(bool _)
+        private void ReachedToNode(bool _)
         {
             CanDrag = true;
         } 
@@ -91,15 +104,23 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private void ObjectDragStart()
         {
             SetDetectionActiveState(true);
+            UpdateDraggingState(true);
             EventService.onTileObjectDragStart?.Invoke(this);
         }
 
         private void ObjectDragEnd()
         {
             SetDetectionActiveState(false);
+            UpdateDraggingState(false);
             ObjectDetectionHandler.TileObjectPlaced(this);
             EventService.onTileObjectDragEnd?.Invoke(this);
             EventService.onAfterTileObjectDragEnd?.Invoke(this);
+        }
+
+        private void UpdateDraggingState(bool state)
+        {
+            isDraggingObject = state;
+            dragObjectIndicator.UpdateIndicatorState(state);
         }
 
         #region Subscribe & Unsubscribe Events
