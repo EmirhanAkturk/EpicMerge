@@ -9,7 +9,7 @@ namespace Systems.GraphSystem.Test
    public class GraphTest : MonoBehaviour
    {
       [SerializeField] private GameObject nodePrefab;
-      [SerializeField] private float nodeDistance = 1.5f;
+      // [SerializeField] private float nodeDistance = 1.5f;
       [SerializeField] private Vector2Int matrixDimensions = new Vector2Int(5, 5);
       [SerializeField] private bool createGraphInStart = true;
       
@@ -45,10 +45,9 @@ namespace Systems.GraphSystem.Test
             for (int j = 0; j < n; j++)
             {
                int rndValue = Random.Range(0, 3);
-
-               IntNode node = CreateNode(rndValue, new Vector3(i * nodeDistance, 0, j * nodeDistance));
+               // Vector3 pos = new Vector3(i * nodeDistance, 0, j * nodeDistance);
+               IntNode node = CreateNode(rndValue);
                ++nodeCount;
-               node.gameObject.name = "Node_" + nodeCount;
 
                graph.AddNode(node);
             }
@@ -57,15 +56,14 @@ namespace Systems.GraphSystem.Test
 
       private void FindEdges()
       {
-         graph.FindEdgesWithNodeDistance(nodeDistance, true);
+         // graph.FindEdgesWithNodeDistance(nodeDistance, true);
       }
 
-      private IntNode CreateNode(int value, Vector3 pos)
+      private IntNode CreateNode(int value)
       {
-         var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, transform);
-         var node = nodeObject.GetComponent<IntNode>();
-         node.Init(value);
-         return node;
+         // var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, transform);
+         IntNode intNode = new IntNode(value);
+         return intNode;
       }
 
       [ContextMenu("PrintGraphNeighbors")]
@@ -83,7 +81,7 @@ namespace Systems.GraphSystem.Test
 
       private void DestroyImmediateGraph()
       {
-         graph?.DestroyImmediateNodes();
+         // graph?.DestroyImmediateNodes();
          graph = null;
       }
    }

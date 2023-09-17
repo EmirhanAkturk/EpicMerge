@@ -173,7 +173,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2571920931737437626}
-  - component: {fileID: 1707805479221566269}
   - component: {fileID: 2470678749750281242}
   m_Layer: 0
   m_Name: OldTileNode
@@ -199,28 +198,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1707805479221566269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2571920931737437627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aeabab683e2b3848a91dc94a53fe076, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 2571920930450649074}
-  vertexObjectPrefab: {fileID: 7268074241907059937, guid: 8f15f679e6babb741adb18feaf7d0daf,
-    type: 3}
-  valueMaterialPairs:
-  - value: 0
-    material: {fileID: 2100000, guid: c2977447d34e0594ca96477bb3c08443, type: 2}
-  - value: 1
-    material: {fileID: 2100000, guid: 4452a4ce201fe1c42baeb9d3cca91293, type: 2}
-  - value: 2
-    material: {fileID: 2100000, guid: 138af5c08ee35244ca1190ca717a1516, type: 2}
 --- !u!54 &2470678749750281242
 Rigidbody:
   m_ObjectHideFlags: 0

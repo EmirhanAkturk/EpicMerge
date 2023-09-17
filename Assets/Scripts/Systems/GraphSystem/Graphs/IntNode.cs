@@ -6,11 +6,16 @@ using Utils;
 
 public class IntNode : Node<IntNode, int> 
 {
-    public override void PrintNeighbors()
+    public override void PrintNeighborsValues()
     {
         Debug.Log("#######################");
-        Debug.Log("Print My Neighbors : ", gameObject);
+        Debug.Log("Print My Neighbors Value: " + Value);
 
-        PrintNodes(Neighbors);
+        PrintNodeValues(Neighbors);
+    }
+
+    public IntNode(int value) : base(value)
+    {
+        
     }
 }

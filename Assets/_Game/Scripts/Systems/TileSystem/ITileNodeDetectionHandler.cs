@@ -7,5 +7,6 @@ namespace _Game.Scripts.Systems.TileSystem
     {
         public void ObjectEnterTileArea(TileObject tileObject);
         public void ObjectExitTileArea(TileObject tileObject);
+        public void ObjectPlacedTileArea(TileObject tileObject);
     }
 }

@@ -1,23 +1,22 @@
 using System;
+using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
+using _Game.Scripts.Utility;
 using GameDepends;
 using JoostenProductions;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.Scripts.Systems.TileNodeSystem
 {
     public class TileNodeObjectController : OverridableMonoBehaviour
     {
-        public Action<TileObject> onPlacedTileObjectChanged;
-        public Func<TileObject, bool> onTryMerge;
-        public Func<TileObject, bool> onCanMerge;
-
         [Space]
 
         [SerializeField] private TileNodeObjectDetectionHandler tileNodeObjectDetectionHandler;
 
-        private TileNode thisTileNode;
+        public TileNode TileNode { get; private set; }
         
         private TileObject placedTileObject;
         private TileObject movingTileObjectOnThisTile;
@@ -29,11 +28,12 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             UnsubscribeAllEvents();
         }
 
-        public void Init(TileObject initObject, TileNode tileNode)
+        public void Init(TileNode tileNode, TileObject initObject)
         {
-            thisTileNode = tileNode;
+            TileNode = tileNode;
+            // tileNode.Init(GetTileObjectValue(initObject));
             ResetVariables();
-            SubscribeTileNodeDetectorEvents();
+            SubscribeInitEvents();
             InitPlacedObject(initObject);
         }
 
@@ -50,7 +50,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
                 placedTileObject.Init(tileObjectValue);
             }
             
-            UnsubscribeAllEvents();
+            UnsubscribeAllObjectEvents();
             // InitPlacedObject(placedTileObject);
         }
 
@@ -102,26 +102,21 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
             
             movingTileObjectOnThisTile = tileObject;
-            SubscribeObjectDragEnd();
             MoveObjectToTileCenter(tileObject);
 
             if (placedTileObject != null && placedTileObject != tileObject)
             {
-                if (onCanMerge != null)
-                {
-                    bool canMerge = onCanMerge.Invoke(tileObject);
-                    Debug.Log("canMerge : " + canMerge);
-                } 
+                bool canMerge = CanMerge(tileObject);
+                Debug.Log("canMerge : " + canMerge);
             }
         }
 
         private void ObjectExitTileArea(TileObject tileObject)
         {
             movingTileObjectOnThisTile = null;
-            UnsubscribeObjectDragEnd();
         }
 
-        private void TileObjectDragEnd(TileObject tileObject)
+        private void TileObjectPlaced(TileObject tileObject)
         {
             if (placedTileObject is null)
             {
@@ -130,13 +125,13 @@ namespace _Game.Scripts.Systems.TileNodeSystem
                 return;
             }
 
-            bool? isMerged = false;
+            bool isMerged = false;
             if (placedTileObject != tileObject && placedTileObject.TileObjectValue.Equals(tileObject.TileObjectValue))
             {
                 Debug.Log("###TryPlaceObjectInTile");
-                isMerged = onTryMerge?.Invoke(tileObject);
+                isMerged = TryMerge(tileObject);
             }
-            if (isMerged != null && isMerged.Value)
+            if (isMerged)
             {
                 // TODO Try Merge
                 Debug.Log("###isMerged true : " + gameObject.name);
@@ -176,10 +171,10 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void SetPlacedObject(TileObject tileObject)
         {
             placedTileObject = tileObject;
-            if (placedTileObject != null) tileObject.TileNode = thisTileNode; 
+            if (placedTileObject != null) tileObject.TileNode = TileNode; 
             CheckTileObjectEventSubState();
-            onPlacedTileObjectChanged?.Invoke(tileObject);
-            UnsubscribeObjectDragEnd();
+            // onPlacedTileObjectChanged?.Invoke(tileObject);
+            PlacedTileObjectChanged(tileObject);
             Debug.Log("Set placedTileObject" + (placedTileObject is null ? "NULL" : "tile object") + ", Node Name : " + gameObject.name);
         }
 
@@ -187,6 +182,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             Vector3 targetPos = GetCenterPoint();
             tileObject.CanDrag = false;
+            // tileObject.MoveWithoutDetection(targetPos, _ => TileObjectMoveEnd(tileObject));
             tileObject.Move(targetPos, _ => TileObjectMoveEnd(tileObject));
         }
 
@@ -209,33 +205,58 @@ namespace _Game.Scripts.Systems.TileNodeSystem
                 UnsubscribeTileObjectEvents();
         }
 
+        #region Merge Functions
+
+        private bool CanMerge(TileObject tileObject)
+        {
+            return tileObject != null && TileObjectMergeHelper.CanMerge(tileObject.TileNode, TileNode, tileObject.TileObjectValue);
+        }
+
+        private bool TryMerge(TileObject tileObject)
+        {
+            return TileObjectMergeHelper.TryMerge(tileObject.TileNode,TileNode, tileObject.TileObjectValue);
+        }
+
+        private void TileObjectMerged(TileObjectValue newValue)
+        {
+            UpdateTileNodeValue(newValue);
+            UpdateMergedTileObjectValue(newValue);
+        }
+        
+        private void PlacedTileObjectChanged(TileObject tileObject)
+        {
+            UpdateTileNodeValue(GetTileObjectValue(tileObject));
+        }
+        
+        #endregion
+        
+        #region Node Functions
+        
+        private void UpdateTileNodeValue(TileObjectValue tileObjectValue)
+        {
+            TileNode.SetValue(tileObjectValue);
+        }
+        
+        private TileObjectValue GetTileObjectValue(TileObject tileObject)
+        {
+            return tileObject != null ? tileObject.TileObjectValue : TileObjectValue.GetEmptyTileObjectValue();
+        }
+        
+        #endregion
+        
         #region Subscribe Unsubscribe Events
 
         private void UnsubscribeAllEvents()
         {
-            UnsubscribeObjectDragEnd();
+            UnsubscribeAllObjectEvents();
+            UnSubscribeInitEvents();
+        }        
+        
+        private void UnsubscribeAllObjectEvents()
+        {
             UnsubscribeTileObjectEvents();
         }
         
-        private bool isSubTileDragEndEvent;
-        private void SubscribeObjectDragEnd()
-        {
-            if (isSubTileDragEndEvent) return;
-            Debug.Log("### SubscribeObjectDragEnd " + gameObject.name);
-            // EventService.onAfterTileObjectDragEnd += TileObjectDragEnd;
-            EventService.onTileObjectDragEnd += TileObjectDragEnd;
-            isSubTileDragEndEvent = true;
-        }
-
-        private void UnsubscribeObjectDragEnd()
-        {
-            if (!isSubTileDragEndEvent) return;
-            Debug.Log("### UnsubscribeObjectDragEnd " + gameObject.name);
-            // EventService.onAfterTileObjectDragEnd -= TileObjectDragEnd;
-            EventService.onTileObjectDragEnd -= TileObjectDragEnd;
-            isSubTileDragEndEvent = false;
-        }
-
         private bool isSubTileObjectEvents;
         private void SubscribeTileObjectEvents()
         {
@@ -252,12 +273,37 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             EventService.onAfterTileObjectDragEnd -= AfterObjectDragEnd;
             EventService.onTileObjectPlacedToTile -= ObjectPlacedToTile;
             isSubTileObjectEvents = false;
-        }        
-        
+        }
+
+        private bool isSubscribedInitEvents;
+        private void SubscribeInitEvents()
+        {
+            if(isSubscribedInitEvents) return;
+            TileNode.onTileObjectMerged += TileObjectMerged;
+            SubscribeTileNodeDetectorEvents();
+            isSubscribedInitEvents = true;
+        }
+
         private void SubscribeTileNodeDetectorEvents()
         {
             tileNodeObjectDetectionHandler.onTileObjectEntered += ObjectEnterTileArea;
             tileNodeObjectDetectionHandler.onTileObjectExited += ObjectExitTileArea;
+            tileNodeObjectDetectionHandler.onTileObjectPlaced += TileObjectPlaced;
+        }        
+        
+        private void UnsubscribeTileNodeDetectorEvents()
+        {
+            tileNodeObjectDetectionHandler.onTileObjectEntered -= ObjectEnterTileArea;
+            tileNodeObjectDetectionHandler.onTileObjectExited -= ObjectExitTileArea;
+            tileNodeObjectDetectionHandler.onTileObjectPlaced -= TileObjectPlaced;
+        }
+
+        private void UnSubscribeInitEvents()
+        {
+            if(!isSubscribedInitEvents) return;
+            TileNode.onTileObjectMerged -= TileObjectMerged;
+            UnsubscribeTileNodeDetectorEvents();
+            isSubscribedInitEvents = false;
         }
 
         #endregion

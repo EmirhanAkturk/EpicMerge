@@ -1,3 +1,5 @@
+using System.Text;
+using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Attribute;
@@ -16,7 +18,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
       [SerializeField] private float nodeDistance = 1.5f;
       [SerializeField] private Vector2Int matrixDimensions = new Vector2Int(5, 5);
       [SerializeField] private bool createGraphInStart = true;
-      [SerializeField] private bool drawGraphVertex = false;
+      // [SerializeField] private bool drawGraphVertex = false;
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
 
@@ -46,6 +48,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
       {
          int nodeCount = 0;
          Vector3 parentPos = transform.position;
+         StringBuilder nodeName = new StringBuilder();
+
          for (int i = 0; i < m; i++)
          {
             for (int j = 0; j < n; j++)
@@ -61,10 +65,12 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
                   tileObject = CreateTileObject(rndValue, pos);
                }
                
-               Debug.Log("rndValue : " + rndValue);
-               TileNodeController tileNodeController = CreateNode(tileObject, pos);
+               nodeName.Clear();
+               nodeName.Append("Node_");
+               nodeName.Append(nodeCount);
+               
+               TileNodeController tileNodeController = CreateNode(tileObject, pos, nodeName.ToString());
                ++nodeCount;
-               tileNodeController.gameObject.name = "Node_" + nodeCount;
 
                tileGraph.AddNode(tileNodeController.TileNode);
             }
@@ -73,7 +79,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
 
       private void FindEdges()
       {
-         tileGraph.FindEdgesWithNodeDistance(nodeDistance, drawGraphVertex);
+         tileGraph.FindEdgesWithNodeDistance(nodeDistance/*, drawGraphVertex*/);
          // tileGraph.PrintGraphNeighbors();
       }
 
@@ -115,11 +121,17 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
 
       #endregion
 
-      private TileNodeController CreateNode(TileObject tileObject, Vector3 pos)
+      private TileNodeController CreateNode(TileObject tileObject, Vector3 pos, string nodeName)
       {
          var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, NodesParent.transform);
+         nodeObject.name = nodeName;
+
+         TileObjectValue tileObjectValue = tileObject != null ? tileObject.TileObjectValue : TileObjectValue.GetEmptyTileObjectValue(); 
+         TileNode tileNode = new TileNode(nodeObject.transform, tileObjectValue);
+         
          var tileNodeController = nodeObject.GetComponent<TileNodeController>();
-         tileNodeController.Init(tileObject);
+         tileNodeController.Init(tileNode, tileObject);
+         
          return tileNodeController;
       }
 
@@ -169,5 +181,6 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
          }
          tileGraph = null;
       }
+      
    }
 }

@@ -1,4 +1,5 @@
 using System;
+using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using GameDepends;
@@ -35,8 +36,20 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         public void Move(Vector3 targetPos, MoveEndCallback onMoveEnd = null)
         {
             MoveController?.Move(targetPos, onMoveEnd);
-        }
+        }        
         
+        public void MoveWithoutDetection(Vector3 targetPos, MoveEndCallback onMoveEnd = null)
+        {
+            SetDetectionActiveState(false);
+            onMoveEnd += (_) => SetDetectionActiveState(true);
+            MoveController?.Move(targetPos, onMoveEnd);
+        }
+
+        private void SetDetectionActiveState(bool isDetectionActive)
+        {
+            ObjectDetectionHandler.IsDetectionActive = isDetectionActive;
+        }
+
         // private void Start()
         // {
         //     Init();
@@ -63,11 +76,14 @@ namespace _Game.Scripts.Systems.TileObjectSystem
 
         private void ObjectDragStart()
         {
+            SetDetectionActiveState(true);
             EventService.onTileObjectDragStart?.Invoke(this);
         }
 
         private void ObjectDragEnd()
         {
+            SetDetectionActiveState(false);
+            ObjectDetectionHandler.TileObjectPlaced(this);
             EventService.onTileObjectDragEnd?.Invoke(this);
             EventService.onAfterTileObjectDragEnd?.Invoke(this);
         }

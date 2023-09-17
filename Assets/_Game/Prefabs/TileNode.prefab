@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 2571920931737437626}
   - component: {fileID: 6005623108848249140}
   - component: {fileID: 940148049429949504}
-  - component: {fileID: 1707805479221566269}
   - component: {fileID: 1289154809800282515}
   - component: {fileID: 4817397723535728622}
   - component: {fileID: 7496104473921521836}
@@ -151,22 +150,6 @@ MonoBehaviour:
   tileObjectPrefab: {fileID: 2086667363387616332, guid: 6d74efadcac8f624c8c94340c068c5bf,
     type: 3}
   tileNodeObjectController: {fileID: 1289154809800282515}
-  tileNode: {fileID: 1707805479221566269}
---- !u!114 &1707805479221566269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2571920931737437627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aeabab683e2b3848a91dc94a53fe076, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertexObjectPrefab: {fileID: 7268074241907059937, guid: 8f15f679e6babb741adb18feaf7d0daf,
-    type: 3}
-  buttonField: 0
 --- !u!114 &1289154809800282515
 MonoBehaviour:
   m_ObjectHideFlags: 0

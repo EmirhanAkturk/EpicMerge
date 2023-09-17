@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Systems.ConfigurationSystem;
 using UnityEngine;
@@ -21,13 +22,13 @@ namespace _Game.Scripts.Utility
         {
             wantedNodes = null;
             
-            if (TileObjectValue.IsEmptyTileObjectValue(targetValue)) return false;
+            if (TileObjectValue.IsEmptyTileObjectValue(targetValue) || TileObjectValue.IsEmptyTileObjectValue(movedNode.Value)) return false;
             
             wantedNodes = TileGraph.FindWantedNodesWithBfs(movedNode, targetValue, tileObjectNode);
             if(!wantedNodes.Contains(tileObjectNode)) wantedNodes.Add(tileObjectNode);
             
             bool canMerge = wantedNodes.Count >= MergeRequiredObject;
-            Debug.Log("canMerge : " + canMerge);
+            // Debug.Log("canMerge : " + canMerge);
             onCanMergeStateChange?.Invoke(canMerge, wantedNodes);
             return canMerge;
         }        

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Utility;
 using GameDepends;
@@ -43,7 +44,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
             Vector3 scale = new Vector3(.8f, .1f, .8f);
             foreach (var node in canMergeNodes)
             {
-                Gizmos.DrawCube(node.transform.position + Vector3.up, scale);
+                Gizmos.DrawCube(node.Transform.position + Vector3.up, scale);
             }
         }
     }

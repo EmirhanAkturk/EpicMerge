@@ -10,6 +10,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
     {
         public Action<TileObject> onTileObjectEntered;
         public Action<TileObject> onTileObjectExited;
+        public Action<TileObject> onTileObjectPlaced;
 
         public void ObjectEnterTileArea(TileObject tileObject)
         {
@@ -19,6 +20,11 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         public void ObjectExitTileArea(TileObject tileObject)
         {
             onTileObjectExited?.Invoke(tileObject);
+        }
+
+        public void ObjectPlacedTileArea(TileObject tileObject)
+        {
+            onTileObjectPlaced?.Invoke(tileObject);
         }
     }
 }

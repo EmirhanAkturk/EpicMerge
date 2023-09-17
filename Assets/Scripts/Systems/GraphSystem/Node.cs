@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using UnityEngine;
 using Utils;
 
@@ -7,14 +8,13 @@ namespace Systems.GraphSystem
 {
     /// <typeparam name="T"> Neighbor Node Type </typeparam>
     /// <typeparam name="TF"> Node Value Type </typeparam>
-    public class Node<T, TF> : MonoBehaviour where T : Node<T, TF>
+    public class Node<T, TF> where T : Node<T, TF>
     {
-        [SerializeField] private GameObject vertexObjectPrefab;
-        
         public TF Value { get; private set; }
+        
         protected List<T> Neighbors { get; private set;}
 
-        public virtual void Init(TF value)
+        public Node(TF value)
         {
             Value = value;
             Neighbors = new List<T>();
@@ -23,22 +23,6 @@ namespace Systems.GraphSystem
         public void SetValue(TF newValue)
         {
             Value = newValue;
-        }
-
-        public virtual void PrintNeighbors()
-        {
-            PrintNodes(Neighbors);
-        }        
-        
-        public virtual void PrintNodes(IEnumerable<T> nodes)
-        {
-            int nodesOrder = 0;
-            foreach (var node in nodes)
-            {
-                ++nodesOrder;
-                GameObject nodeObject = node.gameObject;
-                LogUtility.PrintLog("Nodes order : " + nodesOrder + ", NodeName : " + nodeObject.name, nodeObject);
-            }
         }
 
         public bool IsNeighbor(T node)
@@ -62,7 +46,35 @@ namespace Systems.GraphSystem
         {
             return false;
         }
+
+        #region Print Functions
+
+        public virtual void PrintNeighborsValues()
+        {
+            PrintNodeValues(Neighbors);
+        }        
         
+        public virtual void PrintNodeValues(IEnumerable<T> nodes)
+        {
+            int nodesOrder = 0;
+            foreach (var node in nodes)
+            {
+                ++nodesOrder;
+                PrintNodeValue(node, nodesOrder);
+            }
+        }
+
+        protected  virtual void PrintNodeValue(T node, int nodesOrder)
+        {
+            TF value = node.Value;
+            LogUtility.PrintLog("Nodes order : " + nodesOrder + ", NodeValue : " + value);
+        }
+
+        #endregion
+        #region Test Part
+
+        /*[SerializeField] private GameObject vertexObjectPrefab;
+
         public void CreateVertexObject(T otherNode)
         {
             CreateVertexObject(transform.position, otherNode.transform.position);
@@ -75,6 +87,8 @@ namespace Systems.GraphSystem
 
             var quaternion = Quaternion.Euler(Vector3.up * yRotation);
             var vertexObject = Instantiate(vertexObjectPrefab, midPoint, quaternion, transform);
-        }
+        }*/
+        #endregion        
+        
     }
 }
