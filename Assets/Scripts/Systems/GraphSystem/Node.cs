@@ -42,6 +42,7 @@ namespace Systems.GraphSystem
             return Neighbors;
         }
         
+        
         protected virtual bool CheckNeighborsFull()
         {
             return false;

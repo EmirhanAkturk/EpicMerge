@@ -10,7 +10,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 {
     public class TileNodeController : OverridableMonoBehaviour
     {
-        public TileNode TileNode => tileNodeObjectController.TileNode;
+        public TileNode TileNode => tileNodeObjectController.ThisTileNode;
         
         [Space]
         [SerializeField] private GameObject tileObjectPrefab; // for test

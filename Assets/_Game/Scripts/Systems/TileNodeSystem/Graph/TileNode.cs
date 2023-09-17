@@ -1,4 +1,5 @@
 using System;
+using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Attribute;
 using Systems.GraphSystem;
@@ -10,6 +11,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Graph
     public class TileNode : Node<TileNode, TileObjectValue>
     {
         public Action<TileObjectValue> onTileObjectMerged; 
+        public Action<TileObject> onTileObjectChanged; 
         
         [Button(nameof(Bfs))] public bool bfsButtonField;
         [Button(nameof(PrintNeighbors))] public bool printNeighborsButtonField;
@@ -28,8 +30,34 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Graph
 
         #endregion
 
+        #region Get Functions
+
+        public TileNode GetEmptyNeighbor()
+        {
+            var neighbors = GetNeighbors();
+            foreach (var tileNode in neighbors)
+            {
+                if (TileObjectValue.IsEmptyTileObjectValue(tileNode.Value))
+                {
+                    return tileNode;
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
         #region Other Functions
 
+        protected override bool CheckNeighborsFull()
+        {
+            return Neighbors.Count >= MAX_NEIGHBORS_COUNT;
+        }
+    
+        #endregion
+        
+        #region Test Functions
+        
         [ContextMenu("Bfs")]
         public void Bfs()
         {
@@ -53,13 +81,9 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Graph
             TileObjectValue value = node.Value;
             LogUtility.PrintLog($"TileName : {node.Name}, Nodes order : " + nodesOrder + ", NodeValue : " + value);
         }
-    
-        protected override bool CheckNeighborsFull()
-        {
-            return Neighbors.Count >= MAX_NEIGHBORS_COUNT;
-        }
-    
+        
         #endregion
+
     }
 
     [Serializable]
