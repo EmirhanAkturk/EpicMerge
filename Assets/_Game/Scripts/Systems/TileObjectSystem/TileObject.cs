@@ -29,8 +29,10 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         
         [SerializeField] private TileObjectDragDropController tileObjectDragDropController;
         [SerializeField] private TileObjectModelController tileObjectModelController;
-        [SerializeField] private TileObjectMergeableIndicator mergeableTileObjectIndicator;
-        [SerializeField] private DragObjectIndicator dragObjectIndicator;
+  
+        [Space]
+        [SerializeField] private BaseIndicatorController mergeableTileObjectIndicatorController;
+        [SerializeField] private BaseIndicatorController dragObjectIndicatorController;
 
         private IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
         private IMoveController moveController;
@@ -73,7 +75,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         public void UpdateMergeableIndicatorState(bool isMergeable)
         {
             if(isDraggingObject) return;
-            mergeableTileObjectIndicator.UpdateIndicatorState(isMergeable);    
+            mergeableTileObjectIndicatorController.UpdateIndicatorState(isMergeable);    
         }
         
         public bool CanObjectCentered()
@@ -120,7 +122,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private void UpdateDraggingState(bool state)
         {
             isDraggingObject = state;
-            dragObjectIndicator.UpdateIndicatorState(state);
+            dragObjectIndicatorController.UpdateIndicatorState(state);
         }
 
         #region Subscribe & Unsubscribe Events

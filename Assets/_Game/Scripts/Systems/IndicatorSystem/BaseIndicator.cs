@@ -5,13 +5,16 @@ using UnityEngine.Serialization;
 
 namespace _Game.Scripts.Systems.IndicatorSystem
 {
-    public abstract class BaseObjectIndicator : MonoBehaviour, IIndicator
+    public abstract class BaseIndicator : MonoBehaviour, IIndicator
     {
         public bool IsShowingIndicator { get; private set; }
 
-        [SerializeField] private List<GameObject> indicatorObjects;
-
         private void Start()
+        {
+            Init();
+        }
+
+        protected virtual void Init()
         {
             HideIndicator();
         }
@@ -38,22 +41,7 @@ namespace _Game.Scripts.Systems.IndicatorSystem
             HideIndicator();
         }
 
-        protected virtual void ShowIndicator()
-        {
-            SetIndicatorObjectsState(IsShowingIndicator);
-        }
-
-        protected virtual void HideIndicator()
-        {
-            SetIndicatorObjectsState(IsShowingIndicator);
-        }
-
-        private void SetIndicatorObjectsState(bool isShowingIndicator)
-        {
-            foreach (var mergeIndicatorObject in indicatorObjects)
-            {
-                mergeIndicatorObject.SetActive(isShowingIndicator);
-            }
-        }
+        protected abstract void ShowIndicator();
+        protected abstract void HideIndicator();
     }
 }

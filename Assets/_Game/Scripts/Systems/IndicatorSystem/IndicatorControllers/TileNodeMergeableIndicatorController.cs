@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Game.Scripts.Systems.IndicatorSystem
 {
-    public class TileNodeMergeableIndicator : BaseObjectIndicator
+    public class TileNodeMergeableIndicatorController : BaseIndicatorController
     {
        
     }

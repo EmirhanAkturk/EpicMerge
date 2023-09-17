@@ -11,8 +11,10 @@ namespace GameDepends
         public static Action<TileObject> onTileObjectDragEnd;
         public static Action<TileObject> onAfterTileObjectDragEnd;
         
-        // TODO Sent TileNode, not TileNodeController
         public static Action<TileNode, TileObject> onTileObjectPlacedToTile;
-        // public static Action<TileObject, TileNodeObjectController> onTileObjectEnteredToNode;
+        
+        //Merge Events
+        public static Action<bool> onCanMergeStateChange;
+        public static Action onMergeCanceled;
     }
 }

@@ -17,7 +17,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
         
         private void Awake()
         {
-            TileObjectMergeHelper.onCanMergeStateChange += UpdateGizmo;
+            EventService.onCanMergeStateChange += UpdateGizmo;
         }
 
         private void UpdateGizmo(bool isMergeable)

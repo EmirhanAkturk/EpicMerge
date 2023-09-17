@@ -164,6 +164,8 @@ MonoBehaviour:
   addOnEnable: 1
   removeOnDisable: 1
   tileNodeObjectDetectionHandler: {fileID: 7496104473921521836}
+  hasMergeableTileIndicator: 0
+  mergeableTileIndicatorController: {fileID: 0}
 --- !u!114 &4817397723535728622
 MonoBehaviour:
   m_ObjectHideFlags: 0

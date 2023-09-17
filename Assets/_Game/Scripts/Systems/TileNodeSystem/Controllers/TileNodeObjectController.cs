@@ -20,7 +20,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         [SerializeField] private TileNodeObjectDetectionHandler tileNodeObjectDetectionHandler;
         // [SerializeField] private MergeableTileIndicator mergeableTileIndicator;
         [SerializeField] private bool hasMergeableTileIndicator;
-        [ShowIf("hasMergeableTileIndicator")][SerializeField] private TileNodeMergeableIndicator mergeableTileIndicator;
+        [ShowIf("hasMergeableTileIndicator")]
+        [SerializeField] private BaseIndicatorController mergeableTileIndicatorController;
         
         private TileObject placedTileObject;
         private TileObject movingTileObjectOnThisTile;
@@ -196,7 +197,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             if (hasMergeableTileIndicator)
             {
-                mergeableTileIndicator.UpdateIndicatorState(isMergeable);
+                mergeableTileIndicatorController.UpdateIndicatorState(isMergeable);
             }
             if (placedTileObject != null)
             {

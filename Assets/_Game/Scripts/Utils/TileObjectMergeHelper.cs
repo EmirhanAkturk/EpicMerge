@@ -11,8 +11,6 @@ namespace _Game.Scripts.Utils
 {
     public static class TileObjectMergeHelper
     {
-        public static Action<bool> onCanMergeStateChange;
-
         private static int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
         
         // TODO Made private!!
@@ -21,12 +19,18 @@ namespace _Game.Scripts.Utils
         static TileObjectMergeHelper()
         {
             EventService.onTileObjectPlacedToTile += TileObjectPlacedToTile;
+            EventService.onMergeCanceled += MergeCancel;
         }
 
         private static void TileObjectPlacedToTile(TileNode tileNode, TileObject tileObject)
         {
+            MergeCancel();
+        }
+
+        public static void MergeCancel()
+        {
             UpdateMergeableObjectsIndicator( _mergeableIndicatorShownNodes, false);
-            onCanMergeStateChange?.Invoke(false);
+            EventService.onCanMergeStateChange?.Invoke(false);
         }
         
         public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects)
@@ -49,7 +53,7 @@ namespace _Game.Scripts.Utils
             {
                 UpdateMergeableObjectsIndicator(wantedNodes, canMerge);
             }
-            onCanMergeStateChange?.Invoke(canMerge);
+            EventService.onCanMergeStateChange?.Invoke(canMerge);
             return canMerge;
         }
 
