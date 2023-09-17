@@ -97,6 +97,10 @@ namespace _Game.Scripts.Systems.TileNodeSystem
                 bool canMerge = CanMerge(tileObject, true);
                 Debug.Log("canMerge : " + canMerge);
             }
+            else
+            {
+                EventService.onMergeCanceled?.Invoke();
+            }
         }
 
         private void ObjectExitTileArea(TileObject tileObject)
