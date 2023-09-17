@@ -37,7 +37,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Graph
             var neighbors = GetNeighbors();
             foreach (var tileNode in neighbors)
             {
-                if (TileObjectValue.IsEmptyTileObjectValue(tileNode.Value))
+                if (tileNode.Value.IsEmptyTileObjectValue())
                 {
                     return tileNode;
                 }

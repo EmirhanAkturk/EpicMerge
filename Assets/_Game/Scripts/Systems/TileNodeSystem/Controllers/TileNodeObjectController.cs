@@ -41,7 +41,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             movingTileObjectOnThisTile = null;
 
-            if (TileObjectValue.IsEmptyTileObjectValue(tileObjectValue))
+            if (tileObjectValue.IsEmptyTileObjectValue())
             {
                 Destroy(placedTileObject.gameObject);
                 placedTileObject = null;
@@ -70,10 +70,10 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             UnsubscribeAllEvents();
         }
 
-        private void ObjectPlacedToTile(TileNodeObjectController tileNodeObjectController, TileObject tileObject)
+        private void ObjectPlacedToTile(TileNode newTileNode, TileObject tileObject)
         {
             if(placedTileObject == null || placedTileObject != tileObject) return;
-            if (tileNodeObjectController != this)
+            if (newTileNode != ThisTileNode)
             {
                 // The object previously placed in this tile is now placed in another tile
                 SetPlacedObject(null);
@@ -127,25 +127,23 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             }
 
             bool isMerged = false;
-            if (placedTileObject != tileObject && placedTileObject.TileObjectValue.Equals(tileObject.TileObjectValue))
+            if (CanTryMerge(tileObject))
             {
                 // Debug.Log("###TryPlaceObjectInTile");
                 isMerged = TryMerge(tileObject);
             }
-            if (isMerged)
+            if (!isMerged)
             {
-                // TODO Try Merge
-                Debug.Log("###isMerged true : " + gameObject.name);
-            }
-            else
-            {
-                // TODO Refactor below part
                 var targetTileNode = ThisTileNode.GetEmptyNeighbor() ?? tileObject.TileNode;
                 targetTileNode.onTileObjectChanged?.Invoke(placedTileObject);
                 
                 PlaceObjectOnTile(tileObject);
-                // TODO Move Or Swap objects pos 
                 Debug.Log("###isMerged False" + gameObject.name);
+            }
+            else
+            {
+                // TODO Try Merge
+                Debug.Log("###isMerged true : " + gameObject.name);
             }
         }
         
@@ -171,7 +169,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             MoveObjectToTileCenter(tileObject);
             movingTileObjectOnThisTile = null;
             SetPlacedObject(tileObject);
-            EventService.onTileObjectPlacedToTile?.Invoke(this, tileObject);
+            EventService.onTileObjectPlacedToTile?.Invoke(ThisTileNode, tileObject);
         }
 
         private void SetPlacedObject(TileObject tileObject)
@@ -187,16 +185,14 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void MoveObjectToTileCenter(TileObject tileObject)
         {
             Vector3 targetPos = GetCenterPoint();
-            tileObject.CanDrag = false;
-            // tileObject.MoveWithoutDetection(targetPos, _ => TileObjectMoveEnd(tileObject));
-            tileObject.Move(targetPos, _ => TileObjectMoveEnd(tileObject));
+            tileObject.MoveToTargetNode(targetPos);
         }
 
-        private void TileObjectMoveEnd(TileObject tileObject)
+        private void PlacedTileObjectChanged(TileObject tileObject)
         {
-            tileObject.CanDrag = true;
+            UpdateTileNodeValue(GetTileObjectValue(tileObject));
         }
-
+        
         private Vector3 GetCenterPoint()
         {
             centerPoint ??= transform.position;
@@ -213,6 +209,11 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
         #region Merge Functions
 
+        private bool CanTryMerge(TileObject tileObject)
+        {
+            return placedTileObject != tileObject && placedTileObject.TileObjectValue.Equals(tileObject.TileObjectValue);
+        }
+        
         private bool CanMerge(TileObject tileObject)
         {
             return tileObject != null && TileObjectMergeHelper.CanMerge(tileObject.TileNode, ThisTileNode, tileObject.TileObjectValue);
@@ -228,12 +229,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             UpdateTileNodeValue(newValue);
             UpdateMergedTileObjectValue(newValue);
         }
-        
-        private void PlacedTileObjectChanged(TileObject tileObject)
-        {
-            UpdateTileNodeValue(GetTileObjectValue(tileObject));
-        }
-        
+
         #endregion
         
         #region Node Functions

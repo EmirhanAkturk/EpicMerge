@@ -44,6 +44,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem.MoveSystem
         public void Stop()
         {
             moveEndCallback?.Invoke(IsTargetReached());
+            moveEndCallback = null;
             isMoving = false;
         }
 

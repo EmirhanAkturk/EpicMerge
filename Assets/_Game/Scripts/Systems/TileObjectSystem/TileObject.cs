@@ -32,7 +32,14 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private IObjectDetectionHandler ObjectDetectionHandler => objectDetectionHandler ??= new TileObjectDetectionHandler();
         private IObjectDetectionHandler objectDetectionHandler;
         
-
+        public void Init(TileObjectValue tileObjectValue)
+        {
+            TileObjectValue = tileObjectValue;
+            tileObjectModelController.InitVisual(TileObjectValue);
+            SubscribeDragDropEvents();
+            // Debug.Log(" ### Init return : " + gameObject.name);
+        }
+        
         public void Move(Vector3 targetPos, MoveEndCallback onMoveEnd = null)
         {
             MoveController?.Move(targetPos, onMoveEnd);
@@ -45,23 +52,20 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             MoveController?.Move(targetPos, onMoveEnd);
         }
 
+        public void MoveToTargetNode(Vector3 targetPos)
+        {
+            CanDrag = false;
+            Move(targetPos, ReachedToNode);
+        }
+
+        void ReachedToNode(bool _)
+        {
+            CanDrag = true;
+        } 
+        
         private void SetDetectionActiveState(bool isDetectionActive)
         {
             ObjectDetectionHandler.IsDetectionActive = isDetectionActive;
-        }
-
-        // private void Start()
-        // {
-        //     Init();
-        // }
-        
-
-        public void Init(TileObjectValue tileObjectValue)
-        {
-            TileObjectValue = tileObjectValue;
-            tileObjectModelController.InitVisual(TileObjectValue);
-            SubscribeDragDropEvents();
-            // Debug.Log(" ### Init return : " + gameObject.name);
         }
 
         private void OnTriggerEnter(Collider other)

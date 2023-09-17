@@ -20,7 +20,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
             EventService.onTileObjectPlacedToTile += TryClearList;
         }
 
-        private void TryClearList(TileNodeObjectController arg1, TileObject arg2)
+        private void TryClearList(TileNode arg1, TileObject arg2)
         {
             canMergeNodes.Clear();
         }

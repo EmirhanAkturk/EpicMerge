@@ -40,8 +40,8 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             }    
         }
         private Camera mainCam;
-
-
+        
+        // TODO Move controller can only be known by TileObjectController
         private IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
         private IMoveController moveController;
 

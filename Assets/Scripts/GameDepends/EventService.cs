@@ -1,5 +1,6 @@
 using System;
 using _Game.Scripts.Systems.TileNodeSystem;
+using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 
 namespace GameDepends
@@ -11,7 +12,7 @@ namespace GameDepends
         public static Action<TileObject> onAfterTileObjectDragEnd;
         
         // TODO Sent TileNode, not TileNodeController
-        public static Action<TileNodeObjectController, TileObject> onTileObjectPlacedToTile;
+        public static Action<TileNode, TileObject> onTileObjectPlacedToTile;
         // public static Action<TileObject, TileNodeObjectController> onTileObjectEnteredToNode;
     }
 }

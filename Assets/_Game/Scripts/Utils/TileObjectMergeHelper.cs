@@ -22,7 +22,7 @@ namespace _Game.Scripts.Utility
         {
             wantedNodes = null;
             
-            if (TileObjectValue.IsEmptyTileObjectValue(targetValue) || TileObjectValue.IsEmptyTileObjectValue(movedNode.Value)) return false;
+            if (targetValue.IsEmptyTileObjectValue() || movedNode.Value.IsEmptyTileObjectValue()) return false;
             
             wantedNodes = TileGraph.FindWantedNodesWithBfs(movedNode, targetValue, tileObjectNode);
             if(!wantedNodes.Contains(tileObjectNode)) wantedNodes.Add(tileObjectNode);

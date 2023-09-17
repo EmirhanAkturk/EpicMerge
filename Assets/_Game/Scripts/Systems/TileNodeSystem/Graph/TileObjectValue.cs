@@ -1,6 +1,6 @@
 using System;
 
-namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph
+namespace _Game.Scripts.Systems.TileNodeSystem.Graph
 {
     [Serializable]
     public struct TileObjectValue
@@ -20,7 +20,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph
             objectLevel = tileObjectValue.objectLevel;
         }
         
-        public bool Equals(TileObjectValue other)
+        public readonly bool Equals(TileObjectValue other)
         {
             return objectId == other.objectId && objectLevel == other.objectLevel;
         }
@@ -42,9 +42,9 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph
         }
 
         // TODO Move the bottom part into extension class
-        public static bool IsEmptyTileObjectValue(TileObjectValue tileObjectValue)
+        public bool IsEmptyTileObjectValue()
         {
-            return tileObjectValue.Equals(EmptyTileObjectValue);
+            return EmptyTileObjectValue.Equals(this);
         }
     }
 }
