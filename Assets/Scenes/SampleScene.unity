@@ -159,7 +159,6 @@ MonoBehaviour:
   nodeDistance: 1.5
   matrixDimensions: {x: 6, y: 6}
   createGraphInStart: 1
-  drawGraphVertex: 0
   buttonField: 0
 --- !u!4 &28346964
 Transform:
@@ -401,7 +400,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodePrefab: {fileID: 2571920931737437627, guid: 7373497c88dc33e4282c7b1c5ecb92a8,
     type: 3}
-  nodeDistance: 1.75
   matrixDimensions: {x: 5, y: 5}
   createGraphInStart: 0
   buttonField: 0
@@ -484,7 +482,6 @@ MonoBehaviour:
   nodeDistance: 1.5
   matrixDimensions: {x: 5, y: 5}
   createGraphInStart: 1
-  drawGraphVertex: 0
   buttonField: 0
 --- !u!4 &1486840344
 Transform:

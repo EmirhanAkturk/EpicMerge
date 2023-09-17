@@ -39,18 +39,19 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
         public void UpdateMergedTileObjectValue(TileObjectValue tileObjectValue)
         {
+            movingTileObjectOnThisTile = null;
+
             if (TileObjectValue.IsEmptyTileObjectValue(tileObjectValue))
             {
                 Destroy(placedTileObject.gameObject);
                 placedTileObject = null;
-                movingTileObjectOnThisTile = null;
             }
             else if (placedTileObject != null)
             {
                 placedTileObject.Init(tileObjectValue);
             }
             
-            UnsubscribeAllObjectEvents();
+            // UnsubscribeAllObjectEvents();
             // InitPlacedObject(placedTileObject);
         }
 
@@ -82,7 +83,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void AfterObjectDragEnd(TileObject tileObject)
         {
             if(tileObject != placedTileObject) return;
-            Debug.Log("ObjectDragEnd : " + gameObject.name);
+            // Debug.Log("ObjectDragEnd : " + gameObject.name);
             MoveObjectToTileCenter(tileObject);
         }
 
@@ -120,7 +121,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         {
             if (placedTileObject is null)
             {
-                Debug.Log("###TryPlaceObjectInTile");
+                // Debug.Log("###TryPlaceObjectInTile");
                 TryPlaceObjectInTile(tileObject);
                 return;
             }
@@ -128,7 +129,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             bool isMerged = false;
             if (placedTileObject != tileObject && placedTileObject.TileObjectValue.Equals(tileObject.TileObjectValue))
             {
-                Debug.Log("###TryPlaceObjectInTile");
+                // Debug.Log("###TryPlaceObjectInTile");
                 isMerged = TryMerge(tileObject);
             }
             if (isMerged)

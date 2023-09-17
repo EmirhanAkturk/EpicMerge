@@ -15,7 +15,7 @@ namespace _Game.Scripts.Systems.TileSystem
             if (!CheckHasTileNodeDetectionHandler(enteredObject, out var tileNodeDetectionHandler)) return;
             currentTileNodeDetectionHandler = tileNodeDetectionHandler;
             tileNodeDetectionHandler.ObjectEnterTileArea(tileObject);
-            Debug.Log("###enteredObject : " + enteredObject.name);
+            // Debug.Log("###enteredObject : " + enteredObject.name);
         }
 
         public void TileObjectExited(TileObject tileObject, GameObject exitObject)
@@ -27,7 +27,7 @@ namespace _Game.Scripts.Systems.TileSystem
                 currentTileNodeDetectionHandler = null;
             }
             tileNodeObjectController.ObjectExitTileArea(tileObject);
-            Debug.Log("###exitObject : " + exitObject.name);
+            // Debug.Log("###exitObject : " + exitObject.name);
         }
 
         public void TileObjectPlaced(TileObject tileObject)

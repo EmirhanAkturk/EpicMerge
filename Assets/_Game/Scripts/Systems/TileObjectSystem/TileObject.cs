@@ -61,7 +61,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             TileObjectValue = tileObjectValue;
             tileObjectModelController.InitVisual(TileObjectValue);
             SubscribeDragDropEvents();
-            Debug.Log(" ### Init return : " + gameObject.name);
+            // Debug.Log(" ### Init return : " + gameObject.name);
         }
 
         private void OnTriggerEnter(Collider other)
