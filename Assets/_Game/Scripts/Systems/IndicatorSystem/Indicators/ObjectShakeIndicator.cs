@@ -37,33 +37,12 @@ namespace _Game.Scripts.Systems.IndicatorSystem
         {
             StopShakeAnim();
             
+            Debug.Log("PlayShakeAnimation");
             Transform targetTr = modelParent;
             
-            // DOTween ile shake animasyonunu başlatma
             shakeTween = targetTr.DOShakePosition(shakeDuration, shakeStrength)
-                // .SetId("ShakeAnimation") // Eşsiz bir ID atayın
-                .SetLoops(-1) // Sonsuz döngüde çalıştırmak için -1 kullanın
-                .SetEase(Ease.InOutQuad) // İsterseniz başka bir eğri kullanabilirsiniz
-                .Pause() // Animasyonu başlatmadan duraklatın
-                .OnPlay(() =>
-                {
-                    // Animasyon başladığında yapılacak işlemler
-                    Debug.Log("Shake animation started");
-                })
-                .OnKill(() =>
-                {
-                    // Animasyon sona erdiğinde veya durdurulduğunda yapılacak işlemler
-                    Debug.Log("Shake animation finished");
-                });
-
-            // DOTween'de zamanlayıcı kullanarak period süresi boyunca animasyonu çalıştırma
-            DOTween.Sequence()
-                .AppendInterval(period) // Belirtilen süre boyunca bekleme
-                .OnComplete(() =>
-                {
-                    // Period süresi boyunca bekleme sona erdiğinde animasyonu başlatma
-                    // transform.DOPlayById("ShakeAnimation");
-                });
+                .SetLoops(-1) 
+                .SetEase(Ease.InOutQuad);
         }
         
         private void StopShakeAnim()

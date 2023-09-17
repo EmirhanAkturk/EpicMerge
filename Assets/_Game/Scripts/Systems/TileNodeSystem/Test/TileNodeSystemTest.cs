@@ -57,7 +57,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
                Vector3 localPos = new Vector3(i * nodeDistance, 0, j * nodeDistance);
                Vector3 pos = parentPos + localPos;
                
-               int rndValue = Random.Range(0, 3);
+               int rndValue = Random.Range(0, 4);
                TileObject tileObject = null;
                
                if (rndValue > 0)
