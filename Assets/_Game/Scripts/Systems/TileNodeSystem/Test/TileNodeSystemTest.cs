@@ -3,6 +3,7 @@ using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Attribute;
+using Systems.ConfigurationSystem;
 using Systems.GraphSystem;
 using UnityEngine;
 using Utils.Extensions;
@@ -50,6 +51,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
          Vector3 parentPos = transform.position;
          StringBuilder nodeName = new StringBuilder();
 
+         int mergeableObjectTypeCount = ConfigurationService.Configurations.mergeableObjectTypeCount;
+         
          for (int i = 0; i < m; i++)
          {
             for (int j = 0; j < n; j++)
@@ -57,7 +60,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
                Vector3 localPos = new Vector3(i * nodeDistance, 0, j * nodeDistance);
                Vector3 pos = parentPos + localPos;
                
-               int rndValue = Random.Range(0, 4);
+               int rndValue = Random.Range(0, mergeableObjectTypeCount + 1);
                BaseTileObject baseTileObject = null;
                
                if (rndValue > 0)

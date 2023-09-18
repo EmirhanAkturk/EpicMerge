@@ -8,5 +8,8 @@ public class GameConfigurations : ScriptableObject
 {
 	public LayerMask dragDropLayerMask;
 	public int mergeRequiredObject = 3;
+	
+	[Header("Test")]
+	public int mergeableObjectTypeCount = 3;
 }
 
