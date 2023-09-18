@@ -7,6 +7,8 @@ using UnityEngine.Serialization;
 public class GameConfigurations : ScriptableObject
 {
 	public LayerMask dragDropLayerMask;
+	
+	[Header("Merge")]
 	public int mergeRequiredObject = 3;
 	
 	[Header("Test")]

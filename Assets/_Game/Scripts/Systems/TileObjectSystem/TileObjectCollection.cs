@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 namespace _Game.Scripts.Systems.TileObjectSystem
 {
@@ -9,12 +10,17 @@ namespace _Game.Scripts.Systems.TileObjectSystem
     {
         [SerializeField] private List<TileObjectCollectionData> tileObjectCollectionDatas;
         
-        [NonSerialized] private Dictionary<int, TileObjectCollectionData> tileObjectCollectionDataMap = new Dictionary<int, TileObjectCollectionData>();
-        [NonSerialized] private bool isLoaded;
+        private const string COLLECTION_PATH = "Configurations/TileObjectCollection";
 
-        public void LoadCollectionDatas()
+        public static TileObjectCollection Create()
         {
-            
+            var tileObjectCollection = Resources.Load<TileObjectCollection>(COLLECTION_PATH);
+            return tileObjectCollection;
+        }
+
+        public List<TileObjectCollectionData> GetAllTileCollectionDatas()
+        {
+            return tileObjectCollectionDatas;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using JoostenProductions;
 using UnityEngine;
@@ -18,9 +19,21 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         public virtual void Init(TileObjectValue tileObjectValue)
         {
             TileObjectValue = tileObjectValue;
-            baseTileObjectModelController.InitVisual(TileObjectValue);
+            InitVisual(tileObjectValue);
         }
-        
+
+        private void InitVisual(TileObjectValue tileObjectValue)
+        {
+            if(tileObjectValue.IsEmptyTileObjectValue()) return;
+            
+            var objectData = TileObjectManager.Instance.GetObjectDataById(tileObjectValue.objectId);
+            var dataByLevel = objectData.GetDataByLevel(tileObjectValue.objectLevel);
+            
+            Material material = objectData.objectMaterial;
+            Mesh mesh = dataByLevel?.model;
+            baseTileObjectModelController.InitVisual(mesh, material);
+        }
+
         public virtual bool CanObjectCentered()
         {
             return true;

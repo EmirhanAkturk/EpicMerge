@@ -15,3 +15,5 @@ MonoBehaviour:
   dragDropLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  mergeRequiredObject: 3
+  mergeableObjectTypeCount: 3
