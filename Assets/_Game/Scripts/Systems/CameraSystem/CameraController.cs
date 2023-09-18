@@ -85,23 +85,22 @@ namespace _Game.Scripts.Systems.CameraSystem
                 Vector3 deltaMousePosition = lastMousePosition - Input.mousePosition;
                 Vector3 deltaPos = new Vector3(deltaMousePosition.x, deltaMousePosition.y, 0);
                 Vector3 moveVector = moveSpeed * Time.deltaTime * deltaPos;
-                // Vector3 borderedPos = GetBorderedPos(moveVector);
-
                 Vector3 newPosition = cameraTR.position + moveVector;
-                float distance = Vector3.Distance(newPosition, startPosition);
-                Debug.Log($"newPos : {newPosition}, startPosition : { startPosition}, Distance : " + distance);
-                if ( distance < moveRangeRadius)
+
+                if(IsTargetInDistance(newPosition))
                 {
                     cameraTR.Translate(moveVector);
                 }
+                
                 lastMousePosition = Input.mousePosition;
             }
         }
 
-        // private Vector3 GetBorderedPos(Vector3 moveVector)
-        // {
-        //     return  ? cameraTR.position : moveVector;
-        // }
+        private bool IsTargetInDistance(Vector3 targetPos)
+        {
+            float distance = Vector3.Distance(targetPos, startPosition);
+            return distance < moveRangeRadius;
+        }
 
         private void CameraZoom()
         {
