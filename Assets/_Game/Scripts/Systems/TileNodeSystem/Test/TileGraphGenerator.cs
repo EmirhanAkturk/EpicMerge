@@ -6,6 +6,7 @@ using Attribute;
 using Systems.ConfigurationSystem;
 using Systems.GraphSystem;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils.Extensions;
 using Application = UnityEngine.Device.Application;
 using Random = UnityEngine.Random;
@@ -20,6 +21,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
       [SerializeField] private Vector2Int matrixDimensions = new Vector2Int(5, 5);
       [SerializeField] private bool createGraphInStart = true;
       // [SerializeField] private bool drawGraphVertex = false;
+      [FormerlySerializedAs("borderNodeCanDeleteRatio")] [Range(0f, 100f)][SerializeField] private float nodeCanDeleteRatio = 20f;
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
 
@@ -57,6 +59,12 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
          {
             for (int j = 0; j < n; j++)
             {
+               if (Random.Range(0, 100) < nodeCanDeleteRatio)
+               {
+                  // Dont Create This node
+                  continue;
+               }
+               
                Vector3 localPos = new Vector3(i * nodeDistance, 0, j * nodeDistance);
                Vector3 pos = parentPos + localPos;
                

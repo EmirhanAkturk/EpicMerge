@@ -1,0 +1,156 @@
+using System;
+using _Game.Scripts.Systems.TileObjectSystem;
+using GameDepends;
+using JoostenProductions;
+using NaughtyAttributes;
+using UnityEngine;
+
+namespace _Game.Scripts.Systems.CameraSystem
+{
+    public class CameraController : OverridableMonoBehaviour
+    {
+        [Space]
+        [SerializeField] private Transform cameraTR;
+        [Space]
+        [SerializeField] private float zoomSpeed = 1.0f;
+        [SerializeField] private float minZoom = 3.0f;
+        [SerializeField] private float maxZoom = 10.0f;
+
+        [SerializeField] private float moveSpeed = 5.0f;
+        [SerializeField] private float moveRangeRadius = 50f;
+
+        private const string STR_WHEEL_AXIS = "Mouse ScrollWheel";
+
+        private Vector3 startPosition;
+        private Vector3 lastMousePosition;
+        private Vector2 initialTouch1;
+        private Vector2 initialTouch2;
+        private float initialDistance;
+        private float initialZoom;
+
+        private bool isCameraControllable = true;
+
+        #region Game Part
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            EventService.onTileObjectDragStart += ObjectDragStart;
+            EventService.onTileObjectDragEnd += ObjectDragEnd;
+        }
+    
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            EventService.onTileObjectDragStart -= ObjectDragStart;
+            EventService.onTileObjectDragEnd -= ObjectDragEnd;
+        }
+
+        private void ObjectDragStart(BaseTileObject obj)
+        {
+            isCameraControllable = false;
+        }
+        
+        private void ObjectDragEnd(BaseTileObject obj)
+        {
+            isCameraControllable = true;
+        }
+        #endregion
+
+        private void Awake()
+        {
+            startPosition = cameraTR.position;
+        }
+
+        public override void UpdateMe()
+        {
+            if (!isCameraControllable) return;
+
+            CameraMove();
+            CameraZoom();
+        }
+
+        private void CameraMove()
+        {
+            // Check Zoom in / out
+            if(Input.touchCount > 1) return;
+                
+            if (Input.GetMouseButtonDown(0))
+            {
+                lastMousePosition = Input.mousePosition;
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                Vector3 deltaMousePosition = lastMousePosition - Input.mousePosition;
+                Vector3 deltaPos = new Vector3(deltaMousePosition.x, deltaMousePosition.y, 0);
+                Vector3 moveVector = moveSpeed * Time.deltaTime * deltaPos;
+                // Vector3 borderedPos = GetBorderedPos(moveVector);
+
+                Vector3 newPosition = cameraTR.position + moveVector;
+                float distance = Vector3.Distance(newPosition, startPosition);
+                Debug.Log($"newPos : {newPosition}, startPosition : { startPosition}, Distance : " + distance);
+                if ( distance < moveRangeRadius)
+                {
+                    cameraTR.Translate(moveVector);
+                }
+                lastMousePosition = Input.mousePosition;
+            }
+        }
+
+        // private Vector3 GetBorderedPos(Vector3 moveVector)
+        // {
+        //     return  ? cameraTR.position : moveVector;
+        // }
+
+        private void CameraZoom()
+        {
+#if UNITY_EDITOR
+            CameraZoomWheel();
+#else
+            CameraZoomTouch();
+#endif
+        }
+
+        private void CameraZoomWheel()
+        {
+            float scrollWheelInput = Input.GetAxis(STR_WHEEL_AXIS);
+
+            if (scrollWheelInput != 0)
+            {
+                float newZoom = Camera.main.orthographicSize - scrollWheelInput * zoomSpeed;
+                newZoom = Mathf.Clamp(newZoom, minZoom, maxZoom);
+
+                Camera.main.orthographicSize = newZoom;
+            }
+        }
+
+        private void CameraZoomTouch()
+        {
+            if (Input.touchCount == 2)
+            {
+                Touch touch1 = Input.GetTouch(0);
+                Touch touch2 = Input.GetTouch(1);
+
+                if (touch1.phase == TouchPhase.Began || touch2.phase == TouchPhase.Began)
+                {
+                    initialTouch1 = touch1.position;
+                    initialTouch2 = touch2.position;
+                    initialDistance = Vector2.Distance(initialTouch1, initialTouch2);
+                    initialZoom = Camera.main.orthographicSize;
+                }
+                else if (touch1.phase == TouchPhase.Moved || touch2.phase == TouchPhase.Moved)
+                {
+                    Vector2 currentTouch1 = touch1.position;
+                    Vector2 currentTouch2 = touch2.position;
+
+                    float currentDistance = Vector2.Distance(currentTouch1, currentTouch2);
+                    float pinchDelta = currentDistance - initialDistance;
+
+                    float newZoom = Mathf.Clamp(initialZoom - pinchDelta * zoomSpeed, minZoom, maxZoom);
+                    Camera.main.orthographicSize = newZoom;
+                }
+            }
+        }
+    }
+}
