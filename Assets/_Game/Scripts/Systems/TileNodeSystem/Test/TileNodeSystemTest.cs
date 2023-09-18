@@ -58,18 +58,18 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
                Vector3 pos = parentPos + localPos;
                
                int rndValue = Random.Range(0, 4);
-               TileObject tileObject = null;
+               BaseTileObject baseTileObject = null;
                
                if (rndValue > 0)
                {
-                  tileObject = CreateTileObject(rndValue, pos);
+                  baseTileObject = CreateTileObject(rndValue, pos);
                }
                
                nodeName.Clear();
                nodeName.Append("Node_");
                nodeName.Append(nodeCount);
                
-               TileNodeController tileNodeController = CreateNode(tileObject, pos, nodeName.ToString());
+               TileNodeController tileNodeController = CreateNode(baseTileObject, pos, nodeName.ToString());
                ++nodeCount;
 
                tileGraph.AddNode(tileNodeController.TileNode);
@@ -121,24 +121,24 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
 
       #endregion
 
-      private TileNodeController CreateNode(TileObject tileObject, Vector3 pos, string nodeName)
+      private TileNodeController CreateNode(BaseTileObject baseTileObject, Vector3 pos, string nodeName)
       {
          var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, NodesParent.transform);
          nodeObject.name = nodeName;
 
-         TileObjectValue tileObjectValue = tileObject != null ? tileObject.TileObjectValue : TileObjectValue.GetEmptyTileObjectValue(); 
+         TileObjectValue tileObjectValue = baseTileObject != null ? baseTileObject.TileObjectValue : TileObjectValue.GetEmptyTileObjectValue(); 
          TileNode tileNode = new TileNode(nodeObject.transform, tileObjectValue);
          
          var tileNodeController = nodeObject.GetComponent<TileNodeController>();
-         tileNodeController.Init(tileNode, tileObject);
+         tileNodeController.Init(tileNode, baseTileObject);
          
          return tileNodeController;
       }
 
-      public TileObject CreateTileObject(int objectId, Vector3 pos)
+      public BaseTileObject CreateTileObject(int objectId, Vector3 pos)
       {
          var tileObjectGo = Instantiate(tileObjectPrefab, pos, Quaternion.identity, TileObjectsParent.transform);
-         var tileObject = tileObjectGo.GetComponent<TileObject>();
+         var tileObject = tileObjectGo.GetComponent<BaseTileObject>();
          tileObject.Init(new TileObjectValue(objectId, 1));
          return tileObject;
       }

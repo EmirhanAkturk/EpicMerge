@@ -11,7 +11,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Graph
     public class TileNode : Node<TileNode, TileObjectValue>
     {
         public Action<TileObjectValue> onTileObjectMerged; 
-        public Action<TileObject> onTileObjectChanged; 
+        public Action<BaseTileObject> onTileObjectChanged; 
         public Action<bool> onUpdateMergeableIndicator; 
         
         [Button(nameof(Bfs))] public bool bfsButtonField;

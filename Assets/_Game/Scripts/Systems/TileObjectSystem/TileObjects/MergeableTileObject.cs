@@ -1,5 +1,6 @@
 using System;
 using _Game.Scripts.Systems.DetectionSystem;
+using _Game.Scripts.Systems.DragDropSystem;
 using _Game.Scripts.Systems.IndicationSystem;
 using _Game.Scripts.Systems.IndicatorSystem;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
@@ -13,52 +14,38 @@ using Zenject;
 
 namespace _Game.Scripts.Systems.TileObjectSystem
 {
-    public class TileObject : OverridableMonoBehaviour
+    public class MergeableTileObject : BaseTileObject, IMergeableTileObject
     {
-        //TODO This script was created temporarily to test the Tile Node System and will be refactored
         private bool CanDrag
         {
-            get { return tileObjectDragDropController.CanDrag; }
-            set { tileObjectDragDropController.CanDrag = value; }
+            get { return objectDragDropController.CanDrag; }
+            set { objectDragDropController.CanDrag = value; }
         }
 
         private bool isDraggingObject;
 
-        public TileObjectValue TileObjectValue { get; private set; } 
-        public TileNode TileNode { get;  set; } // for test 
         
-        [SerializeField] private TileObjectDragDropController tileObjectDragDropController;
-        [SerializeField] private TileObjectModelController tileObjectModelController;
+        [FormerlySerializedAs("tileObjectDragDropController")] [SerializeField] private ObjectDragDropController objectDragDropController;
   
         [Space]
+        [Header("Indicator Controllers")]
         [SerializeField] private BaseIndicatorController mergeableTileObjectIndicatorController;
         [SerializeField] private BaseIndicatorController dragObjectIndicatorController;
 
-        private IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
-        private IMoveController moveController;
-
         private IObjectDetector ObjectDetector => objectDetector ??= GetComponentInChildren<IObjectDetector>();
         private IObjectDetector objectDetector;
-        
-        
+
         // TODO Use inject for below part
         private IObjectDetectionHandler ObjectDetectionHandler => objectDetectionHandler ??= new TileObjectDetectionHandler();
         private IObjectDetectionHandler objectDetectionHandler;
-        
-        public void Init(TileObjectValue tileObjectValue)
+
+        public override void Init(TileObjectValue tileObjectValue)
         {
-            TileObjectValue = tileObjectValue;
-            tileObjectModelController.InitVisual(TileObjectValue);
+            base.Init(tileObjectValue);
             SubscribeDragDropEvents();
             SubscribeObjectDetectionEvents();
-            // Debug.Log(" ### Init return : " + gameObject.name);
         }
 
-        public void Move(Vector3 targetPos, MoveEndCallback onMoveEnd = null)
-        {
-            MoveController?.Move(targetPos, onMoveEnd);
-        }        
-        
         public void MoveWithoutDetection(Vector3 targetPos, MoveEndCallback onMoveEnd = null)
         {
             SetDetectionActiveState(false);
@@ -66,7 +53,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             MoveController?.Move(targetPos, onMoveEnd);
         }
 
-        public void MoveToTargetNode(Vector3 targetPos)
+        public override void MoveToTargetNode(Vector3 targetPos)
         {
             CanDrag = false;
             Move(targetPos, ReachedToNode);
@@ -78,7 +65,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             mergeableTileObjectIndicatorController.UpdateIndicatorState(isMergeable);    
         }
         
-        public bool CanObjectCentered()
+        public override bool CanObjectCentered()
         {
             return CanDrag;
         }
@@ -131,8 +118,8 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private void SubscribeDragDropEvents()
         {
             if(isSubscribedDragDropEvents) return;
-            tileObjectDragDropController.onObjectDragStart += ObjectDragStart;
-            tileObjectDragDropController.onObjectDragEnd += ObjectDragEnd;
+            objectDragDropController.onObjectDragStart += ObjectDragStart;
+            objectDragDropController.onObjectDragEnd += ObjectDragEnd;
             isSubscribedDragDropEvents = true;
         }
 

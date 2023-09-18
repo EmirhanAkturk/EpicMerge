@@ -7,23 +7,23 @@ namespace _Game.Scripts.Systems.DetectionSystem
 {
     public class TileNodeObjectDetectionHandler : MonoBehaviour, ITileNodeDetectionHandler
     {
-        public Action<TileObject> onTileObjectEntered;
-        public Action<TileObject> onTileObjectExited;
-        public Action<TileObject> onTileObjectPlaced;
+        public Action<BaseTileObject> onTileObjectEntered;
+        public Action<BaseTileObject> onTileObjectExited;
+        public Action<BaseTileObject> onTileObjectPlaced;
 
-        public void ObjectEnterTileArea(TileObject tileObject)
+        public void ObjectEnterTileArea(BaseTileObject baseTileObject)
         {
-            onTileObjectEntered?.Invoke(tileObject);
+            onTileObjectEntered?.Invoke(baseTileObject);
         }
 
-        public void ObjectExitTileArea(TileObject tileObject)
+        public void ObjectExitTileArea(BaseTileObject baseTileObject)
         {
-            onTileObjectExited?.Invoke(tileObject);
+            onTileObjectExited?.Invoke(baseTileObject);
         }
 
-        public void ObjectPlacedTileArea(TileObject tileObject)
+        public void ObjectPlacedTileArea(BaseTileObject baseTileObject)
         {
-            onTileObjectPlaced?.Invoke(tileObject);
+            onTileObjectPlaced?.Invoke(baseTileObject);
         }
     }
 }

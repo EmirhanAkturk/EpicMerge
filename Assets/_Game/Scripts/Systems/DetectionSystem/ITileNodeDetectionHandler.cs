@@ -5,8 +5,8 @@ namespace _Game.Scripts.Systems.TileSystem
 {
     public interface ITileNodeDetectionHandler
     {
-        public void ObjectEnterTileArea(TileObject tileObject);
-        public void ObjectExitTileArea(TileObject tileObject);
-        public void ObjectPlacedTileArea(TileObject tileObject);
+        public void ObjectEnterTileArea(BaseTileObject baseTileObject);
+        public void ObjectExitTileArea(BaseTileObject baseTileObject);
+        public void ObjectPlacedTileArea(BaseTileObject baseTileObject);
     }
 }

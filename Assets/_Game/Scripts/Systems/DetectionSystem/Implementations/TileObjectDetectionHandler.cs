@@ -7,28 +7,28 @@ namespace _Game.Scripts.Systems.DetectionSystem
     public class TileObjectDetectionHandler : IObjectDetectionHandler
     {
         private ITileNodeDetectionHandler currentTileNodeDetectionHandler;
-        public void TileObjectEntered(TileObject tileObject, GameObject enteredObject)
+        public void TileObjectEntered(BaseTileObject baseTileObject, GameObject enteredObject)
         {
             if (!CheckHasTileNodeDetectionHandler(enteredObject, out var tileNodeDetectionHandler)) return;
             currentTileNodeDetectionHandler = tileNodeDetectionHandler;
-            tileNodeDetectionHandler.ObjectEnterTileArea(tileObject);
+            tileNodeDetectionHandler.ObjectEnterTileArea(baseTileObject);
             // Debug.Log("###enteredObject : " + enteredObject.name);
         }
 
-        public void TileObjectExited(TileObject tileObject, GameObject exitObject)
+        public void TileObjectExited(BaseTileObject baseTileObject, GameObject exitObject)
         {
             if (!CheckHasTileNodeDetectionHandler(exitObject, out var tileNodeObjectController)) return;
             if (currentTileNodeDetectionHandler == tileNodeObjectController)
             {
                 currentTileNodeDetectionHandler = null;
             }
-            tileNodeObjectController.ObjectExitTileArea(tileObject);
+            tileNodeObjectController.ObjectExitTileArea(baseTileObject);
             // Debug.Log("###exitObject : " + exitObject.name);
         }
 
-        public void TileObjectPlaced(TileObject tileObject)
+        public void TileObjectPlaced(BaseTileObject baseTileObject)
         {
-            currentTileNodeDetectionHandler?.ObjectPlacedTileArea(tileObject);
+            currentTileNodeDetectionHandler?.ObjectPlacedTileArea(baseTileObject);
         }
 
         // private const string TILE_NODE_TAG = "TileNode";

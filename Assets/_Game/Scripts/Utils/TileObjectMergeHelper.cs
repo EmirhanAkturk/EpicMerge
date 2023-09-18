@@ -22,7 +22,7 @@ namespace _Game.Scripts.Utils
             EventService.onMergeCanceled += MergeCancel;
         }
 
-        private static void TileObjectPlacedToTile(TileNode tileNode, TileObject tileObject)
+        private static void TileObjectPlacedToTile(TileNode tileNode, BaseTileObject baseTileObject)
         {
             MergeCancel();
         }

@@ -18,9 +18,9 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
         #region Init Functions
 
-        public void Init(TileNode tileNode, TileObject tileObject)
+        public void Init(TileNode tileNode, BaseTileObject baseTileObject)
         {
-            tileNodeObjectController.Init(tileNode, tileObject);
+            tileNodeObjectController.Init(tileNode, baseTileObject);
         }
 
         #endregion

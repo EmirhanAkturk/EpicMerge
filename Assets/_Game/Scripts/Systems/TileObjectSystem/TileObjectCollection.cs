@@ -1,18 +1,20 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileObjectCollection : MonoBehaviour
+namespace _Game.Scripts.Systems.TileObjectSystem
 {
-    // Start is called before the first frame update
-    void Start()
+    [CreateAssetMenu(menuName = "lib / Tile Object Collection", fileName = "TileObjectCollection")]
+    public class TileObjectCollection : ScriptableObject
     {
+        [SerializeField] private List<TileObjectCollectionData> tileObjectCollectionDatas;
         
-    }
+        [NonSerialized] private Dictionary<int, TileObjectCollectionData> tileObjectCollectionDataMap = new Dictionary<int, TileObjectCollectionData>();
+        [NonSerialized] private bool isLoaded;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void LoadCollectionDatas()
+        {
+            
+        }
     }
 }

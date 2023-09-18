@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace _Game.Scripts.Systems.TileObjectSystem
 {
-    public class TileObjectModelController : MonoBehaviour
+    public class BaseTileObjectModelController : MonoBehaviour
     {
         [Space]
         [HelpBox("Bottom Part For Test", HelpBoxMessageType.Info)]        

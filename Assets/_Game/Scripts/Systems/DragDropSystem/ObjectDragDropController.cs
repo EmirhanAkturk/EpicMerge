@@ -1,15 +1,13 @@
 using System;
-using GameDepends;
+using _Game.Scripts.Systems.TileObjectSystem;
 using JoostenProductions;
 using Systems.ConfigurationSystem;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
-namespace _Game.Scripts.Systems.TileObjectSystem
+namespace _Game.Scripts.Systems.DragDropSystem
 {
     [RequireComponent(typeof(Collider))]
-    public sealed class TileObjectDragDropController : OverridableMonoBehaviour
+    public sealed class ObjectDragDropController : OverridableMonoBehaviour
     {
         public Action onObjectDragStart;
         public Action onObjectDragEnd;
@@ -23,6 +21,8 @@ namespace _Game.Scripts.Systems.TileObjectSystem
                 TryResetDragPos();
             }
         }
+        
+        public bool IsDragging { get; private set; }
 
         private bool canDrag;
 
@@ -87,8 +87,8 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             hitPoint = Input.mousePosition;
             if (CanDrag) 
             {
-                onObjectDragStart?.Invoke();
                 SetDraggingObjectState(true);
+                onObjectDragStart?.Invoke();
             }
         }
 
@@ -125,14 +125,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         
         private void SetDraggingObjectState(bool isDragging)
         {
-            if (isDragging)
-            {
-                // gameObject.layer = 7;
-            }
-            else
-            {
-                // gameObject.layer = 0;
-            }
+            IsDragging = isDragging;
         }
 
         #endregion

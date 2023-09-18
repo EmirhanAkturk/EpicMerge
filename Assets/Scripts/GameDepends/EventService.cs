@@ -7,11 +7,11 @@ namespace GameDepends
 {
     public class EventService
     {
-        public static Action<TileObject> onTileObjectDragStart;
-        public static Action<TileObject> onTileObjectDragEnd;
-        public static Action<TileObject> onAfterTileObjectDragEnd;
+        public static Action<BaseTileObject> onTileObjectDragStart;
+        public static Action<BaseTileObject> onTileObjectDragEnd;
+        public static Action<BaseTileObject> onAfterTileObjectDragEnd;
         
-        public static Action<TileNode, TileObject> onTileObjectPlacedToTile;
+        public static Action<TileNode, BaseTileObject> onTileObjectPlacedToTile;
         
         //Merge Events
         public static Action<bool> onCanMergeStateChange;

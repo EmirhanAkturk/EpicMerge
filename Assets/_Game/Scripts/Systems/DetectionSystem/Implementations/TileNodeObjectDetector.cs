@@ -8,8 +8,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
     [RequireComponent(typeof(Collider))]
     public class TileNodeObjectDetector : MonoBehaviour
     {
-        public Action<TileObject> onTileObjectEntered;
-        public Action<TileObject> onTileObjectExited;
+        public Action<BaseTileObject> onTileObjectEntered;
+        public Action<BaseTileObject> onTileObjectExited;
 
         private const string TILE_OBJECT_TAG = "TileObject";
 
@@ -34,17 +34,17 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             onTileObjectExited?.Invoke(tileObject);
         }
 
-        private static bool CheckIsTileObject(Collider other, out TileObject tileObject)
+        private static bool CheckIsTileObject(Collider other, out BaseTileObject baseTileObject)
         {
             if (!other.gameObject.CompareTag(TILE_OBJECT_TAG))
             {
-                tileObject = null;
+                baseTileObject = null;
                 return false;
             }
 
-            tileObject = other.GetComponent<TileObject>();
+            baseTileObject = other.GetComponent<BaseTileObject>();
             
-            return tileObject != null;
+            return baseTileObject != null;
         }
     }
 }
