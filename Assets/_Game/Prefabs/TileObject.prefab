@@ -568,10 +568,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 358576fe788a2814fa532cfe8ad79103, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelParent: {fileID: 4042972737628470276}
-  shakeStrength: {x: 0.5, y: 0.5, z: 0.5}
-  shakeDuration: 1
-  shakePeriod: 2
+  targetTransform: {fileID: 4042972737628470276}
+  swingDuration: 0.8
+  swingDistance: 0.4
 --- !u!1 &6006175829122596133
 GameObject:
   m_ObjectHideFlags: 0
