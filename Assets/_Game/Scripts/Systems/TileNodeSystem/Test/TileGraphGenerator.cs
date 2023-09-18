@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 
 namespace _Game.Scripts.Systems.TileNodeSystem.Test
 {
-   public class TileNodeSystemTest : MonoBehaviour
+   public class TileGraphGenerator : MonoBehaviour
    {
       [SerializeField] private GameObject nodePrefab;
       [SerializeField] private GameObject tileObjectPrefab;
