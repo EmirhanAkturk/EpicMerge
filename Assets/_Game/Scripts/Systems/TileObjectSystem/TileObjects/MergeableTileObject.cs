@@ -10,6 +10,7 @@ using GameDepends;
 using JoostenProductions;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Utils;
 using Zenject;
 
 namespace _Game.Scripts.Systems.TileObjectSystem
@@ -39,11 +40,18 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private IObjectDetectionHandler ObjectDetectionHandler => objectDetectionHandler ??= new TileObjectDetectionHandler();
         private IObjectDetectionHandler objectDetectionHandler;
 
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            SetDetectionActiveState(false);
+        }
+
         public override void Init(TileObjectValue tileObjectValue)
         {
             base.Init(tileObjectValue);
             SubscribeDragDropEvents();
             SubscribeObjectDetectionEvents();
+            SetDetectionActiveState(true);
         }
 
         public void MoveWithoutDetection(Vector3 targetPos, MoveEndCallback onMoveEnd = null)

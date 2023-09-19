@@ -36,9 +36,17 @@ namespace _Game.Scripts.Systems.TileObjectSystem.MoveSystem
         public void Move(Vector3 targetPos, MoveEndCallback onMoveEnd)
         {
             Stop();
-            isMoving = true;
             currentTargetPos = targetPos;
             moveEndCallback = onMoveEnd;
+
+            if (IsTargetReached()) // destination to close
+            {
+                Stop();
+            }
+            else
+            {
+                isMoving = true;
+            }
         }
 
         public void Stop()
