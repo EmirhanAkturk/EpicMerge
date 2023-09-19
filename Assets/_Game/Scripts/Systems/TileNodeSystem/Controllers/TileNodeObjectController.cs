@@ -1,6 +1,7 @@
 using _Game.Scripts.Systems.DetectionSystem;
 using _Game.Scripts.Systems.IndicationSystem;
 using _Game.Scripts.Systems.IndicatorSystem;
+using _Game.Scripts.Systems.MergeSystem;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Utils;
@@ -14,7 +15,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 {
     public class TileNodeObjectController : OverridableMonoBehaviour
     {
-        public TileNode ThisTileNode { get; private set; }
+        public TileNode ThisTileNode { get;  private set; } //TODO POOL  setter public for test
 
         [Space]
         
@@ -31,6 +32,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         protected override void OnDisable()
         {
             base.OnDisable();
+            ResetVariables();
             UnsubscribeAllEvents();
         }
 
@@ -126,7 +128,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             }
             if (!isMerged)
             {
-                var targetTileNode = ThisTileNode.GetEmptyNeighbor() ?? baseTileObject.TileNode;
+                var targetTileNode = ThisTileNode.GetEmptyNeighbor() ?? baseTileObject.CurrentTileNode;
                 targetTileNode.onTileObjectChanged?.Invoke(placedBaseTileObject);
                 
                 PlaceObjectOnTile(baseTileObject);
@@ -166,7 +168,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void SetPlacedObject(BaseTileObject baseTileObject)
         {
             placedBaseTileObject = baseTileObject;
-            if (placedBaseTileObject != null) baseTileObject.TileNode = ThisTileNode; 
+            if (placedBaseTileObject != null) baseTileObject.CurrentTileNode = ThisTileNode; 
             CheckTileObjectEventSubState();
             // onPlacedTileObjectChanged?.Invoke(tileObject);
             PlacedTileObjectChanged(baseTileObject);
@@ -226,12 +228,12 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         
         private bool CanMerge(BaseTileObject baseTileObject, bool indicateMergeableObjects)
         {
-            return baseTileObject != null && TileObjectMergeHelper.CanMerge(baseTileObject.TileNode, ThisTileNode, baseTileObject.TileObjectValue, indicateMergeableObjects);
+            return baseTileObject != null && TileObjectMergeHelper.CanMerge(baseTileObject.CurrentTileNode, ThisTileNode, baseTileObject.TileObjectValue, indicateMergeableObjects);
         }
 
         private bool TryMerge(BaseTileObject baseTileObject)
         {
-            return TileObjectMergeHelper.TryMerge(baseTileObject.TileNode,ThisTileNode, baseTileObject.TileObjectValue);
+            return TileObjectMergeHelper.TryMerge(baseTileObject.CurrentTileNode,ThisTileNode, baseTileObject.TileObjectValue);
         }
 
         private void UpdateMergedTileObjectValue(TileObjectValue tileObjectValue)
@@ -240,6 +242,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
             if (tileObjectValue.IsEmptyTileObjectValue())
             {
+                // TODO pool
                 Destroy(placedBaseTileObject.gameObject);
                 placedBaseTileObject = null;
             }

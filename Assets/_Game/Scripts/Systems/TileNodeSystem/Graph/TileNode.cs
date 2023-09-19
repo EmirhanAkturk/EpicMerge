@@ -12,10 +12,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Graph
     {
         public Action<TileObjectValue> onTileObjectMerged; 
         public Action<BaseTileObject> onTileObjectChanged; 
-        public Action<bool> onUpdateMergeableIndicator; 
-        
-        [Button(nameof(Bfs))] public bool bfsButtonField;
-        [Button(nameof(PrintNeighbors))] public bool printNeighborsButtonField;
+        public Action<bool> onUpdateMergeableIndicator;
 
         public Transform Transform { get; private set; }
         public string Name { get; private set; } // For test

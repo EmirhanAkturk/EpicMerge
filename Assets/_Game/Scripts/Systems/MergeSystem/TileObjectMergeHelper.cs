@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
@@ -7,14 +6,14 @@ using GameDepends;
 using Systems.ConfigurationSystem;
 using UnityEngine;
 
-namespace _Game.Scripts.Utils
+namespace _Game.Scripts.Systems.MergeSystem
 {
     public static class TileObjectMergeHelper
     {
         private static int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
         
         // TODO Made private!!
-        public static List<TileNode> _mergeableIndicatorShownNodes;
+        private static List<TileNode> _mergeableIndicatorShownNodes;
         
         static TileObjectMergeHelper()
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Game.Scripts.Systems.IndicationSystem;
+using _Game.Scripts.Systems.MergeSystem;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Utils;
@@ -13,7 +14,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
 {
     public class MergeTestManager : Singleton<MergeTestManager>
     {
-        private List<TileNode> canMergeNodes = new List<TileNode>();
+        private readonly List<TileNode> canMergeNodes = new List<TileNode>();
         
         private void Awake()
         {
@@ -22,7 +23,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
 
         private void UpdateGizmo(bool isMergeable)
         {
-            canMergeNodes = TileObjectMergeHelper._mergeableIndicatorShownNodes;
+            // canMergeNodes = TileObjectMergeHelper._mergeableIndicatorShownNodes;
         }
 
         private void OnDrawGizmos()

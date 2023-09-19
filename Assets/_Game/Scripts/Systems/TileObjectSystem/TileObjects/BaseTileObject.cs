@@ -9,13 +9,19 @@ namespace _Game.Scripts.Systems.TileObjectSystem
     public class BaseTileObject : OverridableMonoBehaviour
     {
         public TileObjectValue TileObjectValue { get; private set; }
-        public TileNode TileNode { get;  set; } // for test 
+        public TileNode CurrentTileNode { get;  set; } // for test 
 
-        [FormerlySerializedAs("tileObjectModelController")] [SerializeField] private BaseTileObjectModelController baseTileObjectModelController;
+        [SerializeField] private BaseTileObjectModelController baseTileObjectModelController;
         
         protected IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
         private IMoveController moveController;
-        
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            CurrentTileNode = null;
+        }
+
         public virtual void Init(TileObjectValue tileObjectValue)
         {
             TileObjectValue = tileObjectValue;
