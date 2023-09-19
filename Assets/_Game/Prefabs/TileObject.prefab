@@ -569,8 +569,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTransform: {fileID: 4042972737628470276}
-  swingDuration: 0.8
-  swingDistance: 0.4
+  swingDuration: 0.7
+  swingDistance: 0.3
 --- !u!1 &6006175829122596133
 GameObject:
   m_ObjectHideFlags: 0
