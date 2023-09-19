@@ -1,27 +1,34 @@
+using System;
 using System.Text;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Attribute;
 using Systems.ConfigurationSystem;
-using Systems.GraphSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utils.Extensions;
 using Application = UnityEngine.Device.Application;
 using Random = UnityEngine.Random;
 
-namespace _Game.Scripts.Systems.TileNodeSystem.Test
+namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
 {
    public class TileGraphGenerator : MonoBehaviour
    {
+      public int GraphGraphGeneratorId => graphGeneratorId;
+      public string GraphGeneratorName => graphGeneratorName;
+      
+      [SerializeField] private int graphGeneratorId;
+      [SerializeField] private string graphGeneratorName;
+      
+      [Space]
       [SerializeField] private GameObject nodePrefab;
       [SerializeField] private GameObject tileObjectPrefab;
       [SerializeField] private float nodeDistance = 1.5f;
       [SerializeField] private Vector2Int matrixDimensions = new Vector2Int(5, 5);
       [SerializeField] private bool createGraphInStart = true;
       // [SerializeField] private bool drawGraphVertex = false;
-      [FormerlySerializedAs("borderNodeCanDeleteRatio")] [Range(0f, 100f)][SerializeField] private float nodeCanDeleteRatio = 20f;
+      [Range(0f, 100f)][SerializeField] private float nodeCanDeleteRatio = 20f;
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
 
@@ -35,7 +42,20 @@ namespace _Game.Scripts.Systems.TileNodeSystem.Test
          }
       }
 
-      private void CreateGraph()
+      private void OnEnable()
+      {
+         TileGraphGeneratorManager.Instance.AddGenerator(this);
+      }
+
+      private void OnDisable()
+      {
+         if (TileGraphGeneratorManager.IsAvailable())
+         {
+            TileGraphGeneratorManager.Instance.RemoveGenerator(this);
+         }
+      }
+
+      public void CreateGraph()
       {
          tileGraph = new TileGraph();
 
