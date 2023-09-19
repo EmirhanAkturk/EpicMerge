@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.Scripts.Systems.TileObjectSystem
 {
@@ -7,6 +8,6 @@ namespace _Game.Scripts.Systems.TileObjectSystem
     public struct TileObjectDataByLevel
     {
         public int level;
-        public Mesh model; // TODO Can Made Sprite
+        public Sprite sprite;
     }
 }

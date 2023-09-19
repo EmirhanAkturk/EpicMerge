@@ -9,7 +9,6 @@ namespace _Game.Scripts.Systems.TileObjectSystem
     public class TileObjectCollectionData // TODO Can Made Struct
     {
         public int objectId;
-        public Material objectMaterial; // TODO Obect Visual Can Made Sprite
         public List<TileObjectDataByLevel> tileObjectDataByLevels;
 
         private Dictionary<int, TileObjectDataByLevel> TileObjectLevelDataMap

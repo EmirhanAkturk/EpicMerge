@@ -11,7 +11,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         public TileObjectValue TileObjectValue { get; private set; }
         public TileNode CurrentTileNode { get;  set; } // for test 
 
-        [SerializeField] private BaseTileObjectModelController baseTileObjectModelController;
+        [SerializeField] private BaseTileObjectSpriteController baseTileObjectSpriteController;
         
         protected IMoveController MoveController => moveController ??= GetComponent<IMoveController>();
         private IMoveController moveController;
@@ -35,9 +35,8 @@ namespace _Game.Scripts.Systems.TileObjectSystem
             var objectData = TileObjectManager.Instance.GetObjectDataById(tileObjectValue.objectId);
             var dataByLevel = objectData.GetDataByLevel(tileObjectValue.objectLevel);
             
-            Material material = objectData.objectMaterial;
-            Mesh mesh = dataByLevel?.model;
-            baseTileObjectModelController.InitVisual(mesh, material);
+            Sprite sprite = dataByLevel?.sprite;
+            baseTileObjectSpriteController.InitVisual(sprite);
         }
 
         public virtual bool CanObjectCentered()

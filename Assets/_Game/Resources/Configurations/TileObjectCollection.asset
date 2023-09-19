@@ -14,29 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileObjectCollectionDatas:
   - objectId: 1
-    objectMaterial: {fileID: 2100000, guid: 138af5c08ee35244ca1190ca717a1516, type: 2}
     tileObjectDataByLevels:
     - level: 1
-      model: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+      sprite: {fileID: -845734132, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
     - level: 2
-      model: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      sprite: {fileID: 134058063, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
     - level: 3
-      model: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+      sprite: {fileID: -1221487395, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
+    - level: 4
+      sprite: {fileID: 245104838, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
   - objectId: 2
-    objectMaterial: {fileID: 2100000, guid: 4452a4ce201fe1c42baeb9d3cca91293, type: 2}
     tileObjectDataByLevels:
     - level: 1
-      model: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+      sprite: {fileID: 1481816883, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
     - level: 2
-      model: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      sprite: {fileID: -1541887147, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
     - level: 3
-      model: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+      sprite: {fileID: -758086804, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
+    - level: 4
+      sprite: {fileID: 1333492610, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
   - objectId: 3
-    objectMaterial: {fileID: 2100000, guid: 1fb615f8aa5b907489dc156bda40ede1, type: 2}
     tileObjectDataByLevels:
     - level: 1
-      model: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+      sprite: {fileID: 121935013, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
     - level: 2
-      model: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      sprite: {fileID: -2019069628, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
     - level: 3
-      model: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+      sprite: {fileID: 241712259, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
+    - level: 4
+      sprite: {fileID: 1439115617, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
