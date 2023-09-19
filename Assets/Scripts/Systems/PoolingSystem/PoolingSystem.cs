@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameDepends.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utils;

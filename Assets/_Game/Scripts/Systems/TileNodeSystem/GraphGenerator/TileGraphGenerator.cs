@@ -1,13 +1,18 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Attribute;
+using GameDepends.Enums;
 using Systems.ConfigurationSystem;
+using Systems.PoolingSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utils.Extensions;
+using Zenject;
 using Application = UnityEngine.Device.Application;
 using Random = UnityEngine.Random;
 
@@ -22,8 +27,10 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
       [SerializeField] private string graphGeneratorName;
       
       [Space]
-      [SerializeField] private GameObject nodePrefab;
-      [SerializeField] private GameObject tileObjectPrefab;
+      [SerializeField] private PoolType nodeType;
+      [SerializeField] private PoolType tileObjectType;
+
+      [Space]
       [SerializeField] private float nodeDistance = 1.5f;
       [SerializeField] private Vector2Int matrixDimensions = new Vector2Int(5, 5);
       [SerializeField] private bool createGraphInStart = true;
@@ -32,6 +39,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
 
+      private readonly List<GameObject> nodeObjects = new List<GameObject>();
+      private readonly List<GameObject> tileObjects = new List<GameObject>();
       private TileGraph tileGraph;
    
       private void Start()
@@ -100,10 +109,10 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
                nodeName.Append("Node_");
                nodeName.Append(nodeCount);
                
-               TileNodeController tileNodeController = CreateNode(baseTileObject, pos, nodeName.ToString());
+               TileNode tileNode = CreateNode(baseTileObject, pos, nodeName.ToString());
                ++nodeCount;
 
-               tileGraph.AddNode(tileNodeController.TileNode);
+               tileGraph.AddNode( tileNode);
             }
          }
       }
@@ -152,25 +161,39 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
 
       #endregion
 
-      private TileNodeController CreateNode(BaseTileObject baseTileObject, Vector3 pos, string nodeName)
+      private TileNode CreateNode(BaseTileObject baseTileObject, Vector3 pos, string nodeName)
       {
-         var nodeObject = Instantiate(nodePrefab, pos, Quaternion.identity, NodesParent.transform);
+         var tileNodeController = PoolingSystem.Instance.Create<TileNodeController>(nodeType, NodesParent.transform);
+         
+         var nodeObject = tileNodeController.gameObject;
+         var nodeObjectTr = nodeObject.transform;
+         
+         nodeObjectTr.position = pos;
+         nodeObjectTr.rotation = Quaternion.identity;
          nodeObject.name = nodeName;
-
+         
          TileObjectValue tileObjectValue = baseTileObject != null ? baseTileObject.TileObjectValue : TileObjectValue.GetEmptyTileObjectValue(); 
          TileNode tileNode = new TileNode(nodeObject.transform, tileObjectValue);
          
-         var tileNodeController = nodeObject.GetComponent<TileNodeController>();
          tileNodeController.Init(tileNode, baseTileObject);
          
-         return tileNodeController;
+         nodeObjects.Add(nodeObject);
+         return tileNode;
       }
 
       public BaseTileObject CreateTileObject(int objectId, Vector3 pos)
       {
-         var tileObjectGo = Instantiate(tileObjectPrefab, pos, Quaternion.identity, TileObjectsParent.transform);
-         var tileObject = tileObjectGo.GetComponent<BaseTileObject>();
+         var tileObject = PoolingSystem.Instance.Create<BaseTileObject>(tileObjectType, TileObjectsParent.transform);
+         
+         var tileObjectGo = tileObject.gameObject;
+         var tileObjectTr = tileObjectGo.transform;
+         
+         tileObjectTr.position = pos;
+         tileObjectTr.rotation = Quaternion.identity;
+         
          tileObject.Init(new TileObjectValue(objectId, 1));
+
+         tileObjects.Add(tileObjectGo);
          return tileObject;
       }
 
@@ -192,24 +215,35 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
       {
          if (Application.isPlaying)
          {
-            TileObjectsParent.transform.DestroyChildren();
+            foreach (var tileObject in tileObjects)
+            {
+               // PoolingSystem.Instance.Destroy(tileObjectType, tileObject);
+               Destroy(tileObject);
+            }
+            tileObjects.Clear();
          }
-         else
-         {
-            TileObjectsParent.transform.DestroyImmediateChildren();
-         }
+         // else
+         // {
+         //    TileObjectsParent.transform.DestroyImmediateChildren();
+         // }
       }
 
       private void DestroyGraph()
       {
          if (Application.isPlaying)
          {
-            tileGraph?.DestroyNodes();
+            foreach (var nodeObject in nodeObjects)
+            {
+               // PoolingSystem.Instance.Destroy(nodeType, nodeObject);
+               Destroy(nodeObject);
+            }
+            nodeObjects.Clear();
+            tileGraph?.ClearNodes();
          }
-         else
-         {
-            tileGraph?.DestroyImmediateNodes();
-         }
+         // else
+         // {
+         //    tileGraph?.DestroyImmediateNodes();
+         // }
          tileGraph = null;
       }
       

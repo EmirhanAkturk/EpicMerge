@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using GameDepends.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Systems.PoolingSystem
 {
-    [CreateAssetMenu(fileName = "PoolCollection", menuName = "lib/GameDependent/PoolCollection")]
+    [CreateAssetMenu(fileName = "PoolCollection", menuName = "lib/PoolCollection")]
     public class PoolCollection : ScriptableObject
     {
         public List<PoolGroup> list = new List<PoolGroup>();
@@ -35,10 +37,23 @@ namespace Systems.PoolingSystem
         public string path;
         public int count;
         private string absolutePath;
+        private string pathPrefix = "PoolObjects/";
 
         public void SetPath(string groupPath)
         {
-            absolutePath = groupPath + "/" + path;
+            absolutePath = GetFullPath(groupPath);;
+        }
+
+        private string GetFullPath(string groupPath)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            
+            stringBuilder.Append(pathPrefix);
+            stringBuilder.Append(groupPath);
+            stringBuilder.Append("/");
+            stringBuilder.Append(path);
+
+            return stringBuilder.ToString();
         }
     }
 

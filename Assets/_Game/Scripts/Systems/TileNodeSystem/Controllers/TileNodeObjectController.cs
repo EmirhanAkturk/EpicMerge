@@ -6,8 +6,10 @@ using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Utils;
 using GameDepends;
+using GameDepends.Enums;
 using JoostenProductions;
 using NaughtyAttributes;
+using Systems.PoolingSystem;
 using UnityEngine;
 using Utils;
 
@@ -80,9 +82,6 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         private void ObjectEnterTileArea(BaseTileObject baseTileObject)
         {
             //TODO Refactor below part!!
-            // EventService.onTileObjectEnteredToNode?.Invoke(tileObject, this);
-            
-            // TODO Due to the CanDrag control, the object may not be centered in the slot when the drag ends
             if (!baseTileObject.CanObjectCentered())
             {
                 Debug.Log("### tileObject.CanDrag return : " + gameObject.name);
@@ -242,7 +241,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 
             if (tileObjectValue.IsEmptyTileObjectValue())
             {
-                // TODO pool
+                // TODO PoolType can get from tile object
+                // PoolingSystem.Instance.Destroy(PoolType.MergeableTileObject, placedBaseTileObject.gameObject);
                 Destroy(placedBaseTileObject.gameObject);
                 placedBaseTileObject = null;
             }
