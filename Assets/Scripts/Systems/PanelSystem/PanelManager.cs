@@ -145,6 +145,13 @@ namespace Systems.PanelSystem
             isPanelDisabled = true;
         }
 
+        
+        [Tooltip("Except Gameplay panel")]
+        public bool IsAnyPanelShowing()
+        {
+            return IsAnyPanelShowed(PopupType.GamePlayPanel);
+        }
+        
         public bool IsPanelShowed(PopupType popupType, bool checkStillShowing = true)
         {
             if (!panels.ContainsKey(popupType)) return false;

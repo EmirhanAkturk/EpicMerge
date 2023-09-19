@@ -1,7 +1,9 @@
 using System;
 using _Game.Scripts.Systems.TileObjectSystem;
+using GameDepends.Enums;
 using JoostenProductions;
 using Systems.ConfigurationSystem;
+using Systems.PanelSystem;
 using UnityEngine;
 
 namespace _Game.Scripts.Systems.DragDropSystem
@@ -94,7 +96,11 @@ namespace _Game.Scripts.Systems.DragDropSystem
 
         public void OnMouseDrag()
         {
-            if (!CanDrag || !IsMouseDragEnoughForMovement()) return;
+            if (!CanDrag || !IsMouseDragEnoughForMovement() || 
+                PanelManager.Instance.IsAnyPanelShowing())
+            {
+                return;
+            }
 
             UpdateTargetDragPosition();
             MoveController.Move(targetDragPosition);

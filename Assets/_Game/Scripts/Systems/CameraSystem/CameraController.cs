@@ -3,12 +3,15 @@ using _Game.Scripts.Systems.TileObjectSystem;
 using GameDepends;
 using JoostenProductions;
 using NaughtyAttributes;
+using Systems.PanelSystem;
 using UnityEngine;
 
 namespace _Game.Scripts.Systems.CameraSystem
 {
     public class CameraController : OverridableMonoBehaviour
     {
+        // This script created for Game Mechanic test, can be refactored
+        
         [Space]
         [SerializeField] private Transform cameraTR;
         [Space]
@@ -74,7 +77,7 @@ namespace _Game.Scripts.Systems.CameraSystem
         private void CameraMove()
         {
             // Check Zoom in / out
-            if(Input.touchCount > 1) return;
+            if(Input.touchCount > 1 || PanelManager.Instance.IsAnyPanelShowing()) return;
                 
             if (Input.GetMouseButtonDown(0))
             {
@@ -99,7 +102,7 @@ namespace _Game.Scripts.Systems.CameraSystem
         private bool IsTargetInDistance(Vector3 targetPos)
         {
             float distance = Vector3.Distance(targetPos, startPosition);
-            return distance < moveRangeRadius;
+            return distance <= moveRangeRadius;
         }
 
         private void CameraZoom()
