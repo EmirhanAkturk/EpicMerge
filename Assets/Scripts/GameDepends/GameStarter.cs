@@ -17,7 +17,7 @@ namespace GameDepends
         private void StartGame()
         {
             ShowGameplayPanel();
-            CreateGraphsWithDelay(1f);
+            CreateGraphsWithDelay(.1f);
         }
 
         private void ShowGameplayPanel()
