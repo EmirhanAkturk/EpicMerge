@@ -475,7 +475,7 @@ MonoBehaviour:
   addOnEnable: 1
   removeOnDisable: 1
   stoppingDistance: 0.01
-  moveSpeed: 15
+  moveSpeed: 25
   hasLongDistanceSpeed: 1
   longMoveDistance: 10
   longMoveMoveSpeedMultiplier: 10
