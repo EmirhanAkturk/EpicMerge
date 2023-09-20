@@ -16,8 +16,8 @@ namespace Systems.PanelSystem
         public PanelEvent onPanelHidden = new PanelEvent();
     
         //Optimization
-        [FormerlySerializedAs("AllExtraCanvasList")] public List<Canvas> allExtraCanvasList = new List<Canvas>();
-        [FormerlySerializedAs("BasePanelsListForCloseAfter")] public List<BasePanel> basePanelsListForCloseAfter = new List<BasePanel>();
+        public List<Canvas> allExtraCanvasList = new List<Canvas>();
+        public List<BasePanel> basePanelsListForCloseAfter = new List<BasePanel>();
 
         public Transform PanelCanvas
         {
