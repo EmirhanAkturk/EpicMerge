@@ -217,7 +217,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
          {
             foreach (var tileObject in tileObjects)
             {
-               // PoolingSystem.Instance.Destroy(tileObjectType, tileObject);
+               // TODO Fix Pooling Bug
+               // PoolingSystem.Instance.Destroy(tileObjectType, tileObject, false);
                Destroy(tileObject);
             }
             tileObjects.Clear();
@@ -234,7 +235,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
          {
             foreach (var nodeObject in nodeObjects)
             {
-               // PoolingSystem.Instance.Destroy(nodeType, nodeObject);
+               // TODO Fix Pooling Bug
+               // PoolingSystem.Instance.Destroy(nodeType, nodeObject, false);
                Destroy(nodeObject);
             }
             nodeObjects.Clear();

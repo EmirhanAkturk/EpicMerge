@@ -65,7 +65,7 @@ namespace _Game.Scripts.Systems.MergeSystem
                 return false;
             }
 
-            Debug.Log("TryMerge : ");
+            // Debug.Log("TryMerge : ");
 
             Merge(wantedNodes, targetValue);
             return true;
@@ -87,7 +87,7 @@ namespace _Game.Scripts.Systems.MergeSystem
             }
             
             UpdateMergeableObjectsIndicator(wantedNodes, false);
-            Debug.Log("Merged : ");
+            // Debug.Log("Merged : ");
         }
 
         private static List<TileObjectValue> GetMergedTileObjectValues(TileObjectValue tileObjectValue, int mergeObjectCount)

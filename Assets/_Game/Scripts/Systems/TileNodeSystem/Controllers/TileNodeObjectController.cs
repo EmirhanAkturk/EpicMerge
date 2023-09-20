@@ -84,11 +84,11 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             //TODO Refactor below part!!
             if (!baseTileObject.CanObjectCentered())
             {
-                Debug.Log("### tileObject.CanDrag return : " + gameObject.name);
+                //Debug.Log("### tileObject.CanDrag return : " + gameObject.name);
                 return;
             }
             
-            Debug.Log("### tileObject.CanDrag not return : " + gameObject.name);
+            //Debug.Log("### tileObject.CanDrag not return : " + gameObject.name);
 
             
             movingBaseTileObjectOnThisBaseTile = baseTileObject;
@@ -97,7 +97,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             if (placedBaseTileObject != null && placedBaseTileObject != baseTileObject)
             {
                 bool canMerge = CanMerge(baseTileObject, true);
-                Debug.Log("canMerge : " + canMerge);
+                // Debug.Log("canMerge : " + canMerge);
             }
             else
             {
@@ -131,17 +131,17 @@ namespace _Game.Scripts.Systems.TileNodeSystem
                 targetTileNode.onTileObjectChanged?.Invoke(placedBaseTileObject);
                 
                 PlaceObjectOnTile(baseTileObject);
-                Debug.Log("###isMerged False" + gameObject.name);
+                // Debug.Log("###isMerged False" + gameObject.name);
             }
             else
             {
-                Debug.Log("###isMerged true : " + gameObject.name);
+                // Debug.Log("###isMerged true : " + gameObject.name);
             }
         }
         
         private void TryPlaceObjectInTile(BaseTileObject baseTileObject)
         {
-            Debug.Log("TryPlaceObjectIn : " + gameObject.name);
+            // Debug.Log("TryPlaceObjectIn : " + gameObject.name);
             if(baseTileObject != movingBaseTileObjectOnThisBaseTile) return;
 
             if (placedBaseTileObject == baseTileObject)
@@ -171,7 +171,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             CheckTileObjectEventSubState();
             // onPlacedTileObjectChanged?.Invoke(tileObject);
             PlacedTileObjectChanged(baseTileObject);
-            Debug.Log("Set placedTileObject" + (placedBaseTileObject is null ? "NULL" : "tile object") + ", Node Name : " + gameObject.name);
+            //Debug.Log("Set placedTileObject" + (placedBaseTileObject is null ? "NULL" : "tile object") + ", Node Name : " + gameObject.name);
         }
 
         private void MoveObjectToTileCenter(BaseTileObject baseTileObject)
