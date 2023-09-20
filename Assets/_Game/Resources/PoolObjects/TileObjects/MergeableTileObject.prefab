@@ -475,10 +475,10 @@ MonoBehaviour:
   addOnEnable: 1
   removeOnDisable: 1
   stoppingDistance: 0.01
-  moveSpeed: 25
+  moveSpeed: 20
   hasLongDistanceSpeed: 1
-  longMoveDistance: 10
-  longMoveMoveSpeedMultiplier: 10
+  longMoveDistance: 3
+  longMoveMoveSpeedMultiplier: 3
 --- !u!114 &7312820888753685371
 MonoBehaviour:
   m_ObjectHideFlags: 0
