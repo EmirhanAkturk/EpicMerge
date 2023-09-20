@@ -77,6 +77,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
             if(baseTileObject != placedBaseTileObject) return;
             // Debug.Log("ObjectDragEnd : " + gameObject.name);
             MoveObjectToTileCenter(baseTileObject);
+            EventService.onMergeCanceled?.Invoke();
         }
 
         private void ObjectEnterTileArea(BaseTileObject baseTileObject)
