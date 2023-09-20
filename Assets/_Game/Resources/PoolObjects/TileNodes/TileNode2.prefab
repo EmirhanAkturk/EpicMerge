@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2571920930450649072}
   - component: {fileID: 2571920930450649073}
   - component: {fileID: 2571920930450649074}
-  - component: {fileID: 5885508348963559262}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -63,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9ef37bb38527d5e4e95bd87e3242812f, type: 2}
+  - {fileID: 2100000, guid: c54097cc1e2ce9a449cca1d9ef23a28f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,20 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5885508348963559262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2571920930450649076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5926b52470820d44a4ebf37bc3169d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectRenderer: {fileID: 2571920930450649074}
-  color: {r: 0.77254903, g: 0.8117647, b: 0.54901963, a: 1}
 --- !u!1 &2571920931737437627
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,7 +208,6 @@ GameObject:
   - component: {fileID: 4430420686979623039}
   - component: {fileID: 6566941143669910686}
   - component: {fileID: 925454212834651073}
-  - component: {fileID: 8261757801950437520}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -274,7 +258,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9ef37bb38527d5e4e95bd87e3242812f, type: 2}
+  - {fileID: 2100000, guid: 879c436051137b8409ed3ea2bd7ca7aa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -296,17 +280,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8261757801950437520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7593310243301123705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5926b52470820d44a4ebf37bc3169d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectRenderer: {fileID: 925454212834651073}
-  color: {r: 0.62352943, g: 0.62352943, b: 0.62352943, a: 1}
