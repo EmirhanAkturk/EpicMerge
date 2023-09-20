@@ -100,8 +100,9 @@ namespace _Game.Scripts.Systems.CameraSystem
                 Vector3 deltaPos = new Vector3(deltaMousePosition.x, deltaMousePosition.y, 0);
                 Vector3 moveVector = adaptiveMoveSpeed * Time.deltaTime * deltaPos;
                 Vector3 newPosition = cameraTR.position + moveVector;
-
-                if(IsTargetInDistance(newPosition))
+                
+                
+                if(CanCameraMove(newPosition))
                 {
                     cameraTR.Translate(moveVector);
                 }
@@ -110,12 +111,14 @@ namespace _Game.Scripts.Systems.CameraSystem
             }
         }
 
-        private bool IsTargetInDistance(Vector3 targetPos)
+        private bool CanCameraMove(Vector3 targetPos)
         {
-            float distance = Vector3.Distance(targetPos, startPosition);
-            return distance <= moveRangeRadius;
+            float newDistance = Vector3.Distance(targetPos, startPosition);
+            if (newDistance <= moveRangeRadius) return true;
+            float currentDistance = Vector3.Distance(targetPos, startPosition);
+            return newDistance < currentDistance;
         }
-
+        
         private void CameraZoom()
         {
 #if UNITY_EDITOR
