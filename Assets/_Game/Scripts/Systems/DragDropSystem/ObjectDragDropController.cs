@@ -97,6 +97,7 @@ namespace _Game.Scripts.Systems.DragDropSystem
         public void OnMouseDrag()
         {
             if (!CanDrag || !IsMouseDragEnoughForMovement() || 
+                Input.touchCount > 1 ||
                 PanelManager.Instance.IsAnyPanelShowing())
             {
                 return;

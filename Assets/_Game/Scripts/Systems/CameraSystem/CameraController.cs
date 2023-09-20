@@ -30,6 +30,8 @@ namespace _Game.Scripts.Systems.CameraSystem
         private Vector2 initialTouch2;
         private float initialDistance;
         private float initialZoom;
+        private float adaptiveMoveSpeed;
+        private float adaptiveZoomSpeed;
 
         private bool isCameraControllable = true;
 
@@ -64,6 +66,15 @@ namespace _Game.Scripts.Systems.CameraSystem
         private void Awake()
         {
             startPosition = cameraTR.position;
+            ConvertToAdaptiveSpeed();
+        }
+
+        private void ConvertToAdaptiveSpeed()
+        {
+            float adaptiveMultiplier = ((float)1920 / 1080) * Screen.height / Screen.width; 
+             
+            adaptiveMoveSpeed = moveSpeed * adaptiveMultiplier;
+            adaptiveZoomSpeed = zoomSpeed * adaptiveMultiplier;
         }
 
         public override void UpdateMe()
@@ -87,7 +98,7 @@ namespace _Game.Scripts.Systems.CameraSystem
             {
                 Vector3 deltaMousePosition = lastMousePosition - Input.mousePosition;
                 Vector3 deltaPos = new Vector3(deltaMousePosition.x, deltaMousePosition.y, 0);
-                Vector3 moveVector = moveSpeed * Time.deltaTime * deltaPos;
+                Vector3 moveVector = adaptiveMoveSpeed * Time.deltaTime * deltaPos;
                 Vector3 newPosition = cameraTR.position + moveVector;
 
                 if(IsTargetInDistance(newPosition))
@@ -120,7 +131,7 @@ namespace _Game.Scripts.Systems.CameraSystem
 
             if (scrollWheelInput != 0)
             {
-                float newZoom = Camera.main.orthographicSize - scrollWheelInput * zoomSpeed;
+                float newZoom = Camera.main.orthographicSize - scrollWheelInput * adaptiveZoomSpeed;
                 newZoom = Mathf.Clamp(newZoom, minZoom, maxZoom);
 
                 Camera.main.orthographicSize = newZoom;
@@ -149,7 +160,7 @@ namespace _Game.Scripts.Systems.CameraSystem
                     float currentDistance = Vector2.Distance(currentTouch1, currentTouch2);
                     float pinchDelta = currentDistance - initialDistance;
 
-                    float newZoom = Mathf.Clamp(initialZoom - pinchDelta * zoomSpeed, minZoom, maxZoom);
+                    float newZoom = Mathf.Clamp(initialZoom - pinchDelta * adaptiveZoomSpeed, minZoom, maxZoom);
                     Camera.main.orthographicSize = newZoom;
                 }
             }
