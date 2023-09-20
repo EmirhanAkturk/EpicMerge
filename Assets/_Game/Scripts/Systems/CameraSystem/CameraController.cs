@@ -115,7 +115,7 @@ namespace _Game.Scripts.Systems.CameraSystem
         {
             float newDistance = Vector3.Distance(targetPos, startPosition);
             if (newDistance <= moveRangeRadius) return true;
-            float currentDistance = Vector3.Distance(transform.position, startPosition);
+            float currentDistance = Vector3.Distance(cameraTR.position, startPosition);
             return newDistance < currentDistance;
         }
         
