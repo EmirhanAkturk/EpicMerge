@@ -17,7 +17,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 {
     public class TileNodeObjectController : OverridableMonoBehaviour
     {
-        public TileNode ThisTileNode { get;  private set; } //TODO POOL  setter public for test
+        private TileNode ThisTileNode { get;  set; }
 
         [Space]
         

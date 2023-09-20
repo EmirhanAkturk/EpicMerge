@@ -12,15 +12,9 @@ namespace _Game.Scripts.Systems.TileNodeSystem
 {
     public class TileNodeController : OverridableMonoBehaviour
     {
-        public TileNode TileNode => tileNodeObjectController.ThisTileNode;
-        
-        [Button(nameof(BfsTest))] public bool bfsButtonField;
-        [Button(nameof(PrintNeighbors))] public bool printNeighborsButtonField;
-        
         [Space]
         
         [SerializeField] private TileNodeObjectController tileNodeObjectController;
-        // [SerializeField] private TileNode tileNode;
 
         #region Init Functions
 
@@ -30,9 +24,13 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         }
 
         #endregion
-
      
         #region Tests
+
+        /*private TileNode TileNode => tileNodeObjectController.ThisTileNode;
+
+        [Button(nameof(BfsTest))] public bool bfsButtonField;
+        [Button(nameof(PrintNeighbors))] public bool printNeighborsButtonField;
 
         public void BfsTest()
         {
@@ -42,7 +40,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         public void PrintNeighbors()
         {
             TileNode.PrintNeighbors();
-        }
+        }*/
         #endregion
     }
 }
