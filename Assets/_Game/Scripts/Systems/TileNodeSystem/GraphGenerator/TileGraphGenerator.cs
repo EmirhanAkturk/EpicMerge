@@ -40,7 +40,6 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
 
-      [Inject] private TileObjectFactoryInterface tileObjectFactory;
       private readonly List<GameObject> nodeObjects = new List<GameObject>();
       private readonly List<GameObject> tileObjects = new List<GameObject>();
       private TileGraph tileGraph;
@@ -188,7 +187,8 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
       
       public BaseTileObject CreateTileObject(int objectId, Vector3 pos)
       {
-         var tileObject = tileObjectFactory.Create(TileObjectPrefab);
+         // var tileObject = tileObjectFactory.Create(TileObjectPrefab);
+         var tileObject = PoolingSystem.Instance.Create<BaseTileObject>(tileObjectType, TileObjectsParent.transform);
          
          var tileObjectGo = tileObject.gameObject;
          var tileObjectTr = tileObjectGo.transform;

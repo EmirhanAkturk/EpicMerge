@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using _Game.Scripts.GameDepend.Zenject.Factories;
 using GameDepends.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utils;
+using Zenject;
 
 namespace Systems.PoolingSystem
 {
     public class PoolingSystem: Singleton<PoolingSystem>
     {
+        [Inject] private PoolObjectFactoryInterface poolObjectFactory;
+        
         private  bool isInitialized = false;
         private  PoolCollection poolCollection;
         private readonly Dictionary<PoolType, PoolElement> poolDictionary = new Dictionary<PoolType, PoolElement>();
@@ -127,8 +131,10 @@ namespace Systems.PoolingSystem
                 LogUtility.PrintColoredError($"Pool type : {name} object is null!!");
                 return;
             }
+
             
-            var go = Instantiate(poolObject, _poolParent.transform, true);
+            var go = poolObjectFactory.Create(poolObject, _poolParent.transform);
+            // go = Instantiate(poolObject, _poolParent.transform, true);
             go.SetActive(false);
             
             var poolable = go.GetComponent<IPoolable>();

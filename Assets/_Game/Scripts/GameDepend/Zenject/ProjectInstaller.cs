@@ -10,7 +10,7 @@ public class ProjectInstaller : MonoInstaller
     {
         Container.Bind<IObjectDetectionHandler>().To<TileObjectDetectionHandler>().AsTransient();
 
-        Container.BindFactory<Object, BaseTileObject, TileObjectFactoryInterface>()
-            .FromFactory<TileObjectFactory>();
+        Container.BindFactory<Object, Transform, GameObject, PoolObjectFactoryInterface>()
+            .FromFactory<PoolObjectFactory>();
     }
 }
