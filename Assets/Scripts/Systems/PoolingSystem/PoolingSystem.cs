@@ -50,12 +50,11 @@ namespace Systems.PoolingSystem
 
         public GameObject Create(PoolType pooltype, Transform parent = null)
         {
-            if (!isInitialized)
-                InstantiatePool();
+            CheckInitialized();
 
             if (pool[pooltype].Count <= 0 && poolCollection.extendMethod == PoolExtendMethod.Extend)
             {
-                AddToPool(pooltype, poolDictionary[pooltype].PoolObject);
+                AddToPool(pooltype, GetPoolObjectPrefab(pooltype));
             }
 
             var go = pool[pooltype].Dequeue();
@@ -85,8 +84,8 @@ namespace Systems.PoolingSystem
         
         public void Destroy(PoolType name, GameObject poolObject, bool changeParent = true)
         {
-            if (!isInitialized)
-                InstantiatePool();
+            CheckInitialized();
+            
             if (poolObject == null || !poolObject.activeInHierarchy) return;
             
             var poolable = poolObject.GetComponent<IPoolable>();
@@ -110,8 +109,8 @@ namespace Systems.PoolingSystem
 
         public void AddBatch(List<PoolType> objects, int count)
         {
-            if (!isInitialized)
-                InstantiatePool();
+            CheckInitialized();
+            
             foreach (var item in objects)
             {
                 for (int i = 0; i < count; i++)
@@ -137,6 +136,18 @@ namespace Systems.PoolingSystem
 
             pool[name].Enqueue(go);
             poolObjects.Add(new PoolRep() { go = go, pt = name });
+        }
+
+        public GameObject GetPoolObjectPrefab(PoolType poolType)
+        {
+            CheckInitialized();
+            return poolDictionary[poolType].PoolObject;
+        }
+
+        private void CheckInitialized()
+        {
+            if (isInitialized) return;
+            InstantiatePool();
         }
     }
 

@@ -26,7 +26,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private bool isDraggingObject;
 
         
-        [FormerlySerializedAs("tileObjectDragDropController")] [SerializeField] private ObjectDragDropController objectDragDropController;
+        [SerializeField] private ObjectDragDropController objectDragDropController;
   
         [Space]
         [Header("Indicator Controllers")]
@@ -36,9 +36,7 @@ namespace _Game.Scripts.Systems.TileObjectSystem
         private IObjectDetector ObjectDetector => objectDetector ??= GetComponentInChildren<IObjectDetector>();
         private IObjectDetector objectDetector;
 
-        // TODO Use inject for below part
-        private IObjectDetectionHandler ObjectDetectionHandler => objectDetectionHandler ??= new TileObjectDetectionHandler();
-        private IObjectDetectionHandler objectDetectionHandler;
+        [Inject] private IObjectDetectionHandler ObjectDetectionHandler { get; }
 
         protected override void OnDisable()
         {

@@ -12,7 +12,6 @@ namespace _Game.Scripts.Systems.MergeSystem
     {
         private static int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
         
-        // TODO Made private!!
         private static List<TileNode> _mergeableIndicatorShownNodes;
         
         static TileObjectMergeHelper()

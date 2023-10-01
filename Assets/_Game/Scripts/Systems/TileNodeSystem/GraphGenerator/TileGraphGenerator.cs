@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using _Game.Scripts.GameDepend.Zenject.Factories;
 using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
@@ -39,6 +40,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
       
       [Button(nameof(RecreateGraph))] public bool buttonField;
 
+      [Inject] private TileObjectFactoryInterface tileObjectFactory;
       private readonly List<GameObject> nodeObjects = new List<GameObject>();
       private readonly List<GameObject> tileObjects = new List<GameObject>();
       private TileGraph tileGraph;
@@ -181,9 +183,12 @@ namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
          return tileNode;
       }
 
+      private GameObject TileObjectPrefab => tileObjectPrefab ??= PoolingSystem.Instance.GetPoolObjectPrefab(tileObjectType); 
+      private GameObject tileObjectPrefab;
+      
       public BaseTileObject CreateTileObject(int objectId, Vector3 pos)
       {
-         var tileObject = PoolingSystem.Instance.Create<BaseTileObject>(tileObjectType, TileObjectsParent.transform);
+         var tileObject = tileObjectFactory.Create(TileObjectPrefab);
          
          var tileObjectGo = tileObject.gameObject;
          var tileObjectTr = tileObjectGo.transform;
