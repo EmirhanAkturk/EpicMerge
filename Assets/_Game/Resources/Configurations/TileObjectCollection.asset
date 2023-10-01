@@ -30,9 +30,9 @@ MonoBehaviour:
     - level: 2
       sprite: {fileID: -1541887147, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
     - level: 3
-      sprite: {fileID: -758086804, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
-    - level: 4
       sprite: {fileID: 1333492610, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
+    - level: 4
+      sprite: {fileID: -758086804, guid: 22b6a1abc0a9b1d40a9ef5766dec1ab0, type: 3}
   - objectId: 3
     tileObjectDataByLevels:
     - level: 1
