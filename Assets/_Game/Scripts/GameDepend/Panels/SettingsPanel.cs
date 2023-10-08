@@ -1,13 +1,11 @@
 using System.Collections.Generic;
-using _Game.Scripts.GameDepend.Panels.Tabs;
-using _Game.Scripts.Systems.TileNodeSystem.GraphGenerator;
-using GameDepends.Enums;
+using _Game.Scripts.Systems.TileNodeSystem;
+using GameDepends;
 using Systems.PanelSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Utils;
 
-namespace _Game.Scripts.GameDepend.Panels
+namespace _Game.Scripts.GameDepend
 {
     public class SettingsPanelData : PanelData
     {

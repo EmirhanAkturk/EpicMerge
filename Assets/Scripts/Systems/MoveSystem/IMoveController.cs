@@ -1,8 +1,6 @@
-using System;
-using UnityEditor;
 using UnityEngine;
 
-namespace _Game.Scripts.Systems.TileObjectSystem
+namespace Systems.MoveSystem
 {
     public delegate void MoveEndCallback(bool isReachedTarget); // declare delegate type
 

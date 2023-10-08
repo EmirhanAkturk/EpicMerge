@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Game.Scripts.GameDepend.Panels.Tabs
+namespace _Game.Scripts.GameDepend
 {
     public class RecreateGraphButton : MonoBehaviour
     {

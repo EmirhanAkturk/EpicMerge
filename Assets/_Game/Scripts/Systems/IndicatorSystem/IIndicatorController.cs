@@ -1,4 +1,4 @@
-namespace _Game.Scripts.Systems.IndicationSystem
+namespace _Game.Scripts.Systems.IndicatorSystem
 {
     public interface IIndicatorController
     {

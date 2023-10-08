@@ -1,6 +1,6 @@
 using System;
 
-namespace _Game.Scripts.Systems.TileNodeSystem.Graph
+namespace _Game.Scripts.Systems.TileNodeSystem
 {
     [Serializable]
     public struct TileObjectValue

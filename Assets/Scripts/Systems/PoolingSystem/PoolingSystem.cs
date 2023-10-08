@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Game.Scripts.GameDepend.Zenject.Factories;
-using GameDepends.Enums;
+using _Game.Scripts.GameDepend;
+using GameDepends;
+using Others;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utils;
 using Zenject;
 

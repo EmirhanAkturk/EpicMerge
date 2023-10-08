@@ -1,6 +1,4 @@
-using System.Collections;
-using _Game.Scripts.Systems.TileNodeSystem.GraphGenerator;
-using GameDepends.Enums;
+using _Game.Scripts.Systems.TileNodeSystem;
 using Systems.PanelSystem;
 using UnityEngine;
 using Utils;

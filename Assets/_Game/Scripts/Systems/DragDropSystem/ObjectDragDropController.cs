@@ -1,8 +1,7 @@
 using System;
-using _Game.Scripts.Systems.TileObjectSystem;
-using GameDepends.Enums;
 using JoostenProductions;
 using Systems.ConfigurationSystem;
+using Systems.MoveSystem;
 using Systems.PanelSystem;
 using UnityEngine;
 

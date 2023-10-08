@@ -1,6 +1,5 @@
 using System;
 using _Game.Scripts.Systems.TileObjectSystem;
-using _Game.Scripts.Systems.TileSystem;
 using UnityEngine;
 
 namespace _Game.Scripts.Systems.DetectionSystem

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GameDepends.Enums;
+using GameDepends;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;

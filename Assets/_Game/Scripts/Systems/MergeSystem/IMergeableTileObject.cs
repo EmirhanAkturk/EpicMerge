@@ -1,4 +1,4 @@
-namespace _Game.Scripts.Systems.TileObjectSystem
+namespace _Game.Scripts.Systems.MergeSystem
 {
     public interface IMergeableTileObject
     {

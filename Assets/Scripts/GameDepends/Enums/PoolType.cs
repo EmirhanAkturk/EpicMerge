@@ -1,5 +1,5 @@
 ﻿
-namespace GameDepends.Enums
+namespace GameDepends
 {
 	public enum PoolType
 	{

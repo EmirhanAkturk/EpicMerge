@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameDepends.Enums;
+using GameDepends;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;

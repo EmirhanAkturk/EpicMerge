@@ -1,15 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class DontDestroyOnLoad : MonoBehaviour
+namespace Others
 {
-    [SerializeField] private bool hide = false;
-    
-    private void Awake()
+    public class DontDestroyOnLoad : MonoBehaviour
     {
-        DontDestroyOnLoad(gameObject);
-        gameObject.SetActive(!hide);
+        [SerializeField] private bool hide = false;
+    
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+            gameObject.SetActive(!hide);
+        }
     }
 }

@@ -1,10 +1,8 @@
 using _Game.Scripts.Systems.TileObjectSystem;
-using GameDepends.Enums;
-using Systems.PoolingSystem;
 using UnityEngine;
 using Zenject;
 
-namespace _Game.Scripts.GameDepend.Zenject.Factories
+namespace _Game.Scripts.GameDepend
 {
     public class TileObjectFactory : IFactory<Object, BaseTileObject>
     {

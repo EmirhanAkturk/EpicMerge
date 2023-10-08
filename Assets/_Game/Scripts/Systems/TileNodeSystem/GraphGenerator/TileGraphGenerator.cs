@@ -1,23 +1,17 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using _Game.Scripts.GameDepend.Zenject.Factories;
-using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
-using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Attribute;
-using GameDepends.Enums;
+using GameDepends;
 using Systems.ConfigurationSystem;
 using Systems.PoolingSystem;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Utils;
 using Utils.Extensions;
-using Zenject;
 using Application = UnityEngine.Device.Application;
 using Random = UnityEngine.Random;
 
-namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
+namespace _Game.Scripts.Systems.TileNodeSystem
 {
    public class TileGraphGenerator : MonoBehaviour
    {

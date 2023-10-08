@@ -1,7 +1,6 @@
 using _Game.Scripts.Systems.TileObjectSystem;
-using UnityEngine;
 
-namespace _Game.Scripts.Systems.TileSystem
+namespace _Game.Scripts.Systems.DetectionSystem
 {
     public interface ITileNodeDetectionHandler
     {

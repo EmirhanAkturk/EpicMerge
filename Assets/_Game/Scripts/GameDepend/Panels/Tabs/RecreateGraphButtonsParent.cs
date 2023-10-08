@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using _Game.Scripts.Systems.TileNodeSystem.GraphGenerator;
-using TMPro;
+using _Game.Scripts.Systems.TileNodeSystem;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace _Game.Scripts.GameDepend.Panels.Tabs
+namespace _Game.Scripts.GameDepend
 {
     public class RecreateGraphButtonsParent : MonoBehaviour
     {

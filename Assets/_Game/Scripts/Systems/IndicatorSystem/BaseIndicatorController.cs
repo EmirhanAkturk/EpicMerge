@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using _Game.Scripts.Systems.IndicationSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 

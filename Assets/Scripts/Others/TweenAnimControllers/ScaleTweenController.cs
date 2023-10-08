@@ -1,8 +1,9 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using Utils;
 
-namespace Others.TweenAnimControllers
+namespace Others
 {
     public class ScaleTweenController : MonoBehaviour
     {

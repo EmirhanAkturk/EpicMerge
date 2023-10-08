@@ -1,7 +1,6 @@
-using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using Systems.GraphSystem;
 
-namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph
+namespace _Game.Scripts.Systems.TileNodeSystem
 {
     public class TileGraph : Graph<TileNode, TileObjectValue>
     {

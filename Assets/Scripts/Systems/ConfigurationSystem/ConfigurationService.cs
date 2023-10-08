@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameDepends;
+using UnityEngine;
 
 namespace Systems.ConfigurationSystem
 {

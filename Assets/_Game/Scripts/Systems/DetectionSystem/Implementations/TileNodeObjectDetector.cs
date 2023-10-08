@@ -1,9 +1,8 @@
 using System;
 using _Game.Scripts.Systems.TileObjectSystem;
 using UnityEngine;
-using Utils;
 
-namespace _Game.Scripts.Systems.TileNodeSystem
+namespace _Game.Scripts.Systems.DetectionSystem
 {
     [RequireComponent(typeof(Collider))]
     public class TileNodeObjectDetector : MonoBehaviour

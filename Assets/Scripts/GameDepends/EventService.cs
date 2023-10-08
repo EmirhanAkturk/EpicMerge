@@ -1,6 +1,5 @@
 using System;
 using _Game.Scripts.Systems.TileNodeSystem;
-using _Game.Scripts.Systems.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileObjectSystem;
 
 namespace GameDepends

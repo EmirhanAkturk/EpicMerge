@@ -1,4 +1,4 @@
-using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
+using _Game.Scripts.Systems.TileNodeSystem;
 using UnityEngine;
 
 namespace Utils.Extensions

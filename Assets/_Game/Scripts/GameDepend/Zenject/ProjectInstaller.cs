@@ -1,16 +1,17 @@
-using _Game.Scripts.GameDepend.Zenject.Factories;
 using _Game.Scripts.Systems.DetectionSystem;
-using _Game.Scripts.Systems.TileObjectSystem;
 using UnityEngine;
 using Zenject;
 
-public class ProjectInstaller : MonoInstaller
+namespace _Game.Scripts.GameDepend
 {
-    public override void InstallBindings()
+    public class ProjectInstaller : MonoInstaller
     {
-        Container.Bind<IObjectDetectionHandler>().To<TileObjectDetectionHandler>().AsTransient();
+        public override void InstallBindings()
+        {
+            Container.Bind<IObjectDetectionHandler>().To<TileObjectDetectionHandler>().AsTransient();
 
-        Container.BindFactory<Object, Transform, GameObject, PoolObjectFactoryInterface>()
-            .FromFactory<PoolObjectFactory>();
+            Container.BindFactory<Object, Transform, GameObject, PoolObjectFactoryInterface>()
+                .FromFactory<PoolObjectFactory>();
+        }
     }
 }

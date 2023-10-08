@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GameDepends.Enums
+namespace GameDepends
 {
     public enum PopupType 
     {

@@ -1,9 +1,8 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Others.TweenAnimControllers
+namespace Others
 {
     public class MoveTweenAnimController : MonoBehaviour
     {

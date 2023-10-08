@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using _Game.Scripts.Systems.TileNodeSystem.Test;
 using Utils;
 
-namespace _Game.Scripts.Systems.TileNodeSystem.GraphGenerator
+namespace _Game.Scripts.Systems.TileNodeSystem
 {
     public class TileGraphGeneratorManager : Singleton<TileGraphGeneratorManager>
     {

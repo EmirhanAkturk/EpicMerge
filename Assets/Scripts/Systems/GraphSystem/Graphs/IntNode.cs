@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using Systems.GraphSystem;
 using UnityEngine;
-using Utils;
 
-public class IntNode : Node<IntNode, int> 
+namespace Systems.GraphSystem
 {
-    public override void PrintNeighborsValues()
+    public class IntNode : Node<IntNode, int> 
     {
-        Debug.Log("#######################");
-        Debug.Log("Print My Neighbors Value: " + Value);
+        public override void PrintNeighborsValues()
+        {
+            Debug.Log("#######################");
+            Debug.Log("Print My Neighbors Value: " + Value);
 
-        PrintNodeValues(Neighbors);
-    }
+            PrintNodeValues(Neighbors);
+        }
 
-    public IntNode(int value) : base(value)
-    {
+        public IntNode(int value) : base(value)
+        {
         
+        }
     }
 }

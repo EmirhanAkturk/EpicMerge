@@ -1,7 +1,7 @@
-using GameDepends.Enums;
+using GameDepends;
 using Systems.PanelSystem;
 
-namespace _Game.Scripts.GameDepend.Panels
+namespace _Game.Scripts.GameDepend
 {
     public class GameplayPanel : BasePanel
     {

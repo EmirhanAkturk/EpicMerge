@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
-using GameDepends.Enums;
+using GameDepends;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;

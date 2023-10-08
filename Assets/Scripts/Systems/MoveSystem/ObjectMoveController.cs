@@ -2,7 +2,7 @@ using JoostenProductions;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace _Game.Scripts.Systems.TileObjectSystem.MoveSystem
+namespace Systems.MoveSystem
 {
     public class ObjectMoveController : OverridableMonoBehaviour, IMoveController
     {
