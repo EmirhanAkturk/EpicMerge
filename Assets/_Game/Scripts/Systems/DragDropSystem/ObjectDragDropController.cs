@@ -4,6 +4,7 @@ using Systems.ConfigurationSystem;
 using Systems.MoveSystem;
 using Systems.PanelSystem;
 using UnityEngine;
+using Utils;
 
 namespace _Game.Scripts.Systems.DragDropSystem
 {
@@ -73,7 +74,7 @@ namespace _Game.Scripts.Systems.DragDropSystem
 
         private void TryResetDragPos()
         {
-            if (!CanDrag)
+            if (!CanDrag && !GameUtility.IsNull(draggingObjectTr))
             {
                 // TODO Check mouse clicking
                 targetDragPosition = draggingObjectTr.position;

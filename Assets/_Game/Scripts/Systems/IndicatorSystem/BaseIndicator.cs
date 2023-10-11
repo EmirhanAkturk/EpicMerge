@@ -18,9 +18,9 @@ namespace _Game.Scripts.Systems.IndicatorSystem
             HideIndicator();
         }
 
-        public void UpdateIndicatorState(bool isMergeable)
+        public void UpdateIndicatorState(bool showState)
         {
-            if(isMergeable) 
+            if(showState) 
                 TryShowIndicator();
             else
                 TryHideIndicator();

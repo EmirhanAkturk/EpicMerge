@@ -43,6 +43,7 @@ namespace _Game.Scripts.Systems.TileNodeSystem
         }
 
         #endregion
+    
         #region Other Functions
 
         protected override bool CheckNeighborsFull()
