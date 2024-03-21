@@ -1,8 +1,9 @@
+using _Game.Scripts.GameDepend;
 using _Game.Scripts.Systems.TileNodeSystem;
-using GameDepends;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem;
+using GameDepends._Game.Scripts.GameDepend.Panels;
 using Systems.PanelSystem;
-
-namespace _Game.Scripts.GameDepend
+namespace GameDepends._Game.Scripts.GameDepend
 {
     public class ShowSettingsPanelButton : BasePanelButton
     {

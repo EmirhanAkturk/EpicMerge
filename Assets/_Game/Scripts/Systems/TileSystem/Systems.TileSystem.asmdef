@@ -1,0 +1,23 @@
+{
+    "name": "Systems.TileSystem",
+    "rootNamespace": "",
+    "references": [
+        "GUID:226d3c5e34cd34fe2b5db86908edbe38",
+        "GUID:f3de9c49f77a846ad90620000cdb3504",
+        "GUID:8cecb6b3e5d494327be3fc7607af1391",
+        "GUID:d8ee81b930591409799c6ced38a22277",
+        "GUID:5e9ad50a710e347e3bdcdf9e79b0e0a7",
+        "GUID:aa0f062a03c694047ba57ae57123574c",
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
+        "GUID:a3773b2fb202d4bb5878de054e626217"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

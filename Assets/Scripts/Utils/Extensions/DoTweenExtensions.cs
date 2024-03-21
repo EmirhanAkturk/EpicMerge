@@ -4,8 +4,7 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.UI;
-
-namespace Utils.Extensions
+namespace Utils.Editor.Extensions
 {
     public static class DoTweenExtensions
     {

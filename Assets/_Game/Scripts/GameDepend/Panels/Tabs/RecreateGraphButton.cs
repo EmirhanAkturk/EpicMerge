@@ -2,8 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
-namespace _Game.Scripts.GameDepend
+namespace GameDepends._Game.Scripts.GameDepend.Panels
 {
     public class RecreateGraphButton : MonoBehaviour
     {

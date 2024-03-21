@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using DG.Tweening;
 using GameDepends;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils;
 
@@ -162,16 +161,16 @@ namespace Systems.PanelSystem
             if (animType == PanelAnimType.Shring)
             {
                 panel?.transform.DOScale(1f, duration).SetUpdate(true);
-                background?.DOFade(fadeAmount, duration).From(0).SetUpdate(true).OnComplete(EnableCanvas);
+                // background?.DOFade(fadeAmount, duration).From(0).SetUpdate(true).OnComplete(EnableCanvas);
             }
             else if (animType == PanelAnimType.Fade)
             {
-                background?.DOFade(fadeAmount, duration).SetUpdate(true);
+                // background?.DOFade(fadeAmount, duration).SetUpdate(true);
             }
             else if (animType == PanelAnimType.ShringAndBouncy)
             {
                 panel?.transform.DOScale(1f, duration).SetUpdate(true).SetEase(curve);
-                background?.DOFade(fadeAmount, duration).From(0).SetUpdate(true).OnComplete(EnableCanvas);
+                // background?.DoFade(fadeAmount, duration).From(0).SetUpdate(true).OnComplete(EnableCanvas);
             }
             else
             {
@@ -186,16 +185,16 @@ namespace Systems.PanelSystem
             if (animType == PanelAnimType.Shring)
             {
                 panel?.transform.DOScale(zoomOutSize, duration).SetUpdate(true);
-                background?.DOFade(0, duration).SetUpdate(true).OnComplete(DisableCanvas);
+                // background?.DOFade(0, duration).SetUpdate(true).OnComplete(DisableCanvas);
             }
             else if (animType == PanelAnimType.Fade)
             {
-                background?.DOFade(0, duration).SetUpdate(true).OnComplete(DisableCanvas);
+                // background?.DOFade(0, duration).SetUpdate(true).OnComplete(DisableCanvas);
             }
             else if (animType == PanelAnimType.ShringAndBouncy)
             {
                 panel?.transform.DOScale(zoomOutSize, duration).SetUpdate(true);
-                background?.DOFade(0, duration).SetUpdate(true).OnComplete(DisableCanvas);
+                // background?.DOFade(0, duration).SetUpdate(true).OnComplete(DisableCanvas);
             }
             else
             {

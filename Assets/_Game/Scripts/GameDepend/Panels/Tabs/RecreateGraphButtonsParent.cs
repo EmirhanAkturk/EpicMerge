@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using _Game.Scripts.Systems.TileNodeSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem;
 using UnityEngine;
-
-namespace _Game.Scripts.GameDepend
+namespace GameDepends._Game.Scripts.GameDepend.Panels
 {
     public class RecreateGraphButtonsParent : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Game.Scripts.GameDepend;
 using GameDepends;
+using GameDepends._Game.Scripts.GameDepend.Zenject.Factories;
 using Others;
 using UnityEngine;
 using Utils;

@@ -1,6 +1,6 @@
 using System;
+using _Game.Scripts.Systems.ConfigurationSystem;
 using JoostenProductions;
-using Systems.ConfigurationSystem;
 using Systems.MoveSystem;
 using Systems.PanelSystem;
 using UnityEngine;

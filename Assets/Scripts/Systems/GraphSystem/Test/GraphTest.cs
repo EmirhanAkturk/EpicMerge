@@ -1,9 +1,9 @@
 using Attribute;
+using Systems.GraphSystem.Utils;
 using UnityEngine;
-using Utils.Extensions;
 using Random = UnityEngine.Random;
 
-namespace Systems.GraphSystem
+namespace Systems.GraphSystem.Test
 {
    public class GraphTest : MonoBehaviour
    {

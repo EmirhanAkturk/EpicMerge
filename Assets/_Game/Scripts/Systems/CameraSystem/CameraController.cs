@@ -1,4 +1,5 @@
-using _Game.Scripts.Systems.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.EventSystem;
+using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
 using GameDepends;
 using JoostenProductions;
 using Systems.PanelSystem;

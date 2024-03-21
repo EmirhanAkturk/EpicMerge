@@ -1,8 +1,8 @@
 using _Game.Scripts.Systems.DetectionSystem;
+using GameDepends._Game.Scripts.GameDepend.Zenject.Factories;
 using UnityEngine;
 using Zenject;
-
-namespace _Game.Scripts.GameDepend
+namespace Systems.PoolingSystem.Zenject
 {
     public class ProjectInstaller : MonoInstaller
     {
