@@ -103,7 +103,7 @@ namespace Systems.PanelSystem
                 //transform.gameObject.SetActive(false);
                 DisableCanvas();
             }
-
+            
             panelCloseTime = Time.time;
             //AnalyticsManager.Instance.PanelClosedEvent(PopupType, panelCloseTime - panelOpenTime, GetPanelEventParams());
 
@@ -160,7 +160,7 @@ namespace Systems.PanelSystem
             KillPlayingTweens();
             if (animType == PanelAnimType.Shring)
             {
-                panel?.transform.DOScale(1f, duration).SetUpdate(true);
+                panel?.transform.DOScale(1f, duration).SetUpdate(true).OnComplete(EnableCanvas);
                 // background?.DOFade(fadeAmount, duration).From(0).SetUpdate(true).OnComplete(EnableCanvas);
             }
             else if (animType == PanelAnimType.Fade)
@@ -169,7 +169,7 @@ namespace Systems.PanelSystem
             }
             else if (animType == PanelAnimType.ShringAndBouncy)
             {
-                panel?.transform.DOScale(1f, duration).SetUpdate(true).SetEase(curve);
+                panel?.transform.DOScale(1f, duration).SetUpdate(true).SetEase(curve).OnComplete(EnableCanvas);
                 // background?.DoFade(fadeAmount, duration).From(0).SetUpdate(true).OnComplete(EnableCanvas);
             }
             else
@@ -184,7 +184,7 @@ namespace Systems.PanelSystem
 
             if (animType == PanelAnimType.Shring)
             {
-                panel?.transform.DOScale(zoomOutSize, duration).SetUpdate(true);
+                panel?.transform.DOScale(zoomOutSize, duration).SetUpdate(true).OnComplete(DisableCanvas);
                 // background?.DOFade(0, duration).SetUpdate(true).OnComplete(DisableCanvas);
             }
             else if (animType == PanelAnimType.Fade)
@@ -193,7 +193,7 @@ namespace Systems.PanelSystem
             }
             else if (animType == PanelAnimType.ShringAndBouncy)
             {
-                panel?.transform.DOScale(zoomOutSize, duration).SetUpdate(true);
+                panel?.transform.DOScale(zoomOutSize, duration).SetUpdate(true).OnComplete(DisableCanvas);
                 // background?.DOFade(0, duration).SetUpdate(true).OnComplete(DisableCanvas);
             }
             else
