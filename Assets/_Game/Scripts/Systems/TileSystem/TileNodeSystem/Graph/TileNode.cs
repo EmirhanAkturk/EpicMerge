@@ -1,10 +1,10 @@
 using System;
-using _Game.Scripts.Systems.TileNodeSystem;
 using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects;
 using Systems.GraphSystem;
 using UnityEngine;
 using Utils;
-namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
+namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph
 {
     public class TileNode : Node<TileNode, TileObjectValue>
     {

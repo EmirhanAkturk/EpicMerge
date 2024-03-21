@@ -1,5 +1,4 @@
 using UnityEngine;
-
 namespace _Game.Scripts.Systems.IndicatorSystem
 {
     public class ObjectShowIndicator : BaseIndicator

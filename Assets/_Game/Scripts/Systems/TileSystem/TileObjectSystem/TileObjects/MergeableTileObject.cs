@@ -1,13 +1,13 @@
-using _Game.Scripts.Systems.DetectionSystem;
 using _Game.Scripts.Systems.DragDropSystem;
 using _Game.Scripts.Systems.IndicatorSystem;
-using _Game.Scripts.Systems.MergeSystem;
-using _Game.Scripts.Systems.TileNodeSystem;
+using _Game.Scripts.Systems.TileSystem.DetectionSystem;
 using _Game.Scripts.Systems.TileSystem.EventSystem;
+using _Game.Scripts.Systems.TileSystem.TileMergeSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using Systems.MoveSystem;
 using UnityEngine;
 using Zenject;
-namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
+namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects
 {
     public class MergeableTileObject : BaseTileObject, IMergeableTileObject
     {

@@ -1,6 +1,8 @@
 using System;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects;
 namespace _Game.Scripts.Systems.TileSystem.EventSystem
 {
     public class EventService

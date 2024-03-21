@@ -1,11 +1,11 @@
 {
-    "name": "Systems.DragDropSystem",
+    "name": "Systems.CameraSystem",
     "rootNamespace": "",
     "references": [
         "GUID:f3de9c49f77a846ad90620000cdb3504",
+        "GUID:399dbc29f24d14c0693a24dbb54ce1f1",
         "GUID:226d3c5e34cd34fe2b5db86908edbe38",
-        "GUID:d8ee81b930591409799c6ced38a22277",
-        "GUID:a3773b2fb202d4bb5878de054e626217"
+        "GUID:22f5b4ea9b21447e493683ab66fb4e54"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

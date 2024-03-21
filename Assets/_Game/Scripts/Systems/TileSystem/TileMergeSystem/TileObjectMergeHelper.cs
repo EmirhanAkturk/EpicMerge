@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using _Game.Scripts.Systems.ConfigurationSystem;
-using _Game.Scripts.Systems.TileNodeSystem;
 using _Game.Scripts.Systems.TileSystem.EventSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects;
 using GameDepends;
 
 namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem

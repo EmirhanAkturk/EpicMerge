@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using _Game.Scripts.Systems.TileSystem.EventSystem;
-using _Game.Scripts.Systems.TileSystem.TileNodeSystem;
-using GameDepends;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using UnityEngine;
 using Utils;
-
-namespace _Game.Scripts.Systems.TileNodeSystem
+namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Test
 {
     public class MergeTestManager : Singleton<MergeTestManager>
     {

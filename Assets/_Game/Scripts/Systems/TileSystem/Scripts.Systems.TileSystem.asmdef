@@ -1,5 +1,5 @@
 {
-    "name": "Systems.TileSystem",
+    "name": "Scripts.Systems.TileSystem",
     "rootNamespace": "",
     "references": [
         "GUID:226d3c5e34cd34fe2b5db86908edbe38",
@@ -9,7 +9,7 @@
         "GUID:5e9ad50a710e347e3bdcdf9e79b0e0a7",
         "GUID:aa0f062a03c694047ba57ae57123574c",
         "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
-        "GUID:a3773b2fb202d4bb5878de054e626217"
+        "GUID:22f5b4ea9b21447e493683ab66fb4e54"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
-
-namespace _Game.Scripts.Systems.TileObjectSystem
+namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
 {
     [Serializable]
     public struct TileObjectDataByLevel

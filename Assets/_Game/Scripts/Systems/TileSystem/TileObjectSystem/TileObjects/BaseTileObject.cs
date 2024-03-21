@@ -1,10 +1,8 @@
-using _Game.Scripts.Systems.TileNodeSystem;
-using _Game.Scripts.Systems.TileObjectSystem;
-using _Game.Scripts.Systems.TileSystem.TileNodeSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using JoostenProductions;
 using Systems.MoveSystem;
 using UnityEngine;
-namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
+namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects
 {
     public class BaseTileObject : OverridableMonoBehaviour
     {

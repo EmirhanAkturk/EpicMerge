@@ -1,0 +1,16 @@
+{
+    "name": "Scripts.Others",
+    "rootNamespace": "",
+    "references": [
+        "GUID:22f5b4ea9b21447e493683ab66fb4e54"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

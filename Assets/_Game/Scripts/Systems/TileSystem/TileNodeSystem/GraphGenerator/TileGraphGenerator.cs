@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text;
 using _Game.Scripts.Systems.ConfigurationSystem;
-using _Game.Scripts.Systems.TileNodeSystem;
-using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
+using _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects;
 using _Game.Scripts.Systems.TileSystem.Utils;
 using Attribute;
 using GameDepends;
@@ -13,7 +13,7 @@ using Utils;
 using Application = UnityEngine.Device.Application;
 using Random = UnityEngine.Random;
 
-namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
+namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.GraphGenerator
 {
    public class TileGraphGenerator : MonoBehaviour
    {

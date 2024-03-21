@@ -1,9 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
-
-namespace _Game.Scripts.Systems.TileObjectSystem
+namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
 {
     public class BaseTileObjectSpriteController : MonoBehaviour
     {

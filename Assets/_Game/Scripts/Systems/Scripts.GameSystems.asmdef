@@ -1,9 +1,7 @@
 {
-    "name": "Others",
+    "name": "Scripts.GameSystems",
     "rootNamespace": "",
-    "references": [
-        "GUID:a3773b2fb202d4bb5878de054e626217"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -1,7 +1,6 @@
 using GameDepends;
 using Systems.PanelSystem;
-
-namespace _Game.Scripts.GameDepend
+namespace _Game.Scripts.GameDepend.Panels
 {
     public class GameplayPanel : BasePanel
     {

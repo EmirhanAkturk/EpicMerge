@@ -1,4 +1,5 @@
 using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects;
 namespace _Game.Scripts.Systems.TileSystem.DetectionSystem
 {
     public interface ITileNodeDetectionHandler

@@ -1,4 +1,5 @@
 using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects;
 using UnityEngine;
 using Zenject;
 namespace GameDepends._Game.Scripts.GameDepend.Zenject.Factory

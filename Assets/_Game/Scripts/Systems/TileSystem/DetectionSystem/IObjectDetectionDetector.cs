@@ -1,8 +1,6 @@
 using System;
-using _Game.Scripts.Systems.TileObjectSystem;
 using UnityEngine;
-
-namespace _Game.Scripts.Systems.DetectionSystem
+namespace _Game.Scripts.Systems.TileSystem.DetectionSystem
 {
     public interface IObjectDetector
     {

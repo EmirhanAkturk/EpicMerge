@@ -1,5 +1,5 @@
-using _Game.Scripts.Systems.TileNodeSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using UnityEngine;
 using UnityEngine.UI;
 

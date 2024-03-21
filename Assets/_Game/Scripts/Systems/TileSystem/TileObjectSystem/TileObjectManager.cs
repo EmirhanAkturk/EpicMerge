@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using _Game.Scripts.Systems.ConfigurationSystem;
-using _Game.Scripts.Systems.TileObjectSystem;
 using Utils;
 namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
 {

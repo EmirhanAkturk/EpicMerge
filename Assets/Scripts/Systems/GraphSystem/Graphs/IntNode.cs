@@ -1,6 +1,5 @@
 using UnityEngine;
-
-namespace Systems.GraphSystem
+namespace Systems.GraphSystem.Graphs
 {
     public class IntNode : Node<IntNode, int> 
     {

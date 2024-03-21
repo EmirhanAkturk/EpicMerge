@@ -1,12 +1,11 @@
 {
-    "name": "GameDepends",
-    "rootNamespace": "GameDepends",
+    "name": "Scripts.Systems.DragDropSystem",
+    "rootNamespace": "",
     "references": [
+        "GUID:f3de9c49f77a846ad90620000cdb3504",
         "GUID:226d3c5e34cd34fe2b5db86908edbe38",
-        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
-        "GUID:399dbc29f24d14c0693a24dbb54ce1f1",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:a3773b2fb202d4bb5878de054e626217"
+        "GUID:d8ee81b930591409799c6ced38a22277",
+        "GUID:22f5b4ea9b21447e493683ab66fb4e54"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

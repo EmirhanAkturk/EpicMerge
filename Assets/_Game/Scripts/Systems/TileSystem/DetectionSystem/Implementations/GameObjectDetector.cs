@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
-
-namespace _Game.Scripts.Systems.DetectionSystem
+namespace _Game.Scripts.Systems.TileSystem.DetectionSystem
 {
     [RequireComponent(typeof(Collider))]
     public class GameObjectDetector : MonoBehaviour, IObjectDetector

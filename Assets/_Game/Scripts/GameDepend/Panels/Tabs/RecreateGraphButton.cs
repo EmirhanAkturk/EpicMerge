@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-namespace GameDepends._Game.Scripts.GameDepend.Panels
+namespace _Game.Scripts.GameDepend.Panels.Tabs
 {
     public class RecreateGraphButton : MonoBehaviour
     {

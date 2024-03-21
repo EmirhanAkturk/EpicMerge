@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils;
-
-namespace _Game.Scripts.Systems.TileObjectSystem
+namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
 {
     [CreateAssetMenu(menuName = "lib / Tile Object Collection", fileName = "TileObjectCollection")]
     public class TileObjectCollection : ScriptableObject

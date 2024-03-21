@@ -1,6 +1,6 @@
 using System;
-using _Game.Scripts.Systems.DetectionSystem;
 using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects;
 using UnityEngine;
 namespace _Game.Scripts.Systems.TileSystem.DetectionSystem
 {

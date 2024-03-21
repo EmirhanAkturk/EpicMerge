@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Utils;
-
-namespace _Game.Scripts.Systems.TileObjectSystem
+namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
 {
     [Serializable]
     public class TileObjectCollectionData // TODO Can Made Struct

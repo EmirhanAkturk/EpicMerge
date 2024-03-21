@@ -1,9 +1,7 @@
-using _Game.Scripts.Systems.TileObjectSystem;
-using _Game.Scripts.Systems.TileSystem.DetectionSystem;
 using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
+using _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects;
 using UnityEngine;
-
-namespace _Game.Scripts.Systems.DetectionSystem
+namespace _Game.Scripts.Systems.TileSystem.DetectionSystem
 {
     public class TileObjectDetectionHandler : IObjectDetectionHandler
     {

@@ -1,10 +1,9 @@
-using _Game.Scripts.Systems.TileNodeSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem;
+using _Game.Scripts.Systems.TileSystem.TileNodeSystem.GraphGenerator;
 using Systems.PanelSystem;
 using UnityEngine;
 using Utils;
-
-namespace GameDepends
+namespace GameDepends._Game.Scripts.GameDepend
 {
     public class GameStarter : MonoBehaviour
     {
