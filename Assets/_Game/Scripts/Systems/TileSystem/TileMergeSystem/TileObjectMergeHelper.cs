@@ -12,13 +12,18 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
     public static class TileObjectMergeHelper
     {
         private static int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
-        
+
         private static List<TileNode> _mergeableIndicatorShownNodes;
-        
-        static TileObjectMergeHelper()
+        private static IEventService _eventService;
+
+        /// <summary>
+        /// Zenject installer tarafından uygulama başlangıcında çağrılmalıdır.
+        /// </summary>
+        public static void Initialize(IEventService eventService)
         {
-            EventService.onTileObjectPlacedToTile += TileObjectPlacedToTile;
-            EventService.onMergeCanceled += MergeCancel;
+            _eventService = eventService;
+            _eventService.OnTileObjectPlacedToTile += TileObjectPlacedToTile;
+            _eventService.OnMergeCanceled += MergeCancel;
         }
 
         private static void TileObjectPlacedToTile(TileNode tileNode, BaseTileObject baseTileObject)
@@ -28,8 +33,8 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
 
         public static void MergeCancel()
         {
-            UpdateMergeableObjectsIndicator( _mergeableIndicatorShownNodes, false);
-            EventService.onCanMergeStateChange?.Invoke(false);
+            UpdateMergeableObjectsIndicator(_mergeableIndicatorShownNodes, false);
+            _eventService?.RaiseCanMergeStateChange(false);
         }
         
         public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects)
@@ -52,7 +57,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
             {
                 UpdateMergeableObjectsIndicator(wantedNodes, canMerge);
             }
-            EventService.onCanMergeStateChange?.Invoke(canMerge);
+            _eventService?.RaiseCanMergeStateChange(canMerge);
             return canMerge;
         }
 

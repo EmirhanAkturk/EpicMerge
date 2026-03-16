@@ -9,11 +9,14 @@ using JoostenProductions;
 using NaughtyAttributes;
 using UnityEngine;
 using Utils;
+using Zenject;
 namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
 {
     public class TileNodeObjectController : OverridableMonoBehaviour
     {
         private TileNode ThisTileNode { get;  set; }
+
+        [Inject] private IEventService EventService { get; }
 
         [Space]
         
@@ -73,7 +76,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
             if(baseTileObject != placedBaseTileObject) return;
             // Debug.Log("ObjectDragEnd : " + gameObject.name);
             MoveObjectToTileCenter(baseTileObject);
-            EventService.onMergeCanceled?.Invoke();
+            EventService.RaiseMergeCanceled();
         }
 
         private void ObjectEnterTileArea(BaseTileObject baseTileObject)
@@ -98,7 +101,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
             }
             else
             {
-                EventService.onMergeCanceled?.Invoke();
+                EventService.RaiseMergeCanceled();
             }
         }
 
@@ -158,7 +161,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
             MoveObjectToTileCenter(baseTileObject);
             movingBaseTileObjectOnThisBaseTile = null;
             SetPlacedObject(baseTileObject);
-            EventService.onTileObjectPlacedToTile?.Invoke(ThisTileNode, baseTileObject);
+            EventService.RaiseTileObjectPlacedToTile(ThisTileNode, baseTileObject);
         }
 
         private void SetPlacedObject(BaseTileObject baseTileObject)
@@ -291,8 +294,8 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
         private void SubscribeTileObjectEvents()
         {
             if(isSubTileObjectEvents) return;
-            EventService.onAfterTileObjectDragEnd += AfterObjectDragEnd;
-            EventService.onTileObjectPlacedToTile += ObjectPlacedToTile;
+            EventService.OnAfterTileObjectDragEnd += AfterObjectDragEnd;
+            EventService.OnTileObjectPlacedToTile += ObjectPlacedToTile;
             isSubTileObjectEvents = true;
         }
 
@@ -300,8 +303,8 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
         {
             // TODO unsubscribe can only be done in OnDisable 
             if(!isSubTileObjectEvents) return;
-            EventService.onAfterTileObjectDragEnd -= AfterObjectDragEnd;
-            EventService.onTileObjectPlacedToTile -= ObjectPlacedToTile;
+            EventService.OnAfterTileObjectDragEnd -= AfterObjectDragEnd;
+            EventService.OnTileObjectPlacedToTile -= ObjectPlacedToTile;
             isSubTileObjectEvents = false;
         }
 

@@ -31,6 +31,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects
         private IObjectDetector objectDetector;
 
         [Inject] private IObjectDetectionHandler ObjectDetectionHandler { get; }
+        [Inject] private IEventService EventService { get; }
 
         protected override void OnDisable()
         {
@@ -94,7 +95,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects
         {
             SetDetectionActiveState(true);
             UpdateDraggingState(true);
-            EventService.onTileObjectDragStart?.Invoke(this);
+            EventService.RaiseTileObjectDragStart(this);
         }
 
         private void ObjectDragEnd()
@@ -102,8 +103,8 @@ namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects
             SetDetectionActiveState(false);
             UpdateDraggingState(false);
             ObjectDetectionHandler.TileObjectPlaced(this);
-            EventService.onTileObjectDragEnd?.Invoke(this);
-            EventService.onAfterTileObjectDragEnd?.Invoke(this);
+            EventService.RaiseTileObjectDragEnd(this);
+            EventService.RaiseAfterTileObjectDragEnd(this);
         }
 
         private void UpdateDraggingState(bool state)

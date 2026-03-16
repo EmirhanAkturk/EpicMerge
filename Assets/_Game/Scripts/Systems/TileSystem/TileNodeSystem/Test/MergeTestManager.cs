@@ -3,15 +3,18 @@ using _Game.Scripts.Systems.TileSystem.EventSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using UnityEngine;
 using Utils;
+using Zenject;
 namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Test
 {
     public class MergeTestManager : Singleton<MergeTestManager>
     {
         private readonly List<TileNode> canMergeNodes = new List<TileNode>();
-        
+
+        [Inject] private IEventService EventService { get; }
+
         private void Awake()
         {
-            EventService.onCanMergeStateChange += UpdateGizmo;
+            EventService.OnCanMergeStateChange += UpdateGizmo;
         }
 
         private void UpdateGizmo(bool isMergeable)

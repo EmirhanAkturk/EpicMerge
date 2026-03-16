@@ -5,6 +5,7 @@ using GameDepends;
 using JoostenProductions;
 using Systems.PanelSystem;
 using UnityEngine;
+using Zenject;
 
 namespace _Game.Scripts.Systems.CameraSystem
 {
@@ -35,21 +36,23 @@ namespace _Game.Scripts.Systems.CameraSystem
 
         private bool isCameraControllable = true;
 
+        [Inject] private IEventService EventService { get; }
+
         #region Game Part
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            EventService.onTileObjectDragStart += ObjectDragStart;
-            EventService.onTileObjectDragEnd += ObjectDragEnd;
+            EventService.OnTileObjectDragStart += ObjectDragStart;
+            EventService.OnTileObjectDragEnd += ObjectDragEnd;
         }
-    
+
         protected override void OnDisable()
         {
             base.OnDisable();
 
-            EventService.onTileObjectDragStart -= ObjectDragStart;
-            EventService.onTileObjectDragEnd -= ObjectDragEnd;
+            EventService.OnTileObjectDragStart -= ObjectDragStart;
+            EventService.OnTileObjectDragEnd -= ObjectDragEnd;
         }
 
         private void ObjectDragStart(BaseTileObject obj)

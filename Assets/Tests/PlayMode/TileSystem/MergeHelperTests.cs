@@ -37,6 +37,7 @@ namespace Tests.PlayMode.TileSystem
 
         private bool?      _lastCanMergeEvent;
         private GameObject _stepLabel;
+        private EventService _eventService;
 
         // ─── Sabitler ─────────────────────────────────────────────────────────
         private static readonly TileObjectValue TypeA1 = new TileObjectValue(1, 1);
@@ -57,7 +58,9 @@ namespace Tests.PlayMode.TileSystem
             _mergeResults.Clear();
             _nodeQuads.Clear();
             _lastCanMergeEvent = null;
-            EventService.onCanMergeStateChange += OnCanMergeStateChange;
+            _eventService = new EventService();
+            TileObjectMergeHelper.Initialize(_eventService);
+            _eventService.OnCanMergeStateChange += OnCanMergeStateChange;
             TileObjectMergeHelper.MergeCancel();
         }
 
@@ -65,7 +68,7 @@ namespace Tests.PlayMode.TileSystem
         public void TearDown()
         {
             TileObjectMergeHelper.MergeCancel();
-            EventService.onCanMergeStateChange -= OnCanMergeStateChange;
+            _eventService.OnCanMergeStateChange -= OnCanMergeStateChange;
             foreach (var go in _sceneObjects)
                 if (go != null) Object.Destroy(go);
             _sceneObjects.Clear();
