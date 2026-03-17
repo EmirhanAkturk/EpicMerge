@@ -2,6 +2,7 @@ using _Game.Scripts.Systems.TileSystem.DetectionSystem;
 using _Game.Scripts.Systems.TileSystem.EventSystem;
 using _Game.Scripts.Systems.TileSystem.TileMergeSystem;
 using GameDepends._Game.Scripts.GameDepend.Zenject.Factories;
+using Systems.PoolingSystem;
 using UnityEngine;
 using Zenject;
 
@@ -29,6 +30,13 @@ namespace _Game.Scripts.GameDepend.Zenject
             // ── Pooling ──────────────────────────────────────────────────────
             Container.BindFactory<Object, Transform, GameObject, PoolObjectFactoryInterface>()
                 .FromFactory<PoolObjectFactory>();
+
+            Container.Bind<IPoolingSystem>()
+                .To<PoolingSystem>()
+                .FromNewComponentOnNewGameObject()
+                .WithGameObjectName("PoolingSystem")
+                .AsSingle()
+                .NonLazy();
         }
     }
 }

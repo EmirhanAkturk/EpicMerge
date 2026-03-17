@@ -9,10 +9,12 @@ using Zenject;
 
 namespace Systems.PoolingSystem
 {
-    public class PoolingSystem: Singleton<PoolingSystem>
+    public class PoolingSystem: MonoBehaviour, IPoolingSystem
     {
+        public static PoolingSystem Instance { get; private set; }
+
         [Inject] private PoolObjectFactoryInterface poolObjectFactory;
-        
+
         private  bool isInitialized = false;
         private  PoolCollection poolCollection;
         private readonly Dictionary<PoolType, PoolElement> poolDictionary = new Dictionary<PoolType, PoolElement>();
@@ -20,7 +22,12 @@ namespace Systems.PoolingSystem
         public List<PoolRep> poolObjects = new List<PoolRep>();
 
         private const string POOL_PATH = "Configurations/PoolCollection";
-        private static GameObject _poolParent;
+        private GameObject _poolParent;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
     
         public  void InstantiatePool()
         {
