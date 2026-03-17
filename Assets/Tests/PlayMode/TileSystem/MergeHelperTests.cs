@@ -38,6 +38,7 @@ namespace Tests.PlayMode.TileSystem
         private bool?      _lastCanMergeEvent;
         private GameObject _stepLabel;
         private EventService _eventService;
+        private ITileObjectMergeHelper _mergeHelper;
 
         // ─── Sabitler ─────────────────────────────────────────────────────────
         private static readonly TileObjectValue TypeA1 = new TileObjectValue(1, 1);
@@ -59,15 +60,15 @@ namespace Tests.PlayMode.TileSystem
             _nodeQuads.Clear();
             _lastCanMergeEvent = null;
             _eventService = new EventService();
-            TileObjectMergeHelper.Initialize(_eventService);
+            _mergeHelper = new TileObjectMergeHelper(_eventService);
             _eventService.OnCanMergeStateChange += OnCanMergeStateChange;
-            TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.MergeCancel();
         }
 
         [TearDown]
         public void TearDown()
         {
-            TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.MergeCancel();
             _eventService.OnCanMergeStateChange -= OnCanMergeStateChange;
             foreach (var go in _sceneObjects)
                 if (go != null) Object.Destroy(go);
@@ -91,7 +92,7 @@ namespace Tests.PlayMode.TileSystem
             SetLabel(moved,   "moved");
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool result = TileObjectMergeHelper.CanMerge(current, moved, Empty, false);
+            bool result = _mergeHelper.CanMerge(current, moved, Empty, false);
             MarkResult(current, result); MarkResult(moved, result);
 
             Assert.IsFalse(result);
@@ -111,7 +112,7 @@ namespace Tests.PlayMode.TileSystem
             SetLabel(moved,   "mov\nBOŞ");
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool result = TileObjectMergeHelper.CanMerge(current, moved, TypeA1, false);
+            bool result = _mergeHelper.CanMerge(current, moved, TypeA1, false);
             MarkResult(current, result); MarkResult(moved, result);
 
             Assert.IsFalse(result);
@@ -135,7 +136,7 @@ namespace Tests.PlayMode.TileSystem
             SetLabel(moved,   "B\nhdf");
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool result = TileObjectMergeHelper.CanMerge(current, moved, TypeA1, false);
+            bool result = _mergeHelper.CanMerge(current, moved, TypeA1, false);
             MarkResult(current, result); MarkResult(moved, result);
 
             Assert.IsFalse(result);
@@ -157,7 +158,7 @@ namespace Tests.PlayMode.TileSystem
             SetLabel(extra,   "C");
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool result = TileObjectMergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
+            bool result = _mergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
             HighlightWantedNodes(wantedNodes, result);
 
             Assert.IsTrue(result);
@@ -179,7 +180,7 @@ namespace Tests.PlayMode.TileSystem
             SetLabel(blocker, "X\nB2\nENGL"); SetLabel(other, "C");
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool result = TileObjectMergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
+            bool result = _mergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
             HighlightWantedNodes(wantedNodes, result);
             _nodeQuads[blocker].GetComponent<Renderer>().material.color = new Color(1f, 0.25f, 0.1f);
 
@@ -201,7 +202,7 @@ namespace Tests.PlayMode.TileSystem
             yield return new WaitForSeconds(STEP_DELAY);
 
             // indicateMergeableObjects = true → onUpdateMergeableIndicator(true) çağrılır
-            bool result = TileObjectMergeHelper.CanMerge(current, moved, TypeA1, indicateMergeableObjects: true);
+            bool result = _mergeHelper.CanMerge(current, moved, TypeA1, indicateMergeableObjects: true);
 
             Assert.IsTrue(result);
             yield return new WaitForSeconds(RESULT_DELAY);
@@ -224,7 +225,7 @@ namespace Tests.PlayMode.TileSystem
             SetLabel(current, "A\ncur"); SetLabel(moved, "B"); SetLabel(extra, "C");
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
+            _mergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
             HighlightWantedNodes(wantedNodes, true);
 
             Assert.IsTrue(wantedNodes.Contains(current));
@@ -244,7 +245,7 @@ namespace Tests.PlayMode.TileSystem
             SetLabel(current, "A"); SetLabel(moved, "B"); SetLabel(extra, "C");
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
+            _mergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
             HighlightWantedNodes(wantedNodes, true);
 
             Assert.AreEqual(3, wantedNodes.Count);
@@ -270,7 +271,7 @@ namespace Tests.PlayMode.TileSystem
             SetLabel(c, "C"); SetLabel(d, "D"); SetLabel(e, "E");
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
+            _mergeHelper.CanMerge(current, moved, TypeA1, false, out var wantedNodes);
             HighlightWantedNodes(wantedNodes, false);
 
             // A grubundan sadece 2 tile — merge yok
@@ -294,7 +295,7 @@ namespace Tests.PlayMode.TileSystem
             DrawConnections(graph);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.CanMerge(current, moved, TypeA1, false);
+            _mergeHelper.CanMerge(current, moved, TypeA1, false);
             MarkResult(current, true); MarkResult(moved, true); MarkResult(extra, true);
 
             Assert.AreEqual(true, _lastCanMergeEvent);
@@ -312,7 +313,7 @@ namespace Tests.PlayMode.TileSystem
             DrawConnections(graph);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.CanMerge(current, moved, TypeA1, false);
+            _mergeHelper.CanMerge(current, moved, TypeA1, false);
             MarkResult(current, false); MarkResult(moved, false);
 
             Assert.AreEqual(false, _lastCanMergeEvent);
@@ -336,7 +337,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(current, moved);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool merged = TileObjectMergeHelper.TryMerge(current, moved, TypeA1);
+            bool merged = _mergeHelper.TryMerge(current, moved, TypeA1);
             MarkResult(current, merged); MarkResult(moved, merged);
 
             Assert.IsFalse(merged);
@@ -362,7 +363,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(current, moved, extra);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool merged = TileObjectMergeHelper.TryMerge(current, moved, TypeA1);
+            bool merged = _mergeHelper.TryMerge(current, moved, TypeA1);
             UpdateQuadColors();
 
             Assert.IsTrue(merged);
@@ -384,7 +385,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(current, moved, extra);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.TryMerge(current, moved, TypeA1);
+            _mergeHelper.TryMerge(current, moved, TypeA1);
             UpdateQuadColors();
 
             Assert.IsTrue(_mergeResults[moved].Equals(TypeA2),
@@ -406,7 +407,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(current, moved, extra);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.TryMerge(current, moved, TypeA1);
+            _mergeHelper.TryMerge(current, moved, TypeA1);
             UpdateQuadColors();
 
             Assert.AreEqual(2, CountResults(v => v.IsEmptyTileObjectValue()));
@@ -429,7 +430,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(ns);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.TryMerge(ns[0], ns[1], TypeA1);
+            _mergeHelper.TryMerge(ns[0], ns[1], TypeA1);
             UpdateQuadColors();
 
             Assert.AreEqual(1, CountResults(v => v.Equals(TypeA2)), "1 upgraded");
@@ -453,7 +454,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(ns);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.TryMerge(ns[0], ns[1], TypeA1);
+            _mergeHelper.TryMerge(ns[0], ns[1], TypeA1);
             UpdateQuadColors();
 
             Assert.AreEqual(2, CountResults(v => v.Equals(TypeA2)), "2 upgraded");
@@ -476,7 +477,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(ns);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.TryMerge(ns[0], ns[1], TypeA1);
+            _mergeHelper.TryMerge(ns[0], ns[1], TypeA1);
             UpdateQuadColors();
 
             Assert.AreEqual(2, CountResults(v => v.Equals(TypeA2)), "2 upgraded");
@@ -499,7 +500,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(ns);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            TileObjectMergeHelper.TryMerge(ns[0], ns[1], TypeA1);
+            _mergeHelper.TryMerge(ns[0], ns[1], TypeA1);
             UpdateQuadColors();
 
             Assert.AreEqual(3, CountResults(v => v.Equals(TypeA2)), "3 upgraded");
@@ -525,7 +526,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(current, moved, extra);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool merged = TileObjectMergeHelper.TryMerge(current, moved, TypeA2);
+            bool merged = _mergeHelper.TryMerge(current, moved, TypeA2);
             UpdateQuadColors();
 
             Assert.IsTrue(merged);
@@ -559,7 +560,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(a, b, c, d, e);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool merged = TileObjectMergeHelper.TryMerge(a, b, TypeA1);
+            bool merged = _mergeHelper.TryMerge(a, b, TypeA1);
             UpdateQuadColors();
 
             Assert.IsTrue(merged);
@@ -602,7 +603,7 @@ namespace Tests.PlayMode.TileSystem
             SubscribeMergeResult(ns);
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool merged = TileObjectMergeHelper.TryMerge(ns[0], ns[1], TypeA1);
+            bool merged = _mergeHelper.TryMerge(ns[0], ns[1], TypeA1);
             UpdateQuadColors();
 
             Assert.IsTrue(merged);
@@ -627,7 +628,7 @@ namespace Tests.PlayMode.TileSystem
             yield return new WaitForSeconds(STEP_DELAY);
 
             _lastCanMergeEvent = null;
-            TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.MergeCancel();
 
             Assert.AreEqual(false, _lastCanMergeEvent);
             yield return new WaitForSeconds(RESULT_DELAY);
@@ -645,11 +646,11 @@ namespace Tests.PlayMode.TileSystem
             DrawConnections(graph);
             SetLabel(current, "A"); SetLabel(moved, "B"); SetLabel(extra, "C");
             // indicator açık göster
-            TileObjectMergeHelper.CanMerge(current, moved, TypeA1, indicateMergeableObjects: true);
+            _mergeHelper.CanMerge(current, moved, TypeA1, indicateMergeableObjects: true);
             yield return new WaitForSeconds(STEP_DELAY);
 
             // Cancel: indicator kapanır (tile'lar normal boyuta döner)
-            TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.MergeCancel();
 
             Assert.AreEqual(false, _lastCanMergeEvent);
             yield return new WaitForSeconds(RESULT_DELAY);
@@ -677,7 +678,7 @@ namespace Tests.PlayMode.TileSystem
             yield return new WaitForSeconds(STEP_DELAY);
 
             // ─── Adım 1: 9 Lv1 → [B,C,D]=Lv2, geri kalanlar=Empty ───
-            bool step1 = TileObjectMergeHelper.TryMerge(ns[0], ns[1], TypeA1);
+            bool step1 = _mergeHelper.TryMerge(ns[0], ns[1], TypeA1);
             ApplyMergeResultsToNodes();
 
             Assert.IsTrue(step1, "Adım 1 merge gerçekleşmeli");
@@ -690,9 +691,9 @@ namespace Tests.PlayMode.TileSystem
             // BFS(C, except B): C→D(Lv2) + add B → [C,D,B] = 3 Lv2 node
             ShowStepText("Adım 2 — 3× Lv2 merge ediliyor");
             _mergeResults.Clear();
-            TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.MergeCancel();
 
-            bool step2 = TileObjectMergeHelper.TryMerge(ns[1], ns[2], TypeA2);
+            bool step2 = _mergeHelper.TryMerge(ns[1], ns[2], TypeA2);
             UpdateQuadColors();
 
             Assert.IsTrue(step2, "Adım 2 merge gerçekleşmeli");
@@ -720,7 +721,7 @@ namespace Tests.PlayMode.TileSystem
             yield return new WaitForSeconds(STEP_DELAY);
 
             // ─── Adım 1: 7 Lv1 → [B=Lv2, C=Lv2, D=Lv1(same), E..G=Empty, A=Empty] ───
-            bool step1 = TileObjectMergeHelper.TryMerge(ns[0], ns[1], TypeA1);
+            bool step1 = _mergeHelper.TryMerge(ns[0], ns[1], TypeA1);
             ApplyMergeResultsToNodes();
 
             Assert.IsTrue(step1, "Adım 1 merge gerçekleşmeli");
@@ -733,9 +734,9 @@ namespace Tests.PlayMode.TileSystem
             // BFS(C, except B): C'nin komşusu D=Lv1 (yanlış değer) → sadece [C]+B = 2 node
             ShowStepText("Adım 2 — 2× Lv2 yetersiz, merge olmuyor");
             _mergeResults.Clear();
-            TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.MergeCancel();
 
-            bool step2 = TileObjectMergeHelper.TryMerge(ns[1], ns[2], TypeA2);
+            bool step2 = _mergeHelper.TryMerge(ns[1], ns[2], TypeA2);
 
             Assert.IsFalse(step2, "Adım 2: 2 Lv2 var, 3 gerekli → merge olmamalı");
             Assert.IsEmpty(_mergeResults, "onTileObjectMerged çağrılmamalı");
@@ -773,13 +774,13 @@ namespace Tests.PlayMode.TileSystem
             yield return new WaitForSeconds(STEP_DELAY);
 
             // ─── Adım 1: Her grup: sTop(src) → b(hedef), BFS b'den except sTop → b+sMid+sTop=3 ───
-            TileObjectMergeHelper.TryMerge(g1[0], g1[2], TypeA1);
-            ApplyMergeResultsToNodes(); _mergeResults.Clear(); TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.TryMerge(g1[0], g1[2], TypeA1);
+            ApplyMergeResultsToNodes(); _mergeResults.Clear(); _mergeHelper.MergeCancel();
 
-            TileObjectMergeHelper.TryMerge(g2[0], g2[2], TypeA1);
-            ApplyMergeResultsToNodes(); _mergeResults.Clear(); TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.TryMerge(g2[0], g2[2], TypeA1);
+            ApplyMergeResultsToNodes(); _mergeResults.Clear(); _mergeHelper.MergeCancel();
 
-            TileObjectMergeHelper.TryMerge(g3[0], g3[2], TypeA1);
+            _mergeHelper.TryMerge(g3[0], g3[2], TypeA1);
             ApplyMergeResultsToNodes();
 
             // b nodeları (g_[2]) Lv2 olmalı
@@ -802,9 +803,9 @@ namespace Tests.PlayMode.TileSystem
             // ─── Adım 2: g1[2](src)=Lv2, g2[2](hdf)=Lv2 → BFS g2[2] except g1[2] → g3[2] bulunur ───
             _mergeResults.Clear();
             SubscribeMergeResult(g1[2], g2[2], g3[2]);
-            TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.MergeCancel();
 
-            bool step2 = TileObjectMergeHelper.TryMerge(g1[2], g2[2], TypeA2);
+            bool step2 = _mergeHelper.TryMerge(g1[2], g2[2], TypeA2);
             UpdateQuadColors();
 
             Assert.IsTrue(step2, "Adım 2 merge gerçekleşmeli");

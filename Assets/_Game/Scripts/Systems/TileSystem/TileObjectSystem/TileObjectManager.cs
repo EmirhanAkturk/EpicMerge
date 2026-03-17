@@ -1,10 +1,17 @@
 using System.Collections.Generic;
 using _Game.Scripts.Systems.ConfigurationSystem;
+using UnityEngine;
 using Utils;
+
 namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
 {
-    public class TileObjectManager : Singleton<TileObjectManager>
+    public class TileObjectManager : MonoBehaviour, ITileObjectManager
     {
+        /// <summary>
+        /// Awake'te set edilir. BaseTileObject gibi inject edilemeyen bileşenler için tutulur.
+        /// </summary>
+        public static TileObjectManager Instance { get; private set; }
+
         // Test Part
         public int MergeableObjectTypeCount
         {
@@ -30,6 +37,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
         
         private void Awake()
         {
+            Instance = this;
             Load();
         }
 

@@ -16,7 +16,8 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
     {
         private TileNode ThisTileNode { get;  set; }
 
-        [Inject] private IEventService EventService { get; }
+        [Inject] private IEventService EventService { get; set; }
+        [Inject] private ITileObjectMergeHelper TileObjectMergeHelper { get; set; }
 
         [Space]
         
@@ -232,7 +233,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem
 
         private bool TryMerge(BaseTileObject baseTileObject)
         {
-            return TileObjectMergeHelper.TryMerge(baseTileObject.CurrentTileNode,ThisTileNode, baseTileObject.TileObjectValue);
+            return TileObjectMergeHelper.TryMerge(baseTileObject.CurrentTileNode, ThisTileNode, baseTileObject.TileObjectValue);
         }
 
         private void UpdateMergedTileObjectValue(TileObjectValue tileObjectValue)

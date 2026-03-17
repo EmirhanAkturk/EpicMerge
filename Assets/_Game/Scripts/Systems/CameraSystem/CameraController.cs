@@ -1,7 +1,5 @@
 using _Game.Scripts.Systems.TileSystem.EventSystem;
-using _Game.Scripts.Systems.TileSystem.TileObjectSystem;
 using _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects;
-using GameDepends;
 using JoostenProductions;
 using Systems.PanelSystem;
 using UnityEngine;
@@ -37,6 +35,7 @@ namespace _Game.Scripts.Systems.CameraSystem
         private bool isCameraControllable = true;
 
         [Inject] private IEventService EventService { get; }
+        [Inject] private IPanelManager PanelManager { get; }
 
         #region Game Part
         protected override void OnEnable()
@@ -91,7 +90,7 @@ namespace _Game.Scripts.Systems.CameraSystem
         private void CameraMove()
         {
             // Check Zoom in / out
-            if(Input.touchCount > 1 || PanelManager.Instance.IsAnyPanelShowing()) return;
+            if(Input.touchCount > 1 || PanelManager.IsAnyPanelShowing()) return;
                 
             if (Input.GetMouseButtonDown(0))
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using _Game.Scripts.Systems.TileSystem.EventSystem;
 using _Game.Scripts.Systems.TileSystem.TileMergeSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 
@@ -41,18 +42,21 @@ namespace Tests.PlayMode.TileSystem
         private const float TILE_SIZE      = 0.85f;
         private const float TILE_SPACING   = 1.1f;
 
+        private ITileObjectMergeHelper _mergeHelper;
+
         [SetUp]
         public void SetUp()
         {
             _mergeResults.Clear();
             _nodeQuads.Clear();
-            TileObjectMergeHelper.MergeCancel();
+            _mergeHelper = new TileObjectMergeHelper(new EventService());
+            _mergeHelper.MergeCancel();
         }
 
         [TearDown]
         public void TearDown()
         {
-            TileObjectMergeHelper.MergeCancel();
+            _mergeHelper.MergeCancel();
             foreach (var go in _sceneObjects)
                 if (go != null) Object.Destroy(go);
             _sceneObjects.Clear();
@@ -81,7 +85,7 @@ namespace Tests.PlayMode.TileSystem
             yield return new WaitForSeconds(STEP_DELAY);
 
             // Merge!
-            bool merged = TileObjectMergeHelper.TryMerge(current, moved, TypeA1);
+            bool merged = _mergeHelper.TryMerge(current, moved, TypeA1);
             UpdateQuadColors();
 
             Assert.IsTrue(merged, "Merge gerçekleşmeliydi");
@@ -113,7 +117,7 @@ namespace Tests.PlayMode.TileSystem
 
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool merged = TileObjectMergeHelper.TryMerge(nodes[0], nodes[1], TypeA1);
+            bool merged = _mergeHelper.TryMerge(nodes[0], nodes[1], TypeA1);
             UpdateQuadColors();
 
             Assert.IsTrue(merged);
@@ -144,7 +148,7 @@ namespace Tests.PlayMode.TileSystem
 
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool merged = TileObjectMergeHelper.TryMerge(current, moved, TypeA1);
+            bool merged = _mergeHelper.TryMerge(current, moved, TypeA1);
             // merge olmadı, renkler değişmez
             UpdateQuadColors();
 
@@ -195,7 +199,7 @@ namespace Tests.PlayMode.TileSystem
 
             yield return new WaitForSeconds(STEP_DELAY);
 
-            bool merged = TileObjectMergeHelper.TryMerge(ns[0], ns[1], TypeA1);
+            bool merged = _mergeHelper.TryMerge(ns[0], ns[1], TypeA1);
             UpdateQuadColors();
 
             Assert.IsTrue(merged);

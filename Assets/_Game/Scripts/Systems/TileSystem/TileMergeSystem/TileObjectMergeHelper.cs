@@ -9,50 +9,54 @@ using GameDepends;
 
 namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
 {
-    public static class TileObjectMergeHelper
+    public interface ITileObjectMergeHelper
     {
-        private static int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
+        void MergeCancel();
+        bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects);
+        bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects, out List<TileNode> wantedNodes);
+        bool TryMerge(TileNode currentMovingObjectNode, TileNode movedNode, TileObjectValue targetValue);
+    }
 
-        private static List<TileNode> _mergeableIndicatorShownNodes;
-        private static IEventService _eventService;
+    public class TileObjectMergeHelper : ITileObjectMergeHelper
+    {
+        private int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
 
-        /// <summary>
-        /// Zenject installer tarafından uygulama başlangıcında çağrılmalıdır.
-        /// </summary>
-        public static void Initialize(IEventService eventService)
+        private List<TileNode> _mergeableIndicatorShownNodes = new List<TileNode>();
+        private readonly IEventService _eventService;
+
+        public TileObjectMergeHelper(IEventService eventService)
         {
             _eventService = eventService;
             _eventService.OnTileObjectPlacedToTile += TileObjectPlacedToTile;
             _eventService.OnMergeCanceled += MergeCancel;
         }
 
-        private static void TileObjectPlacedToTile(TileNode tileNode, BaseTileObject baseTileObject)
+        private void TileObjectPlacedToTile(TileNode tileNode, BaseTileObject baseTileObject)
         {
             MergeCancel();
         }
 
-        public static void MergeCancel()
+        public void MergeCancel()
         {
             UpdateMergeableObjectsIndicator(_mergeableIndicatorShownNodes, false);
             _eventService?.RaiseCanMergeStateChange(false);
         }
-        
-        public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects)
+
+        public bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects)
         {
             return CanMerge(tileObjectNode, movedNode, targetValue, indicateMergeableObjects, out _);
         }
 
-        public static bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects, out List<TileNode> wantedNodes)
+        public bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects, out List<TileNode> wantedNodes)
         {
             wantedNodes = null;
-            
+
             if (targetValue.IsEmptyTileObjectValue() || movedNode.Value.IsEmptyTileObjectValue()) return false;
-            
+
             wantedNodes = TileGraph.FindWantedNodesWithBfs(movedNode, targetValue, tileObjectNode);
-            if(!wantedNodes.Contains(tileObjectNode)) wantedNodes.Add(tileObjectNode);
-            
+            if (!wantedNodes.Contains(tileObjectNode)) wantedNodes.Add(tileObjectNode);
+
             bool canMerge = wantedNodes.Count >= MergeRequiredObject;
-            // Debug.Log("canMerge : " + canMerge);
             if (indicateMergeableObjects)
             {
                 UpdateMergeableObjectsIndicator(wantedNodes, canMerge);
@@ -61,7 +65,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
             return canMerge;
         }
 
-        public static bool TryMerge(TileNode currentMovingObjectNode, TileNode movedNode, TileObjectValue targetValue)
+        public bool TryMerge(TileNode currentMovingObjectNode, TileNode movedNode, TileObjectValue targetValue)
         {
             bool canMerge = CanMerge(currentMovingObjectNode, movedNode, targetValue, false, out var wantedNodes);
 
@@ -70,38 +74,35 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
                 return false;
             }
 
-            // Debug.Log("TryMerge : ");
-
             Merge(wantedNodes, targetValue);
             return true;
         }
 
-        private static void Merge(List<TileNode> wantedNodes, TileObjectValue tileObjectValue)
+        private void Merge(List<TileNode> wantedNodes, TileObjectValue tileObjectValue)
         {
             var newTileObjectValues = GetMergedTileObjectValues(tileObjectValue, wantedNodes.Count);
 
             for (int i = 0; i < wantedNodes.Count; i++)
             {
                 var node = wantedNodes[i];
-                
+
                 var value = i < newTileObjectValues.Count
                     ? newTileObjectValues[i]
                     : TileObjectValue.GetEmptyTileObjectValue();
-                
+
                 node.onTileObjectMerged?.Invoke(value);
             }
-            
+
             UpdateMergeableObjectsIndicator(wantedNodes, false);
-            // Debug.Log("Merged : ");
         }
 
-        private static List<TileObjectValue> GetMergedTileObjectValues(TileObjectValue tileObjectValue, int mergeObjectCount)
+        private List<TileObjectValue> GetMergedTileObjectValues(TileObjectValue tileObjectValue, int mergeObjectCount)
         {
             int upgradedObjectCount = mergeObjectCount / MergeRequiredObject;
-            int reqObjectForOneMoreMerge = mergeObjectCount % MergeRequiredObject; 
+            int reqObjectForOneMoreMerge = mergeObjectCount % MergeRequiredObject;
             int notUpgradedObjectCount = 0;
-            
-            if ( reqObjectForOneMoreMerge > 1)
+
+            if (reqObjectForOneMoreMerge > 1)
             {
                 ++upgradedObjectCount;
             }
@@ -113,7 +114,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
             return GetMergedTileObjectValues(tileObjectValue, upgradedObjectCount, notUpgradedObjectCount);
         }
 
-        private static List<TileObjectValue> GetMergedTileObjectValues(TileObjectValue tileObjectValue, int upgradedObjectCount, int notUpgradedObjectCount)
+        private List<TileObjectValue> GetMergedTileObjectValues(TileObjectValue tileObjectValue, int upgradedObjectCount, int notUpgradedObjectCount)
         {
             List<TileObjectValue> newTileObjectValues = new List<TileObjectValue>();
 
@@ -131,12 +132,12 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
 
             return newTileObjectValues;
         }
-        
-        private static void UpdateMergeableObjectsIndicator(List<TileNode> tileNodes, bool isMergeable)
+
+        private void UpdateMergeableObjectsIndicator(List<TileNode> tileNodes, bool isMergeable)
         {
             HideShowingMergeIndicators();
-            
-            if(tileNodes == null || tileNodes.Count == 0) return;
+
+            if (tileNodes == null || tileNodes.Count == 0) return;
 
             foreach (var tileNode in tileNodes)
             {
@@ -146,22 +147,22 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
             UpdateMergeableIndicatorShownList(tileNodes, isMergeable);
         }
 
-        private static void HideShowingMergeIndicators()
+        private void HideShowingMergeIndicators()
         {
             if (!HasIndicatorShownNode()) return;
-            
+
             foreach (var tileNode in _mergeableIndicatorShownNodes)
             {
                 tileNode?.onUpdateMergeableIndicator.Invoke(false);
             }
         }
 
-        private static bool HasIndicatorShownNode()
+        private bool HasIndicatorShownNode()
         {
             return _mergeableIndicatorShownNodes is { Count: > 0 };
         }
 
-        private static void UpdateMergeableIndicatorShownList(List<TileNode> tileNodes, bool isMergeable)
+        private void UpdateMergeableIndicatorShownList(List<TileNode> tileNodes, bool isMergeable)
         {
             if (isMergeable)
             {

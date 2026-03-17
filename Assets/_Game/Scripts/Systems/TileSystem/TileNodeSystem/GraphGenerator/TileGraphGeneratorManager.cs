@@ -1,10 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Utils;
 namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.GraphGenerator
 {
-    public class TileGraphGeneratorManager : Singleton<TileGraphGeneratorManager>
+    public class TileGraphGeneratorManager : MonoBehaviour, ITileGraphGeneratorManager
     {
+        /// <summary>
+        /// Awake'te set edilir. TileGraphGenerator gibi self-registration pattern'lar için tutulur.
+        /// </summary>
+        public static TileGraphGeneratorManager Instance { get; private set; }
+        
+        public static bool IsAvailable() => Instance != null;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
         private readonly Dictionary<int, TileGraphGenerator> tileGraphGenerators = new Dictionary<int, TileGraphGenerator>();
 
         #region Add & Remove

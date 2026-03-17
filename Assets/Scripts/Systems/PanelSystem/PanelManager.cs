@@ -9,11 +9,21 @@ using Utils;
 
 namespace Systems.PanelSystem
 {
-    //singleton pattern for panel manager
-    public class PanelManager : Singleton<PanelManager>
+    public class PanelManager : MonoBehaviour, IPanelManager
     {
-        public PanelEvent onPanelShowed = new PanelEvent();
-        public PanelEvent onPanelHidden = new PanelEvent();
+        /// <summary>
+        /// Awake'te set edilir. FindObjectOfType yerine kullanılır.
+        /// DragDropSystem gibi Zenject erişimi olmayan bileşenler için tutulur.
+        /// </summary>
+        public static PanelManager Instance { get; private set; }
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        public PanelEvent onPanelShowed { get; } = new PanelEvent();
+        public PanelEvent onPanelHidden { get; } = new PanelEvent();
     
         //Optimization
         public List<Canvas> allExtraCanvasList = new List<Canvas>();

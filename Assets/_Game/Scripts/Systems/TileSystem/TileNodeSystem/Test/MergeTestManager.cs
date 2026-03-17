@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using _Game.Scripts.Systems.TileSystem.EventSystem;
 using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using UnityEngine;
-using Utils;
 using Zenject;
 namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.Test
 {
-    public class MergeTestManager : Singleton<MergeTestManager>
+    public class MergeTestManager : MonoBehaviour
     {
         private readonly List<TileNode> canMergeNodes = new List<TileNode>();
 
