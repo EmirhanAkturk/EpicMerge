@@ -7,9 +7,6 @@ namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
 {
     public class TileObjectManager : MonoBehaviour, ITileObjectManager
     {
-        /// <summary>
-        /// Awake'te set edilir. BaseTileObject gibi inject edilemeyen bileşenler için tutulur.
-        /// </summary>
         public static TileObjectManager Instance { get; private set; }
 
         // Test Part
@@ -34,7 +31,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem
         
         private TileObjectCollection tileObjectCollection;
         private bool isLoaded;
-        
+
         private void Awake()
         {
             Instance = this;

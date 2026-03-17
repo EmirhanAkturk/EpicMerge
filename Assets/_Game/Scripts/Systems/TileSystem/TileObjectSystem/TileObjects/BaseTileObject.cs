@@ -2,6 +2,7 @@ using _Game.Scripts.Systems.TileSystem.TileNodeSystem.Graph;
 using JoostenProductions;
 using Systems.MoveSystem;
 using UnityEngine;
+
 namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects
 {
     public class BaseTileObject : OverridableMonoBehaviour
@@ -29,10 +30,10 @@ namespace _Game.Scripts.Systems.TileSystem.TileObjectSystem.TileObjects
         private void InitVisual(TileObjectValue tileObjectValue)
         {
             if(tileObjectValue.IsEmptyTileObjectValue()) return;
-            
+
             var objectData = TileObjectManager.Instance.GetObjectDataById(tileObjectValue.objectId);
             var dataByLevel = objectData.GetDataByLevel(tileObjectValue.objectLevel);
-            
+
             Sprite sprite = dataByLevel?.sprite;
             baseTileObjectSpriteController.InitVisual(sprite);
         }

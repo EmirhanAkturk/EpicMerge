@@ -11,10 +11,6 @@ namespace Systems.PanelSystem
 {
     public class PanelManager : MonoBehaviour, IPanelManager
     {
-        /// <summary>
-        /// Awake'te set edilir. FindObjectOfType yerine kullanılır.
-        /// DragDropSystem gibi Zenject erişimi olmayan bileşenler için tutulur.
-        /// </summary>
         public static PanelManager Instance { get; private set; }
 
         private void Awake()

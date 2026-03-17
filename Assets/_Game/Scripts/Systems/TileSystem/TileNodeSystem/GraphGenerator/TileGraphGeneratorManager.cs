@@ -6,11 +6,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.GraphGenerator
 {
     public class TileGraphGeneratorManager : MonoBehaviour, ITileGraphGeneratorManager
     {
-        /// <summary>
-        /// Awake'te set edilir. TileGraphGenerator gibi self-registration pattern'lar için tutulur.
-        /// </summary>
         public static TileGraphGeneratorManager Instance { get; private set; }
-        
         public static bool IsAvailable() => Instance != null;
 
         private void Awake()

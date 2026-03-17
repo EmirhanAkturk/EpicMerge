@@ -10,6 +10,7 @@ using Systems.GraphSystem.Utils;
 using Systems.PoolingSystem;
 using UnityEngine;
 using Utils;
+using Zenject;
 using Application = UnityEngine.Device.Application;
 using Random = UnityEngine.Random;
 
@@ -17,6 +18,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.GraphGenerator
 {
    public class TileGraphGenerator : MonoBehaviour
    {
+      [Inject] private ITileGraphGeneratorManager _graphGeneratorManager;
       public int GraphGraphGeneratorId => graphGeneratorId;
       public string GraphGeneratorName => graphGeneratorName;
       
@@ -50,15 +52,12 @@ namespace _Game.Scripts.Systems.TileSystem.TileNodeSystem.GraphGenerator
 
       private void OnEnable()
       {
-         TileGraphGeneratorManager.Instance.AddGenerator(this);
+         _graphGeneratorManager.AddGenerator(this);
       }
 
       private void OnDisable()
       {
-         if (TileGraphGeneratorManager.IsAvailable())
-         {
-            TileGraphGeneratorManager.Instance.RemoveGenerator(this);
-         }
+         _graphGeneratorManager?.RemoveGenerator(this);
       }
 
       public void CreateGraph()

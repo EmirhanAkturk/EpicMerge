@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Game.Scripts.Systems.ConfigurationSystem;
 using _Game.Scripts.Systems.TileSystem.EventSystem;
@@ -9,7 +10,7 @@ using GameDepends;
 
 namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
 {
-    public interface ITileObjectMergeHelper
+    public interface ITileObjectMergeHelper : IDisposable
     {
         void MergeCancel();
         bool CanMerge(TileNode tileObjectNode, TileNode movedNode, TileObjectValue targetValue, bool indicateMergeableObjects);
@@ -19,6 +20,7 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
 
     public class TileObjectMergeHelper : ITileObjectMergeHelper
     {
+        private bool _disposed;
         private int MergeRequiredObject => ConfigurationService.Configurations.mergeRequiredObject;
 
         private List<TileNode> _mergeableIndicatorShownNodes = new List<TileNode>();
@@ -172,6 +174,20 @@ namespace _Game.Scripts.Systems.TileSystem.TileMergeSystem
             {
                 _mergeableIndicatorShownNodes?.Clear();
             }
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+
+            if (_eventService != null)
+            {
+                _eventService.OnTileObjectPlacedToTile -= TileObjectPlacedToTile;
+                _eventService.OnMergeCanceled -= MergeCancel;
+            }
+
+            _mergeableIndicatorShownNodes?.Clear();
+            _disposed = true;
         }
     }
 }

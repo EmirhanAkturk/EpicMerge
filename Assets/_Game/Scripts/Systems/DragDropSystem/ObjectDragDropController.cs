@@ -5,12 +5,14 @@ using Systems.MoveSystem;
 using Systems.PanelSystem;
 using UnityEngine;
 using Utils;
+using Zenject;
 
 namespace _Game.Scripts.Systems.DragDropSystem
 {
     [RequireComponent(typeof(Collider))]
     public sealed class ObjectDragDropController : OverridableMonoBehaviour
     {
+        [Inject] private IPanelManager _panelManager;
         public Action onObjectDragStart;
         public Action onObjectDragEnd;
 
@@ -96,9 +98,9 @@ namespace _Game.Scripts.Systems.DragDropSystem
 
         public void OnMouseDrag()
         {
-            if (!CanDrag || !IsMouseDragEnoughForMovement() || 
+            if (!CanDrag || !IsMouseDragEnoughForMovement() ||
                 Input.touchCount > 1 ||
-                PanelManager.Instance.IsAnyPanelShowing())
+                _panelManager.IsAnyPanelShowing())
             {
                 return;
             }

@@ -22,7 +22,8 @@ namespace _Game.Scripts.GameDepend.Zenject
             Container.Bind<IEventService>().FromInstance(eventService).AsSingle();
 
             // ── Merge System ─────────────────────────────────────────────────
-            Container.Bind<ITileObjectMergeHelper>().To<TileObjectMergeHelper>().AsSingle();
+            // AsSingle() ile bind edilen IDisposable nesneler, container dispose edildiğinde otomatik dispose edilir
+            Container.Bind<ITileObjectMergeHelper>().To<TileObjectMergeHelper>().AsSingle().NonLazy();
 
             // ── Detection ────────────────────────────────────────────────────
             Container.Bind<IObjectDetectionHandler>().To<TileObjectDetectionHandler>().AsTransient();
